@@ -738,14 +738,14 @@
     if (!st) return "No stories yet.";
     const R = H.storyHoldings(st, P), n = R.rows.length;
     let y = header(c, th, `In the news · ${H.fmtDate(st.date)}`, st.title, "", { ts: 46 });
-    y = wrap(c, plain(st.news), M, y + 6, W - 2 * M, 28, 3, { s: 20, w: 500, col: th.ink2 }) + 34;
+    y = wrap(c, plain(st.news), M, y + 6, W - 2 * M, 28, n <= 3 ? 5 : 4, { s: 20, w: 500, col: th.ink2 }) + 34;
     // the four headline figures
     const k4 = [["Trump still holds", R.trump ? "≈" + H.usd(R.trump) : "–", th.ink], ["Return on his buys", pc(R.tRet), sgn(R.tRet, th)], ["Congress still holds", R.cong ? "≈" + H.usd(R.cong) : "–", th.ink], ["Members holding", String(R.members), th.ink]];
     const tw = (W - 2 * M - 3 * 14) / 4;
     k4.forEach(([l, v, col], i) => { const x = M + i * (tw + 14); box(c, th, x, y, tw, 112, 14); caps(c, l, x + 16, y + 32, th.muted, 12); tx(c, v, x + 16, y + 84, { s: 34, w: 800, col, f: MONO, max: tw - 28 }); });
     y += 140;
     // one card per company
-    const photo = await loadImg(R.trumpM ? H.photoSrc(R.trumpM) : ""), gap = 14, ch = Math.min(200, Math.floor((BOTTOM - y - gap * (n - 1)) / n));
+    const photo = await loadImg(R.trumpM ? H.photoSrc(R.trumpM) : ""), gap = 14, ch = Math.min(n <= 3 ? 250 : 200, Math.floor((BOTTOM - y - gap * (n - 1)) / n));
     R.rows.forEach((r, i) => {
       const cy = y + i * (ch + gap); box(c, th, M, cy, W - 2 * M, ch, 14);
       rr(c, M + 18, cy + 18, 92, 36, 8); c.fillStyle = th.chip; c.fill(); tx(c, r.tk, M + 64, cy + 43, { s: 19, w: 800, col: th.ink, f: MONO, a: "center", max: 86 });
@@ -764,15 +764,17 @@
       tx(c, `${r.n} member${r.n === 1 ? "" : "s"}`, cx, ry + 68, { s: 15, w: 600, col: th.ink2 });
       // the biggest holders
       if (on("hltop") && r.top.length) { const hx = M + 620; caps(c, "Biggest holders", hx, ry + 14, th.muted, 12);
-        r.top.forEach((x, j) => { const yy = ry + 24 + j * 30; c.fillStyle = x.m.party === "D" ? "#2f6fd6" : x.m.party === "R" ? "#d64545" : "#7a7f87"; c.beginPath(); c.arc(hx + 6, yy + 12, 6, 0, 7); c.fill();
+        r.top.slice(0, ch >= 240 ? 3 : 2).forEach((x, j) => { const yy = ry + 24 + j * 30; c.fillStyle = x.m.party === "D" ? "#2f6fd6" : x.m.party === "R" ? "#d64545" : "#7a7f87"; c.beginPath(); c.arc(hx + 6, yy + 12, 6, 0, 7); c.fill();
           tx(c, H.surname(x.m.name), hx + 20, yy + 18, { s: 17, w: 700, col: th.ink, max: 170 }); tx(c, "≈" + H.usd(x.v), W - M - 20, yy + 18, { s: 17, w: 700, col: th.ink2, f: MONO, a: "right" }); }); }
       // committee links along the bottom of the card
       const cl = on("hlcom") ? r.links.filter((l) => l.short).slice(0, 2) : [];
       if (cl.length && ch >= 190) { const ly = cy + ch - 20; c.fillStyle = th.grid; c.fillRect(M + 18, ly - 24, W - 2 * M - 36, 1);
         let lx = M + 20; caps(c, "Committee", lx, ly, th.muted, 12); lx += 106;
-        cl.forEach((l) => { c.fillStyle = l.m.party === "D" ? "#2f6fd6" : l.m.party === "R" ? "#d64545" : "#7a7f87"; c.beginPath(); c.arc(lx + 6, ly - 5, 6, 0, 7); c.fill();
-          const nm = `${H.surname(l.m.name)} · ${l.c[0].replace(/ Committee$/, "")}: `; tx(c, nm, lx + 20, ly, { s: 15, w: 700, col: th.ink }); setF(c, 700, 15); const w1 = c.measureText(nm).width;
-          tx(c, l.short, lx + 20 + w1, ly, { s: 15, w: 600, col: th.ink2 }); setF(c, 600, 15); lx += 20 + w1 + c.measureText(l.short).width + 34; }); }
+        // a link that won't fit on the line is left off
+        cl.forEach((l) => { const nm = `${H.surname(l.m.name)} · ${l.c[0].replace(/ Committee$/, "").replace("Health, Education, Labor and Pensions", "Health (HELP)")}: `;
+          setF(c, 700, 15); const w1 = c.measureText(nm).width; setF(c, 600, 15); const w2 = c.measureText(l.short).width; if (lx + 20 + w1 + w2 > W - M - 20) { lx = W; return; }
+          c.fillStyle = l.m.party === "D" ? "#2f6fd6" : l.m.party === "R" ? "#d64545" : "#7a7f87"; c.beginPath(); c.arc(lx + 6, ly - 5, 6, 0, 7); c.fill();
+          tx(c, nm, lx + 20, ly, { s: 15, w: 700, col: th.ink }); tx(c, l.short, lx + 20 + w1, ly, { s: 15, w: 600, col: th.ink2 }); lx += 20 + w1 + w2 + 34; }); }
     });
     footer(c, th, `Holdings estimated from filings since ${H.fmtDate(H.D.start, { month: "short", year: "numeric" })}; shares held before, or from spin-offs, aren't counted. Not financial advice.`);
   }

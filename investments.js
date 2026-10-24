@@ -7,6 +7,39 @@ window.CTC_INVEST = {
   // Holdings and returns are worked out on the page from the filings; only the story itself is written here.
   stories: [
     {
+      id: "f35-deal", date: "2026-10-22",
+      title: "Lockheed agrees a 10-year F-35 deal with the Pentagon",
+      news: "Lockheed Martin reached an initial agreement with the Pentagon to build 850 F-35 jets over 10 years at 156 a year, ending the yearly contract cycle. Its order backlog hit a record $292 billion and the stock rose about 9% on the deal and its results.",
+      angle: "RTX's Pratt & Whitney makes the F-35's engine and Northrop Grumman builds part of its body, so a steady order book helps them too.",
+      tickers: ["LMT", "RTX", "NOC"],
+      committees: [
+        { tk: "LMT", m: "C001123", role: "Armed Services Committee", why: "Oversees Pentagon programs, the F-35 among them", short: "oversees the F-35" },
+        { tk: "LMT", m: "F000472", role: "Appropriations Committee", why: "Sets Pentagon spending, including jet purchases", short: "Pentagon spending" },
+        { tk: "RTX", m: "B001236", role: "Appropriations Committee", why: "Sets Pentagon spending, including jet purchases", short: "Pentagon spending" }
+      ],
+      sources: [
+        { name: "MarketScreener (Dow Jones), 22 Oct 2026: Lockheed Martin stock rises on F-35 framework deal with government, record backlog", url: "https://www.marketscreener.com/news/lockheed-martin-stock-rises-on-f-35-framework-deal-with-government-record-backlog-ce785cded88af523" },
+        { name: "GuruFocus: Lockheed stock rises as Pentagon backs 850 F-35 jets", url: "https://www.gurufocus.com/news/9136340/lockheed-stock-rises-as-pentagon-backs-850-f35-jets" }
+      ]
+    },
+    {
+      id: "oil-spr", date: "2026-10-19",
+      title: "US emergency oil reserve falls to its lowest since 1982",
+      news: "The Strategic Petroleum Reserve fell to its lowest level since 1982 while oil stayed near $110 a barrel on Middle East and Russia–Ukraine worries. A smaller reserve leaves less to release if supply is cut, which tends to keep prices high.",
+      angle: "High oil prices lift producers' profits. Congressional Democrats estimated in August that Trump's oil and gas stocks could be worth up to $61 million.",
+      tickers: ["XOM", "CVX", "COP", "OXY"],
+      committees: [
+        { tk: "XOM", m: "K000383", role: "Energy and Natural Resources Committee", why: "Oversees the Strategic Petroleum Reserve", short: "oil reserve" },
+        { tk: "XOM", m: "W000798", role: "Natural Resources Committee", why: "Oversees oil drilling on federal land and waters", short: "federal drilling" },
+        { tk: "CVX", m: "W000798", role: "Natural Resources Committee", why: "Oversees oil drilling on federal land and waters", short: "federal drilling" },
+        { tk: "COP", m: "M001157", role: "Foreign Affairs Committee", why: "Shapes Middle East and Russia policy, which drives oil prices", short: "Middle East policy" }
+      ],
+      sources: [
+        { name: "Reuters, 19 Oct 2026: Oil stocks in US strategic petroleum reserve fall to lowest level since 1982", url: "https://news.google.com/search?q=Oil%20stocks%20in%20US%20strategic%20petroleum%20reserve%20fall%20to%20lowest%20level%20since%201982" },
+        { name: "Yahoo Finance, 25 Aug 2026: Trump discloses over 1,000 new stock trades as Democrats highlight his profitable oil sector holdings", url: "https://finance.yahoo.com/markets/article/trump-discloses-over-1000-new-stock-trades-as-democrats-highlight-his-profitable-oil-sector-holdings-155232209.html" }
+      ]
+    },
+    {
       id: "nuclear-dc", date: "2026-10-17",
       title: "US and Russia discuss joint nuclear-powered data centres",
       news: "Kirill Dmitriev, Putin's investment envoy, said at Russian Energy Week that the US and Russia are discussing joint data-centre projects, some possibly run on small nuclear power plants. Nothing is agreed, and he named US sanctions as the main obstacle.",
@@ -22,6 +55,22 @@ window.CTC_INVEST = {
         { name: "TASS: Russia, US discuss joint data center projects (envoy)", url: "https://tass.com/economy/2203163" },
         { name: "Business Today, 18 Oct 2026: Russia in talks with US to power data centers with nuclear energy", url: "https://www.businesstoday.in/world/story/from-diesel-to-data-russia-in-talks-with-us-to-power-data-centers-with-nuclear-energy-562278-2026-10-18" },
         { name: "Techstrong IT: US and Russia explore joint data centers despite sanctions obstacles", url: "https://techstrong.it/featured/us-and-russia-explore-joint-data-centers-despite-sanctions-obstacles/" }
+      ]
+    },
+    {
+      id: "pharma-orphan", date: "2026-10-16",
+      title: "Democrats: Trump's drug stocks grew in companies spared Medicare price talks",
+      news: "A report from Joint Economic Committee Democrats says Trump's drug-company stocks rose from up to $1.7 million in 2024 to up to $56.2 million at the end of 2025. Up to $39.1 million is in companies that gained from the 2025 tax law's wider orphan-drug exemption from Medicare price negotiations, including Merck (Keytruda), Bristol Myers Squibb (Opdivo) and AbbVie. The White House says outside firms manage his portfolio.",
+      angle: "The exemption delays or excludes some costly drugs from Medicare negotiation, which protects their prices.",
+      tickers: ["MRK", "BMY", "ABBV"],
+      committees: [
+        { tk: "ABBV", m: "A000383", role: "Health, Education, Labor and Pensions Committee", why: "Oversees the FDA, which decides which drugs count as orphan drugs", short: "oversees the FDA" },
+        { tk: "BMY", m: "A000383", role: "Health, Education, Labor and Pensions Committee", why: "Oversees the FDA, which decides which drugs count as orphan drugs", short: "oversees the FDA" },
+        { tk: "BMY", m: "T000278", role: "Health, Education, Labor and Pensions Committee", why: "Oversees the FDA, which decides which drugs count as orphan drugs", short: "oversees the FDA" }
+      ],
+      sources: [
+        { name: "AP via PBS NewsHour, 16 Oct 2026: Democrats say Trump increased investments in drugmakers that were given Medicare exemptions", url: "https://www.pbs.org/newshour/politics/democrats-say-trump-increased-investments-in-drugmakers-that-were-given-medicare-exemptions" },
+        { name: "STAT, 16 Oct 2026: Pharmalittle", url: "https://www.statnews.com/pharmalot/2026/10/16/hhs-peptide-push-trump-pharma-stock-holdings/" }
       ]
     }
   ],

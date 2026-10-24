@@ -1311,8 +1311,8 @@
     return { date, open: false, text: `Market closed at 4:00pm ET (now ${time})` };
   }
   // "what happened", in words, from the numbers: how far, over how long, what moved most
-  const XNAMES = { GFS: "GlobalFoundries", LAC: "Lithium Americas", TMQ: "Trilogy Metals", TSM: "TSMC", ASML: "ASML", LLY: "Eli Lilly", "BRK.B": "Berkshire Hathaway", SPCX: "SpaceX", AMZN: "Amazon" };  // listed names missing from the stock list
-  const coName = (tk) => XNAMES[tk] && stocks[tk] ? XNAMES[tk] : stocks[tk] ? cleanName(stocks[tk][0]).replace(/\s+(Sponsored|Corporation|Oyj|AG|SE)\b.*$/i, "") : XNAMES[tk] || tk;
+  const XNAMES = { GFS: "GlobalFoundries", LAC: "Lithium Americas", TMQ: "Trilogy Metals", TSM: "TSMC", ASML: "ASML", LLY: "Eli Lilly", "BRK.B": "Berkshire Hathaway", SPCX: "SpaceX", AMZN: "Amazon", MRK: "Merck", XOM: "ExxonMobil" };  // listed names missing from the stock list
+  const coName = (tk) => XNAMES[tk] && stocks[tk] ? XNAMES[tk] : stocks[tk] ? cleanName(stocks[tk][0]).replace(/\s+(Sponsored|Corporation|Oyj|AG|SE)\b.*$/i, "").replace(/\s*&$/, "") : XNAMES[tk] || tk;
   const spanTxt = (a, b) => a === b ? `on ${fmtDate(a, { day: "numeric", month: "short" })}` : `from ${fmtDate(a, { day: "numeric", month: "short" })} to ${fmtDate(b, { day: "numeric", month: "short" })}`;
   const pctAbs = (r, d = 1) => `${Math.abs(r * 100).toFixed(d)}%`;
   const dropWhat = (e) => {
@@ -1683,7 +1683,7 @@
   const loadAllPrices = () => loadPrices().then((P) => XPX ? P : loadScript("extra_prices.js").then(() => { if (P && window.CTC_XPX) for (const [t, v] of Object.entries(window.CTC_XPX.px)) if (!P.px[t]) P.px[t] = v; XPX = true; return P; }));
   let AFTER = null, INVEST = null, PROD = null;
   const loadAfter = () => AFTER ? Promise.resolve(AFTER) : loadScript(`aftermath.js?v=3&h=${Math.floor(Date.now() / 3.6e6)}`).then(() => (AFTER = window.CTC_AFTERMATH || null));
-  const loadInvest = () => INVEST ? Promise.resolve(INVEST) : loadScript(`investments.js?v=4&h=${Math.floor(Date.now() / 3.6e6)}`).then(() => (INVEST = window.CTC_INVEST || null));
+  const loadInvest = () => INVEST ? Promise.resolve(INVEST) : loadScript(`investments.js?v=5&h=${Math.floor(Date.now() / 3.6e6)}`).then(() => (INVEST = window.CTC_INVEST || null));
   const loadProd = () => PROD ? Promise.resolve(PROD) : loadScript("production.js?v=4").then(() => (PROD = window.CTC_PROD || null));
   const SPANS = { day: [1, "Today"], week: [5, "This week"], month: [21, "This month"] };
   let moverList = "sp", moverSpan = "day";
@@ -1890,7 +1890,7 @@
       }
       for (const x of hold) { if (links.some((l) => l.m === x.m)) continue; const cs = new Set(); for (const t of trades) if (t.m === x.m.i && t.t === tk) for (const c of t.c || []) cs.add(cname(c)); if (cs.size) links.push({ m: x.m, c: [...cs] }); }
       const now = last(tk), then = at(tk, st.date);
-      return { tk, trump: tL && tL.value >= 1000 ? tL.value : 0, tRet: tr && tr.n ? tr.ret : null, cong: hold.reduce((a, x) => a + x.v, 0), n: hold.length, top: hold.slice(0, 2), links, since: now && then ? now / then - 1 : null };
+      return { tk, trump: tL && tL.value >= 1000 ? tL.value : 0, tRet: tr && tr.n ? tr.ret : null, cong: hold.reduce((a, x) => a + x.v, 0), n: hold.length, top: hold.slice(0, 3), links, since: now && then ? now / then - 1 : null };
     });
     const tAll = st.tickers.flatMap(tBuysOf), tS = tAll.length ? stats(tAll, "T") : null;
     return { rows, trumpM, trump: rows.reduce((a, r) => a + r.trump, 0), tRet: tS && tS.n ? tS.ret : null, cong: rows.reduce((a, r) => a + r.cong, 0), members: holdersAll.size };
@@ -1912,7 +1912,7 @@
         <td class="r mono ${cls(r.since)}">${pct(r.since)}</td>
         <td class="r mono">${r.trump ? "≈" + usd(r.trump) : "–"}</td><td class="r mono ${cls(r.tRet)}">${pct(r.tRet)}</td>
         <td class="r mono">${r.cong ? `≈${usd(r.cong)} <span class="muted small">${r.n} member${r.n === 1 ? "" : "s"}</span>` : "none"}</td>
-        <td>${r.top.length ? r.top.map((x) => `<a class="hl-chip" href="#/member/${encodeURIComponent(x.m.id)}">${dot(x.m)}${esc(surname(x.m.name))} <span class="mono">≈${usd(x.v)}</span></a>`).join(" ") : "–"}</td>
+        <td>${r.top.length ? r.top.slice(0, 2).map((x) => `<a class="hl-chip" href="#/member/${encodeURIComponent(x.m.id)}">${dot(x.m)}${esc(surname(x.m.name))} <span class="mono">≈${usd(x.v)}</span></a>`).join(" ") : "–"}</td>
         <td class="small hl-com">${r.links.length ? r.links.slice(0, 2).map((l) => `<div>${dot(l.m)}<a href="#/member/${encodeURIComponent(l.m.id)}"><b>${esc(surname(l.m.name))}</b></a> · ${esc(l.c[0])}${l.why ? `<span class="muted">${esc(l.why)}. ${l.v >= 1000 ? `Holds ≈${usd(l.v)}` : l.trades ? `${l.trades} trade${l.trades === 1 ? "" : "s"} in it since ${fmtDate(D.start, { year: "numeric" })}` : ""}</span>` : ""}</div>`).join("") : "–"}</td></tr>`).join("")}
       </tbody></table></div>
       <p class="small muted">Holdings are estimates from filings since ${fmtDate(D.start, { month: "short", year: "numeric" })} (and officials' annual reports). Shares owned before then, or received in a spin-off without a trade, aren't counted. A committee link names a member who holds or trades the stock and sits on a committee that touches the story.</p>
@@ -2260,7 +2260,7 @@
       "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Public+Sans:wght@400;500;600;700;800&display=swap"]) {
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
-    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=26")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
+    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=27")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
   })());
   let dvTab = "markets";
   try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }
