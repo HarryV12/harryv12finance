@@ -1311,7 +1311,7 @@
     return { date, open: false, text: `Market closed at 4:00pm ET (now ${time})` };
   }
   // "what happened", in words, from the numbers: how far, over how long, what moved most
-  const XNAMES = { GFS: "GlobalFoundries", LAC: "Lithium Americas", TMQ: "Trilogy Metals", TSM: "TSMC", ASML: "ASML", LLY: "Eli Lilly", "BRK.B": "Berkshire Hathaway", SPCX: "SpaceX", AMZN: "Amazon", MRK: "Merck", XOM: "ExxonMobil" };  // listed names missing from the stock list
+  const XNAMES = { GFS: "GlobalFoundries", LAC: "Lithium Americas", TMQ: "Trilogy Metals", TSM: "TSMC", ASML: "ASML", LLY: "Eli Lilly", "BRK.B": "Berkshire Hathaway", SPCX: "SpaceX", AMZN: "Amazon", MRK: "Merck", XOM: "ExxonMobil", SHEL: "Shell", BP: "BP" };  // listed names missing from the stock list
   const coName = (tk) => XNAMES[tk] && stocks[tk] ? XNAMES[tk] : stocks[tk] ? cleanName(stocks[tk][0]).replace(/\s+(Sponsored|Corporation|Oyj|AG|SE)\b.*$/i, "").replace(/\s*&$/, "") : XNAMES[tk] || tk;
   const spanTxt = (a, b) => a === b ? `on ${fmtDate(a, { day: "numeric", month: "short" })}` : `from ${fmtDate(a, { day: "numeric", month: "short" })} to ${fmtDate(b, { day: "numeric", month: "short" })}`;
   const pctAbs = (r, d = 1) => `${Math.abs(r * 100).toFixed(d)}%`;
@@ -1720,19 +1720,36 @@
     }
     return out;
   }
-  // a heatmap of stocks: sectors as blocks, each stock sized by company value and coloured by its move
-  function heatmapHtml(P, tks, k, { W = 1000, H = 520, cap = 0.03, link = true } = {}) {
-    const rows = tks.map((tk) => ({ tk, r: moveOf(P, tk, k), v: Math.max(mcapOf(tk), 5e9), s: sectorOf(tk) })).filter((x) => x.r != null);
-    const bySec = new Map(); for (const r of rows) { if (!bySec.has(r.s)) bySec.set(r.s, []); bySec.get(r.s).push(r); }
-    const secs = squarify([...bySec].map(([s, l]) => ({ s, l, v: l.reduce((a, x) => a + x.v, 0) })), 0, 0, W, H);
+  // a heatmap of stocks: sectors as blocks (or sub-industries, for an industry list), then the sub-industries
+  // inside each sector, then each company sized by value and coloured by its move. Each block shows its
+  // value-weighted move; tiles show more (name, price) the more room they have.
+  function heatmapHtml(P, tks, k, { W = 1000, H = 520, cap = 0.03, link = true, by = "sector" } = {}) {
+    // on a narrow screen: taller, and no sub-industry level, so the squares stay big enough to read
+    const narrow = (app.clientWidth || innerWidth) < 760; if (narrow) H = Math.round(H * 1.6);
+    const L = P.dates.length - 1, pos = (b) => `left:${b.x / W * 100}%;top:${b.y / H * 100}%;width:${b.w / W * 100}%;height:${b.h / H * 100}%`;
+    const rows = tks.map((tk) => ({ tk, r: moveOf(P, tk, k), v: Math.max(mcapOf(tk), 5e9), s: by === "sector" ? sectorOf(tk) : subOf(tk), i: subOf(tk) })).filter((x) => x.r != null);
+    const groups = (list, key) => { const m = new Map(); for (const r of list) { if (!m.has(r[key])) m.set(r[key], []); m.get(r[key]).push(r); } return [...m].map(([s, l]) => ({ s, l, v: l.reduce((a, x) => a + x.v, 0), r: l.reduce((a, x) => a + x.r * x.v, 0) / l.reduce((a, x) => a + x.v, 0) })); };
+    // text sized for a 1000-wide map, scaled to the map's real width (cqw), never past its full size
+    const fz = (px) => `clamp(7px, ${(px / W * 100).toFixed(2)}cqw, ${px}px)`;
+    const tile = (t) => {
+      const x = P.px[t.tk], px = x && x[L], fs = Math.max(9, Math.min(22, t.w / 4.6, t.h / 2.4));
+      const showTk = t.w > 24 && t.h > 14, showPct = t.w > 38 && t.h > 30, showName = t.w > 104 && t.h > 74, showPx = t.w > 84 && t.h > 58;
+      return `<${link ? `a href="#/stock/${encodeURIComponent(t.tk)}"` : "div"} class="hm-tile" style="${pos(t)};background:${heat(t.r, cap)}" title="${esc(coName(t.tk))} (${esc(t.tk)}) · ${pct(t.r, 2)}${px ? ` · ${price(px)}` : ""} · ${esc(t.i)}${mcapOf(t.tk) ? ` · value ${usd(mcapOf(t.tk))}` : ""}">
+        ${showTk ? `<b style="font-size:${fz(fs)}">${esc(t.tk)}</b>` : ""}${showPct ? `<span style="font-size:${fz(Math.max(10, Math.min(15, fs * 0.66)))}">${pct(t.r)}</span>` : ""}${showName ? `<small class="hm-nm">${esc(coName(t.tk))}</small>` : ""}${showPx ? `<small class="hm-px">${price(px)}</small>` : ""}</${link ? "a" : "div"}>`;
+    };
     let html = "";
-    for (const sb of secs) {
-      html += `<div class="hm-sec" style="left:${sb.x / W * 100}%;top:${sb.y / H * 100}%;width:${sb.w / W * 100}%;height:${sb.h / H * 100}%"><span class="hm-sname">${esc(sb.s)}</span></div>`;
-      for (const t of squarify(sb.l, sb.x + 1, sb.y + 16, sb.w - 2, sb.h - 17)) {
-        const big = t.w > 54 && t.h > 30, mid = t.w > 32 && t.h > 18;
-        html += `<${link ? `a href="#/stock/${encodeURIComponent(t.tk)}"` : "div"} class="hm-tile" style="left:${t.x / W * 100}%;top:${t.y / H * 100}%;width:${t.w / W * 100}%;height:${t.h / H * 100}%;background:${heat(t.r, cap)}" title="${esc(coName(t.tk))} (${esc(t.tk)}): ${pct(t.r)}">
-          ${mid ? `<b style="font-size:${Math.max(10, Math.min(20, t.w / 5))}px">${esc(t.tk)}</b>` : ""}${big ? `<span>${pct(t.r)}</span>` : ""}</${link ? "a" : "div"}>`;
-      }
+    for (const sb of squarify(groups(rows, "s"), 0, 0, W, H)) {
+      const head = sb.h > 30 && sb.w > 44;
+      html += `<div class="hm-sec" style="${pos(sb)}">${head ? `<span class="hm-sname">${esc(sb.s)} <b class="${cls(sb.r)}">${pct(sb.r)}</b></span>` : ""}</div>`;
+      const ix = sb.x + 1, iy = sb.y + (head ? 17 : 1), iw = sb.w - 2, ih = sb.h - (head ? 18 : 2), subs = by === "sector" && !narrow ? groups(sb.l, "i") : [];
+      if (subs.length > 1 && iw > 120 && ih > 80) {
+        // sub-industries inside the sector, each labelled when there's room
+        for (const ib of squarify(subs, ix, iy, iw, ih)) {
+          const lab = ib.w > 70 && ib.h > 46;
+          html += `<div class="hm-ind" style="${pos(ib)}">${lab ? `<span class="hm-iname">${esc(ib.s)} ${pct(ib.r)}</span>` : ""}</div>`;
+          for (const t of squarify(ib.l, ib.x + 1, ib.y + (lab ? 13 : 1), ib.w - 2, ib.h - (lab ? 14 : 2))) html += tile(t);
+        }
+      } else for (const t of squarify(sb.l, ix, iy, iw, ih)) html += tile(t);
     }
     return `<div class="heatmap" style="aspect-ratio:${W}/${H}">${html}</div>`;
   }
@@ -1742,9 +1759,27 @@
       <span class="mv-name"><b>${esc(tk)}</b> <span class="muted">${esc(coName(tk))}</span></span><span class="mv-px mono">${x && x[L] ? price(x[L]) : ""}</span>
       <span class="mv-bar"><i class="${r >= 0 ? "pos" : "neg"}" style="width:${Math.min(100, Math.abs(r) / mx * 100).toFixed(1)}%"></i></span><b class="mono ${cls(r)}">${pct(r, 2)}</b></a>`;
   };
+  // a stock's sub-industry (the S&P's GICS name when it has one, else the stock list's industry)
+  const subOf = (tk) => (stocks[tk] && (stocks[tk][3] || stocks[tk][2])) || "Other";
+  // industry lists: S&P 500 members in matching sub-industries, plus well-known names outside the index
+  const INDUSTRIES = {
+    chips: ["Chips", (g) => /Semiconductor/.test(g), ["TSM", "ASML", "ARM", "MRVL", "SMCI"]],
+    software: ["Software", (g) => /Software/.test(g), ["SNOW", "MDB", "NET"]],
+    oil: ["Oil & gas", (g) => /Oil & Gas|Integrated Oil/.test(g), ["SHEL", "BP"]],
+    power: ["Power & utilities", (g) => /Utilit|Independent Power|Renewable Electricity|Heavy Electrical/.test(g), ["OKLO", "SMR", "CCJ", "TLN"]],
+    defense: ["Defense & space", (g) => /Aerospace & Defense/.test(g), ["AVAV", "BAH", "RKLB"]],
+    banks: ["Banks", (g) => /Banks|Investment Banking/.test(g), ["SOFI", "HOOD"]],
+    health: ["Healthcare", (g, sec) => sec === "Health Care", []],
+    crypto: ["Crypto", (g, sec) => sec === "Crypto", ["COIN", "MSTR", "HOOD"]],
+  };
   // a company's second share class (GOOG beside GOOGL) would count it twice
-  const listTks = (P, which) => (which === "sp" ? Object.keys(P.px).filter((t) => stocks[t] && stocks[t][5] && !["GOOG", "FOX", "NWS"].includes(t)) : which === "ndx" ? NDX100 : which === "dow" ? DOW30 : AI_STOCKS).filter((t) => P.px[t]);
-  const LIST_NAMES = { sp: "S&P 500", ndx: "Nasdaq-100", dow: "Dow 30", ai: "AI stocks" };
+  const SP = (P) => Object.keys(P.px).filter((t) => stocks[t] && stocks[t][5] && !["GOOG", "FOX", "NWS"].includes(t));
+  const listTks = (P, which) => {
+    if (INDUSTRIES[which]) { const [, test, extra] = INDUSTRIES[which]; return [...new Set(SP(P).filter((t) => test(subOf(t), sectorOf(t))).concat(extra))].filter((t) => P.px[t]); }
+    return (which === "sp" ? SP(P) : which === "ndx" ? NDX100 : which === "dow" ? DOW30 : AI_STOCKS).filter((t) => P.px[t]);
+  };
+  const INDEX_LISTS = { sp: "S&P 500", ndx: "Nasdaq-100", dow: "Dow 30" };
+  const LIST_NAMES = { ...INDEX_LISTS, ai: "AI stocks", ...Object.fromEntries(Object.entries(INDUSTRIES).map(([k, v]) => [k, v[0]])) };
   const marketPill = () => { const mk = usMarket(); return `<span class="mkt ${mk.open ? "open" : ""}">${esc(mk.text)}</span>`; };
 
   // ---------- Home: the markets today, with a focus on AI ----------
@@ -1791,20 +1826,21 @@
     const L = P.dates.length - 1, [k, spanName] = SPANS[moverSpan], cap = { day: 0.03, week: 0.07, month: 0.15 }[moverSpan];
     const tks = listTks(P, moverList), rows = tks.map((t) => [t, moveOf(P, t, k)]).filter((x) => x[1] != null).sort((a, b) => b[1] - a[1]);
     const up = rows.filter((x) => x[1] > 0).length, top = rows.slice(0, 12), bot = rows.slice(-12).reverse(), mx = Math.max(...top.concat(bot).map((x) => Math.abs(x[1])), 0.001);
-    const idxTk = { sp: "SPY", ndx: "QQQ", dow: "DIA", ai: null }[moverList], idxMove = idxTk ? moveOf(P, idxTk, k) : rows.reduce((a, x) => a + x[1], 0) / (rows.length || 1);
+    const idxTk = { sp: "SPY", ndx: "QQQ", dow: "DIA" }[moverList] || null, idxMove = idxTk ? moveOf(P, idxTk, k) : rows.reduce((a, x) => a + x[1], 0) / (rows.length || 1);
     const dollar = rows.map(([t, r]) => [t, r, mcapOf(t) * r / (1 + r)]).filter((x) => x[2]).sort((a, b) => Math.abs(b[2]) - Math.abs(a[2])).slice(0, 8), dmx = Math.max(...dollar.map((x) => Math.abs(x[2])), 1);
     const secs = new Map(); for (const [t, r] of rows) { const s = sectorOf(t); if (!secs.has(s)) secs.set(s, []); secs.get(s).push(r); }
     const secRows = [...secs].map(([s, l]) => [s, l.reduce((a, r) => a + r, 0) / l.length, l.length]).sort((a, b) => b[1] - a[1]), smx = Math.max(...secRows.map((x) => Math.abs(x[1])), 0.001);
     app.innerHTML = `<h1>Market movers</h1>
       <p class="lede">${esc(LIST_NAMES[moverList])} · ${spanName.toLowerCase()} to the close on ${fmtDate(P.dates[L], { weekday: "short", day: "numeric", month: "short" })}. ${marketPill()}</p>
-      <div class="toolbar pin-top"><div class="seg" role="group" aria-label="Which stocks">${Object.entries(LIST_NAMES).map(([v, l]) => `<button type="button" data-ml="${v}" aria-pressed="${v === moverList}">${l}</button>`).join("")}</div>
+      <div class="toolbar pin-top"><div class="seg" role="group" aria-label="Index">${Object.entries(INDEX_LISTS).map(([v, l]) => `<button type="button" data-ml="${v}" aria-pressed="${v === moverList}">${l}</button>`).join("")}</div>
+        <div class="seg" role="group" aria-label="Industry">${Object.entries(LIST_NAMES).filter(([v]) => !INDEX_LISTS[v]).map(([v, l]) => `<button type="button" data-ml="${v}" aria-pressed="${v === moverList}">${l}</button>`).join("")}</div>
         <div class="seg" role="group" aria-label="Period">${Object.entries(SPANS).map(([v, [, l]]) => `<button type="button" data-ms="${v}" aria-pressed="${v === moverSpan}">${l}</button>`).join("")}</div></div>
       <div class="grid cols-3">
-        ${statCard(idxTk ? `${esc(LIST_NAMES[moverList])}` : "AI stocks (average)", pct(idxMove, 2), spanName.toLowerCase(), cls(idxMove))}
+        ${statCard(idxTk ? `${esc(LIST_NAMES[moverList])}` : `${esc(LIST_NAMES[moverList])} (average)`, pct(idxMove, 2), spanName.toLowerCase(), cls(idxMove))}
         <div class="card stat"><div class="lbl">Up vs down</div><div class="big"><span class="up">${up}</span> <span class="muted small">/</span> <span class="down">${rows.length - up}</span></div><div class="breadth"><i style="width:${(up / (rows.length || 1) * 100).toFixed(1)}%"></i></div></div>
         ${dollar[0] ? statCard("Biggest $ move", `${dollar[0][2] >= 0 ? "+" : "−"}${usd(Math.abs(dollar[0][2]))}`, `${esc(coName(dollar[0][0]))} ${pct(dollar[0][1])}`, cls(dollar[0][2])) : ""}
       </div>
-      <div class="card section"><h2>Heatmap <span class="muted">each square a company, sized by value, coloured by its move (deepest colour at ±${Math.round(cap * 100)}%)</span></h2>${heatmapHtml(P, rows.map((x) => x[0]), k, { cap, H: moverList === "dow" ? 420 : 560 })}
+      <div class="card section"><h2>Heatmap <span class="muted">${INDEX_LISTS[moverList] ? "sectors, then industries inside them" : "grouped by industry"}; each square a company, sized by value, coloured by its move (deepest colour at ±${Math.round(cap * 100)}%). Hover a square for its price and value.</span></h2>${heatmapHtml(P, rows.map((x) => x[0]), k, { cap, H: moverList === "sp" ? 760 : moverList === "dow" ? 460 : rows.length > 60 ? 620 : 480, by: INDEX_LISTS[moverList] ? "sector" : "industry" })}
         <div class="hm-legend"><span>−${Math.round(cap * 100)}%</span><i style="background:linear-gradient(90deg, ${heat(-cap, cap)}, ${heat(0, cap)}, ${heat(cap, cap)})"></i><span>+${Math.round(cap * 100)}%</span></div></div>
       <div class="grid cols-2 section">
         <div class="card"><h2 class="up">▲ Top gainers</h2>${top.map(([t, r]) => moverRow(P, t, r, mx)).join("")}</div>
@@ -1814,7 +1850,7 @@
         <div class="card"><h2>Sectors <span class="muted">average move</span></h2>${secRows.map(([s, r, n]) => `<div class="dbar div"><span class="dl">${esc(s)} <span class="muted small">${n}</span></span><span class="dt"><i class="${r < 0 ? "neg" : "pos"}" style="width:${(Math.abs(r) / smx * 50).toFixed(1)}%"></i></span><b class="${cls(r)}">${pct(r, 1)}</b></div>`).join("")}</div>
         <div class="card"><h2>Biggest moves in dollars <span class="muted">change in company value</span></h2>${dollar.map(([t, r, d]) => `<a class="mv-row" href="#/stock/${encodeURIComponent(t)}">${BRAND[t] && BRAND[t][1] ? logoBox(t, "var(--chart)", 26) : `<span class="tk">${esc(t)}</span>`}<span class="mv-name"><b>${esc(t)}</b> <span class="muted">${esc(coName(t))}</span></span><span class="mv-px mono ${cls(r)}">${pct(r)}</span><span class="mv-bar"><i class="${d >= 0 ? "pos" : "neg"}" style="width:${(Math.abs(d) / dmx * 100).toFixed(1)}%"></i></span><b class="mono ${cls(d)}">${d >= 0 ? "+" : "−"}${usd(Math.abs(d))}</b></a>`).join("")}</div>
       </div>
-      <p class="small muted">Closing prices from Yahoo Finance. Company values are from the latest stock list, so the dollar moves are estimates. Index lists: S&amp;P 500 members as flagged in our stock list; Nasdaq-100 and Dow members as of 2025.</p>`;
+      <p class="small muted">Closing prices from Yahoo Finance. Company values are from the latest stock list, so the dollar moves are estimates. Index lists: S&amp;P 500 members as flagged in our stock list; Nasdaq-100 and Dow members as of 2025. Industry lists: S&amp;P 500 members in that industry (by their S&amp;P sub-industry), plus a few well-known names outside the index.</p>`;
     pinBar();  // the page drew after the router ran: pin its choices now
     $$("[data-ml]").forEach((b) => b.addEventListener("click", () => { moverList = b.dataset.ml; route(true); }));
     $$("[data-ms]").forEach((b) => b.addEventListener("click", () => { moverSpan = b.dataset.ms; route(true); }));
@@ -2248,7 +2284,7 @@
   window.HFSite = {
     D, stocks, members, trades, today, loadAllPrices, loadMoves, loadAfter, loadInvest, loadProd, loadAIB, loadWorld, loadSignals,
     hype, rangeText, coName, cleanName, photoSrc, isBiz, seat, fmtDate, pct, usd, moveOf, mcapOf, sectorOf, squarify, listTks, lastIdx,
-    AI_STOCKS, LIST_NAMES, DAY, leftOf, stats, cname, securities, isExec, lastPrice, storyHoldings, surname,
+    AI_STOCKS, LIST_NAMES, INDEX_LISTS, INDUSTRIES, subOf, DAY, leftOf, stats, cname, securities, isExec, lastPrice, storyHoldings, surname,
   };
 
   // ---------- Data Visualization: the image maker (dataviz.js, the main site's own copy), linked from the footer only ----------
@@ -2260,7 +2296,7 @@
       "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Public+Sans:wght@400;500;600;700;800&display=swap"]) {
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
-    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=27")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
+    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=32")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
   })());
   let dvTab = "markets";
   try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }

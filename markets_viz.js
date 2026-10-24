@@ -26,6 +26,7 @@
     { v: "week", g: 1, t: "This week's market movers", s: "The same for the last five trading days", f: ["list", "msec", "mn", "mrank", "mheat", "midx"] },
     { v: "industries", g: 1, t: "Industries: today or this week", s: "AI, defense, banks, oil and healthcare: how each moved, and why", f: ["ipd", "ind", "imkt", "iwhy", "ispy", "ibask", "ihead"] },
     { v: "ai", g: 1, t: "AI stocks", s: "Every AI stock at a glance: today, this week or this month", f: ["aip", "aisort", "ain", "aisp"] },
+    { v: "stock", g: 1, t: "Stock breakdown", s: "One company at a glance: its price, returns against the market, risk, months and rivals", f: ["stk", "stp", "stcmp", "stret", "strisk", "stmon", "stpeer"] },
     { v: "aftermath", g: 2, t: "Aftermath card", s: "A steady stock that kept falling: its chart, what led to it and why", f: ["af", "afr", "afcmp", "aftl", "afwhy"] },
     { v: "invest", g: 2, t: "Investments money-flow", s: "Who put money in, and how the linked stocks have moved since", f: ["deal", "ivnote", "ivst", "ivsum"] },
     { v: "prodmap", g: 2, t: "Production map", s: "Where the world's chips, oil, metals and minerals are made", f: ["pmi", "pmn", "pmbub", "pmlist", "pmwhy"] },
@@ -38,7 +39,8 @@
   const ON = [["1", "Show"], ["0", "Hide"]];
   // every filter: its label, and its choices ("sel" = a dropdown filled in from the data)
   const FIELDS = {
-    list: ["Stocks", [["sp", "S&amp;P 500"], ["ndx", "Nasdaq-100"], ["dow", "Dow 30"], ["ai", "AI stocks"]]],
+    list: ["Stocks", [["sp", "S&amp;P 500"], ["ndx", "Nasdaq-100"], ["dow", "Dow 30"], ["ai", "AI stocks"], ["chips", "Chips"], ["software", "Software"], ["oil", "Oil &amp; gas"],
+      ["power", "Power &amp; utilities"], ["defense", "Defense &amp; space"], ["banks", "Banks"], ["health", "Healthcare"], ["crypto", "Crypto"]]],
     msec: ["Sector", "sel"],
     mn: ["Gainers and decliners listed", [["3", "3"], ["5", "5"], ["8", "8"]]],
     mrank: ["Rank them by", [["pct", "% move"], ["usd", "$ value gained or lost"]]],
@@ -51,6 +53,9 @@
     aisort: ["Order", [["move", "Biggest gain first"], ["fall", "Biggest fall first"], ["cap", "Company value"], ["az", "A–Z"]]],
     ain: ["How many", [["12", "12"], ["20", "20"], ["32", "All"]]], aisp: ["Sparklines", ON],
     af: ["Stock", "sel"],
+    stk: ["Company", "sel"], stp: ["Chart period", [["126", "6 months"], ["252", "1 year"], ["504", "2 years"], ["all", "Since 2023"]]],
+    stcmp: ["S&amp;P 500 line on the chart", ON], stret: ["Returns against the S&amp;P 500", ON], strisk: ["Range and risk", ON],
+    stmon: ["Month by month", ON], stpeer: ["Against its rivals", ON],
     afr: ["Chart", [["all", "Full history"], ["365", "1 year"], ["182", "6 months"], ["peak", "Since the high"]]],
     afcmp: ["Same-days comparison", ON], aftl: ["Timeline", ON], afwhy: ["Why it fell", ON],
     deal: ["Deal", "sel"], ivnote: ["Notes on each box", ON], ivst: ["Stake values", ON], ivsum: ["Summary", ON],
@@ -67,7 +72,7 @@
     hyone: ["Buys per person", [["1", "One"], ["0", "All"]]],
   };
   const DEF = { view: "today", list: "sp", msec: "all", mn: "5", mrank: "pct", mheat: "1", midx: "1", ipd: "now", ind: "all", ibask: "1", ihead: "1", imkt: "1", iwhy: "1", ispy: "1",
-    aip: "day", aisort: "move", ain: "32", aisp: "1", af: "", afr: "all", afcmp: "1", aftl: "1", afwhy: "1", deal: "0", ivnote: "1", ivst: "1", ivsum: "1",
+    stk: "NVDA", stp: "252", stcmp: "1", stret: "1", strisk: "1", stmon: "1", stpeer: "1", aip: "day", aisort: "move", ain: "32", aisp: "1", af: "", afr: "all", afcmp: "1", aftl: "1", afwhy: "1", deal: "0", ivnote: "1", ivst: "1", ivsum: "1",
     item: "chips", pmi: "chips", pmn: "8", pmbub: "1", pmlist: "1", pmwhy: "1", pcwho: "1", pctop: "1", awn: "4", awcw: "1", awlabs: "1", awwatch: "1",
     bubub: "1", bun: "12", bucmp: "1", buyr: "252", hlst: "", hlsince: "1", hltop: "1", hlcom: "1", hy: "weak", hyd: "45", hych: "all", hyn: "5", hyr: "3", hyone: "1", theme: "light", ttl: {} };
   const on = (k) => Q[k] !== "0";
@@ -157,7 +162,7 @@
     const bw = W - 2 * M, upW = bw * up / rows.length;
     rr(c, M, y, bw, 16, 8); c.fillStyle = th.down; c.fill(); rr(c, M, y, Math.max(16, upW), 16, 8); c.fillStyle = th.up; c.fill();
     tx(c, `${up} up`, M, y + 44, { s: 18, w: 700, col: th.up }); tx(c, `${dn} down`, W - M, y + 44, { s: 18, w: 700, col: th.down, a: "right" });
-    if (on("mheat")) tx(c, `each square a company, sized by value, coloured by its ${k === 1 ? "day" : "week"}`, W / 2, y + 44, { s: 15, w: 500, col: th.muted, a: "center" });
+    if (on("mheat")) tx(c, `${H.INDEX_LISTS[Q.list] && !sec ? "sectors › industries › companies" : "industries › companies"}, sized by value, coloured by the ${k === 1 ? "day" : "week"}`, W / 2, y + 44, { s: 15, w: 500, col: th.muted, a: "center" });
     y += 64;
     // the lists: by % move, or by the value each company gained or lost
     const n = Math.max(1, Math.min(+Q.mn, Math.ceil(rows.length / 2))), byUsd = Q.mrank === "usd";
@@ -167,21 +172,36 @@
     const rowH = on("mheat") ? 48 : 62;
     // heatmap
     if (on("mheat")) {
-      const hx = M, hy = y, hw = W - 2 * M, hh = Math.max(260, BOTTOM - y - 34 - (22 + n * rowH) - 8);
-      const items = rows.map(([tk, r]) => ({ tk, r, v: Math.max(H.mcapOf(tk), 5e9), s: H.sectorOf(tk) })), bySec = new Map();
-      for (const it of items) { const g = it.s; if (!bySec.has(g)) bySec.set(g, []); bySec.get(g).push(it); }
-      const secs = H.squarify([...bySec].map(([s, l]) => ({ s, l, v: l.reduce((a, x) => a + x.v, 0) })), hx, hy, hw, hh);
-      for (const sb of secs) {
-        const lab = !sec && sb.h > 40 && sb.w > 70;
-        for (const t of H.squarify(sb.l, sb.x + 1, sb.y + (lab ? 22 : 1), sb.w - 2, sb.h - (lab ? 23 : 2))) {
-          c.fillStyle = heat(t.r, cap); c.fillRect(t.x, t.y, t.w, t.h); c.strokeStyle = th.bg; c.lineWidth = 2; c.strokeRect(t.x, t.y, t.w, t.h);
-          if (t.w > 46 && t.h > 30) {
-            const fs = Math.max(13, Math.min(30, t.w / 4.2, t.h / 2.6));
-            tx(c, t.tk, t.x + t.w / 2, t.y + t.h / 2 + (t.h > 64 ? -2 : fs * 0.36), { s: fs, w: 800, col: "#fff", a: "center", max: t.w - 6 });
-            if (t.h > 64) tx(c, pc(t.r), t.x + t.w / 2, t.y + t.h / 2 + fs * 0.95, { s: Math.max(12, fs * 0.62), w: 600, col: "#fff", a: "center", f: MONO });
+      // sectors (or sub-industries, for an industry list or one sector), the sub-industries inside each sector,
+      // then each company: block labels carry their value-weighted move, tiles show more the bigger they are
+      const hx = M, hy = y, hw = W - 2 * M, hh = Math.max(300, BOTTOM - y - 34 - (22 + n * rowH) - 8), bySector = !!H.INDEX_LISTS[Q.list] && !sec;
+      const items = rows.map(([tk, r]) => ({ tk, r, v: Math.max(H.mcapOf(tk), 5e9), s: bySector ? H.sectorOf(tk) : H.subOf(tk), i: H.subOf(tk) }));
+      const groups = (list, key) => { const m = new Map(); for (const it of list) { if (!m.has(it[key])) m.set(it[key], []); m.get(it[key]).push(it); }
+        return [...m].map(([g, l]) => { const v = l.reduce((a, x) => a + x.v, 0); return { s: g, l, v, r: l.reduce((a, x) => a + x.r * x.v, 0) / v }; }); };
+      const tile = (t) => {
+        c.fillStyle = heat(t.r, cap); c.fillRect(t.x, t.y, t.w, t.h); c.strokeStyle = th.bg; c.lineWidth = 1.5; c.strokeRect(t.x, t.y, t.w, t.h);
+        if (t.w < 30 || t.h < 18) return;
+        const fs = Math.max(10, Math.min(30, t.w / 4.2, t.h / 2.4)), two = t.h > 40 && t.w > 40, three = t.w > 150 && t.h > 96, cy = t.y + t.h / 2;
+        const top = three ? cy - fs * 0.55 : two ? cy - 1 : cy + fs * 0.36;
+        tx(c, t.tk, t.x + t.w / 2, top, { s: fs, w: 800, col: "#fff", a: "center", max: t.w - 6 });
+        if (two) tx(c, pc(t.r), t.x + t.w / 2, top + fs * 0.95, { s: Math.max(10, fs * 0.62), w: 700, col: "#fff", a: "center", f: MONO });
+        if (three) tx(c, H.coName(t.tk), t.x + t.w / 2, top + fs * 1.75, { s: Math.max(11, fs * 0.45), w: 600, col: "rgba(255,255,255,.88)", a: "center", max: t.w - 10 });
+      };
+      for (const sb of H.squarify(groups(items, "s"), hx, hy, hw, hh)) {
+        const lab = sb.h > 44 && sb.w > 80;
+        const ix = sb.x + 1, iy = sb.y + (lab ? 22 : 1), iw = sb.w - 2, ih = sb.h - (lab ? 23 : 2), subs = bySector ? groups(sb.l, "i") : [];
+        if (subs.length > 1 && iw > 150 && ih > 100) {
+          for (const ib of H.squarify(subs, ix, iy, iw, ih)) {
+            const sl = ib.w > 84 && ib.h > 56;
+            for (const t of H.squarify(ib.l, ib.x + 1, ib.y + (sl ? 16 : 1), ib.w - 2, ib.h - (sl ? 17 : 2))) tile(t);
+            c.strokeStyle = th.bg; c.lineWidth = 3; c.strokeRect(ib.x, ib.y, ib.w, ib.h);
+            if (sl) { c.fillStyle = "rgba(0,0,0,.42)"; c.fillRect(ib.x + 1.5, ib.y + 1.5, ib.w - 3, 15);
+              tx(c, `${ib.s} ${pc(ib.r)}`, ib.x + 5, ib.y + 13, { s: 11, w: 700, col: "#fff", max: ib.w - 10 }); }
           }
-        }
-        if (lab) tx(c, sb.s, sb.x + 4, sb.y + 16, { s: 13, w: 800, col: th.muted, max: sb.w - 8, ls: 0.6 });
+        } else for (const t of H.squarify(sb.l, ix, iy, iw, ih)) tile(t);
+        if (lab) { setF(c, 800, 13); const nm = sb.s.toUpperCase(), nw = Math.min(c.measureText(nm).width + 8, sb.w - 70);
+          tx(c, nm, sb.x + 4, sb.y + 16, { s: 13, w: 800, col: th.muted, max: sb.w - 70, ls: 0.6 });
+          tx(c, pc(sb.r), sb.x + 4 + nw + 6, sb.y + 16, { s: 13, w: 800, col: sgn(sb.r, th), f: MONO }); }
       }
       y = hy + hh + 34;
     }
@@ -779,8 +799,131 @@
     footer(c, th, `Holdings estimated from filings since ${H.fmtDate(H.D.start, { month: "short", year: "numeric" })}; shares held before, or from spin-offs, aren't counted. Not financial advice.`);
   }
 
+  // ---------- Stock breakdown: one company, as a picture (markets only) ----------
+  const loadDesc = () => window.CTC_DESC ? Promise.resolve(window.CTC_DESC) : new Promise((res) => {
+    const el = document.createElement("script"); el.src = "descriptions.js?v=1"; el.onload = () => res(window.CTC_DESC || {}); el.onerror = () => res({}); document.head.appendChild(el); });
+  async function drawStock(c, th) {
+    const H = S(), [P, DESC] = await Promise.all([H.loadAllPrices(), loadDesc()]), tk = Q.stk, x = P.px[tk];
+    if (!x) return "No prices for this company yet.";
+    const li = H.lastIdx(x), spy = P.px.SPY, at = (arr, i) => { for (let j = i; j >= 0; j--) if (arr[j] != null) return arr[j]; return null; };
+    const back = (n) => { const i = Math.max(0, li - n), a = at(x, i), b = x[li]; return a && b ? b / a - 1 : null; };
+    const spyBack = (n) => { const i = Math.max(0, li - n), a = at(spy, i), b = at(spy, li); return a && b ? b / a - 1 : null; };
+    const n = Q.stp === "all" ? li : Math.min(li, +Q.stp), i0 = li - n, name = H.coName(tk), sector = H.sectorOf(tk), sub = H.subOf(tk);
+    const periodName = { 126: "6 months", 252: "1 year", 504: "2 years" }[Q.stp] || "since 2023";
+    const desc = plain((DESC || {})[tk] || "");
+    let y = header(c, th, [sector, sub].filter((v) => v && v !== "Other").join(" › ") || "Stock", `${name} (${tk})`, desc, { ts: name.length > 26 ? 46 : 54 });
+
+    // four headline figures
+    const mcap = H.mcapOf(tk), today = back(1), pr = back(n), k4 = [["Last close", "$" + (x[li] >= 1000 ? Math.round(x[li]).toLocaleString() : x[li].toFixed(2)), th.ink, H.fmtDate(P.dates[li], { day: "numeric", month: "short" })],
+      ["Today", pc(today, 2), sgn(today, th), "at the close"], ["Company value", mcap ? H.usd(mcap) : "–", th.ink, "market value"], [`Over ${periodName}`, pc(pr), sgn(pr, th), `S&P 500 ${pc(spyBack(n))}`]];
+    const tw = (W - 2 * M - 3 * 14) / 4;
+    k4.forEach(([l, v, col, s2], i) => { const bx = M + i * (tw + 14); box(c, th, bx, y, tw, 118, 14); caps(c, l, bx + 16, y + 30, th.muted, 12);
+      tx(c, v, bx + 16, y + 76, { s: 34, w: 800, col, f: MONO, max: tw - 28 }); tx(c, s2, bx + 16, y + 102, { s: 14, w: 600, col: th.muted, max: tw - 28 }); });
+    y += 146;
+
+    // the price chart, with the S&P 500 drawn from the same starting price, and the period's high and low
+    const ch = on("stpeer") ? 236 : 300, cx0 = M, cw = W - 2 * M - 92, vals = x.slice(i0, li + 1), sp = spy.slice(i0, li + 1), s0 = at(spy, i0), p0 = at(x, i0);
+    const spR = on("stcmp") && s0 ? sp.map((v) => (v != null ? v / s0 * p0 : null)) : [];
+    const all = vals.concat(spR).filter((v) => v != null), lo = Math.min(...all), hi = Math.max(...all), pad = (hi - lo) * 0.08;
+    const X = (i) => cx0 + i / Math.max(1, vals.length - 1) * cw, Y = (v) => y + 26 + ch - (v - lo + pad) / (hi - lo + 2 * pad) * ch;
+    caps(c, `Share price · ${periodName}`, M, y, th.muted, 13);
+    if (spR.length) { c.strokeStyle = th.muted; c.lineWidth = 2; c.setLineDash([7, 6]); c.beginPath(); c.moveTo(W - M - 330, y - 5); c.lineTo(W - M - 296, y - 5); c.stroke(); c.setLineDash([]);
+      tx(c, "S&P 500, same start", W - M - 288, y, { s: 14, w: 600, col: th.muted }); }
+    for (let g = 0; g <= 3; g++) { const v = lo - pad + (hi - lo + 2 * pad) * g / 3, gy = Y(v); c.fillStyle = th.grid; c.fillRect(cx0, gy, cw, 1.5);
+      tx(c, "$" + (v >= 1000 ? Math.round(v).toLocaleString() : v >= 100 ? v.toFixed(0) : v.toFixed(2)), cx0 + cw + 10, gy + 5, { s: 13, w: 600, col: th.muted, f: MONO }); }
+    const pts = vals.map((v, i) => [i, v]).filter((q) => q[1] != null);
+    c.beginPath(); pts.forEach(([i, v], k) => (k ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)))); c.lineTo(X(pts[pts.length - 1][0]), y + 26 + ch); c.lineTo(X(pts[0][0]), y + 26 + ch); c.closePath(); c.fillStyle = th.soft; c.fill();
+    if (spR.length) { c.beginPath(); let st = false; spR.forEach((v, i) => { if (v == null) return; st ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)); st = true; }); c.strokeStyle = th.muted; c.lineWidth = 2; c.setLineDash([7, 6]); c.stroke(); c.setLineDash([]); }
+    c.beginPath(); pts.forEach(([i, v], k) => (k ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)))); c.strokeStyle = th.line; c.lineWidth = 3.5; c.lineJoin = "round"; c.stroke();
+    const hiI = pts.reduce((a, q) => (q[1] > a[1] ? q : a)), loI = pts.reduce((a, q) => (q[1] < a[1] ? q : a));
+    for (const [[i, v], lab, up] of [[hiI, "High", true], [loI, "Low", false]]) {
+      c.fillStyle = up ? th.up : th.down; c.beginPath(); c.arc(X(i), Y(v), 6, 0, 7); c.fill();
+      const t = `${lab} $${v >= 100 ? v.toFixed(0) : v.toFixed(2)} · ${H.fmtDate(P.dates[i0 + i], { day: "numeric", month: "short", year: "2-digit" })}`;
+      setF(c, 700, 14); const tw2 = c.measureText(t).width, lx = Math.min(Math.max(X(i) - tw2 / 2, cx0), cx0 + cw - tw2);
+      // below the low when there's room above the date labels, else above it
+      const ly = up ? Y(v) - 14 : Y(v) + 26 <= y + 26 + ch - 4 ? Y(v) + 26 : Y(v) - 14;
+      rr(c, lx - 4, ly - 15, tw2 + 8, 20, 5); c.fillStyle = th.bg; c.fill();
+      tx(c, t, lx, ly, { s: 14, w: 700, col: up ? th.up : th.down });
+    }
+    let lastM = ""; for (let i = 0; i < vals.length; i++) { const d = P.dates[i0 + i], m = d.slice(0, 7); if (m !== lastM && i > 4 && (n > 300 ? /-(01|04|07|10)$/.test(m) : true)) tx(c, H.fmtDate(d, n > 300 ? { month: "short", year: "2-digit" } : { month: "short" }), X(i), y + 26 + ch + 22, { s: 13, w: 500, col: th.muted, a: "center" }); lastM = m; }
+    y += 26 + ch + 50;
+
+    // returns against the S&P 500 (left) and the 52-week range and risk (right)
+    const colW = (W - 2 * M - 40) / 2, rx = M + colW + 40;
+    if (on("stret") || on("strisk")) {
+      const ytdI = P.dates.findIndex((d) => d.slice(0, 4) === P.dates[li].slice(0, 4)), periods = [["1 week", 5], ["1 month", 21], ["3 months", 63], ["6 months", 126], ["This year", li - ytdI + 1], ["1 year", 252]];
+      let leftEnd = y, rightEnd = y;
+      if (on("stret")) {
+        caps(c, "Returns against the S&P 500", M, y, th.muted, 13);
+        const rows = periods.map(([l, d]) => [l, back(d), spyBack(d)]), mx = Math.max(...rows.flatMap((r) => [Math.abs(r[1] || 0), Math.abs(r[2] || 0)]), 0.01), half = (colW - 190) / 2, mid = M + 96 + half;
+        rows.forEach(([l, a, b], i) => { const ry = y + 18 + i * 36;
+          tx(c, l, M, ry + 22, { s: 15, w: 600, col: th.ink2 }); c.fillStyle = th.grid; c.fillRect(mid - 1, ry + 4, 2, 30);
+          const la = half * Math.abs(a || 0) / mx, lb = half * Math.abs(b || 0) / mx;
+          rr(c, (a || 0) >= 0 ? mid : mid - la, ry + 6, Math.max(3, la), 14, 4); c.fillStyle = sgn(a, th); c.fill();
+          rr(c, (b || 0) >= 0 ? mid : mid - lb, ry + 23, Math.max(3, lb), 7, 3); c.fillStyle = th.muted; c.fill();
+          tx(c, pc(a), M + colW, ry + 20, { s: 16, w: 800, col: sgn(a, th), f: MONO, a: "right" }); tx(c, pc(b), M + colW, ry + 36, { s: 12, w: 600, col: th.muted, f: MONO, a: "right" }); });
+        tx(c, `thick bar ${tk} · thin bar S&P 500`, M, y + 18 + periods.length * 36 + 12, { s: 13, w: 500, col: th.muted });
+        leftEnd = y + 18 + periods.length * 36 + 20;
+      }
+      if (on("strisk")) {
+        const bx = on("stret") ? rx : M, bw = on("stret") ? colW : W - 2 * M;
+        caps(c, "52-week range", bx, y, th.muted, 13);
+        const w52 = x.slice(Math.max(0, li - 251), li + 1).filter((v) => v != null), h52 = Math.max(...w52), l52 = Math.min(...w52), posn = (x[li] - l52) / Math.max(1e-9, h52 - l52);
+        rr(c, bx, y + 22, bw, 14, 7); c.fillStyle = th.chip; c.fill(); rr(c, bx, y + 22, Math.max(14, bw * posn), 14, 7); c.fillStyle = th.line; c.fill();
+        c.fillStyle = th.ink; c.beginPath(); c.arc(bx + bw * posn, y + 29, 9, 0, 7); c.fill();
+        tx(c, `$${l52 >= 100 ? l52.toFixed(0) : l52.toFixed(2)} low`, bx, y + 62, { s: 14, w: 600, col: th.muted }); tx(c, `high $${h52 >= 100 ? h52.toFixed(0) : h52.toFixed(2)}`, bx + bw, y + 62, { s: 14, w: 600, col: th.muted, a: "right" });
+        tx(c, x[li] >= h52 * 0.999 ? "at its 52-week high" : `${pc(x[li] / h52 - 1)} below its high`, bx + bw / 2, y + 62, { s: 14, w: 700, col: th.ink, a: "center" });
+        // risk over the chart period
+        const rets = []; for (let i = i0 + 1; i <= li; i++) { const a = at(x, i - 1), b = x[i]; if (a && b) rets.push([i, b / a - 1]); }
+        const sd = Math.sqrt(rets.reduce((a, r) => a + r[1] * r[1], 0) / Math.max(1, rets.length)), best = rets.reduce((a, r) => (r[1] > a[1] ? r : a), [0, -1]), worst = rets.reduce((a, r) => (r[1] < a[1] ? r : a), [0, 1]);
+        let peak = 0, dd = 0; for (let i = i0; i <= li; i++) { const v = x[i]; if (v == null) continue; peak = Math.max(peak, v); dd = Math.min(dd, v / peak - 1); }
+        const upDays = rets.filter((r) => r[1] > 0).length / Math.max(1, rets.length), sd2 = (() => { const r2 = []; for (let i = i0 + 1; i <= li; i++) { const a = at(spy, i - 1), b = spy[i]; if (a && b) r2.push(b / a - 1); } return Math.sqrt(r2.reduce((a, r) => a + r * r, 0) / Math.max(1, r2.length)); })();
+        const tiles = [["Typical day", `±${(sd * 100).toFixed(1)}%`, th.ink, `S&P 500 ±${(sd2 * 100).toFixed(1)}%`], ["Up days", `${Math.round(upDays * 100)}%`, th.ink, `of ${rets.length} days`],
+          ["Best day", pc(best[1]), th.up, H.fmtDate(P.dates[best[0]], { day: "numeric", month: "short", year: "2-digit" })], ["Worst day", pc(worst[1]), th.down, H.fmtDate(P.dates[worst[0]], { day: "numeric", month: "short", year: "2-digit" })],
+          ["Biggest fall from a high", pc(dd), th.down, periodName], ["Swings vs market", `${(sd / Math.max(1e-9, sd2)).toFixed(1)}×`, th.ink, "as jumpy as the S&P"]];
+        const tcols = bw > 600 ? 3 : 2, tw3 = (bw - (tcols - 1) * 10) / tcols, th3 = 64;
+        tiles.forEach(([l, v, col, s3], i) => { const tx0 = bx + (i % tcols) * (tw3 + 10), ty0 = y + 84 + Math.floor(i / tcols) * (th3 + 10);
+          box(c, th, tx0, ty0, tw3, th3, 10); tx(c, l, tx0 + 12, ty0 + 20, { s: 12, w: 700, col: th.muted, max: tw3 - 24 });
+          tx(c, v, tx0 + 12, ty0 + 48, { s: 22, w: 800, col, f: MONO }); tx(c, s3, tx0 + tw3 - 12, ty0 + 48, { s: 11, w: 600, col: th.muted, a: "right", max: tw3 - 110 }); });
+        rightEnd = y + 84 + Math.ceil(tiles.length / tcols) * (th3 + 10);
+      }
+      y = Math.max(leftEnd, rightEnd) + 26;
+    }
+
+    // month by month: the last 12 months as coloured squares
+    if (on("stmon") && BOTTOM - y > 110) {
+      const ends = []; for (let i = li; i > 0 && ends.length < 13; i--) if (i === li || P.dates[i].slice(0, 7) !== P.dates[i + 1].slice(0, 7)) ends.push(i);
+      const months = []; for (let k = ends.length - 1; k > 0; k--) { const a = at(x, ends[k]), b = at(x, ends[k - 1]); months.push([P.dates[ends[k - 1]], a && b ? b / a - 1 : null]); }
+      caps(c, "Month by month", M, y, th.muted, 13);
+      const sq = (W - 2 * M - 11 * 8) / 12;
+      months.slice(-12).forEach(([d, r], i) => { const sx = M + i * (sq + 8); rr(c, sx, y + 14, sq, 58, 8); c.fillStyle = heat(r, 0.12); c.fill();
+        tx(c, pc(r, 0), sx + sq / 2, y + 40, { s: 15, w: 800, col: "#fff", a: "center", f: MONO }); tx(c, H.fmtDate(d, { month: "short" }) + (d === P.dates[li] ? " so far" : ""), sx + sq / 2, y + 62, { s: 11, w: 600, col: "rgba(255,255,255,.9)", a: "center", max: sq - 4 }); });
+      y += 100;
+    }
+
+    // against its rivals: the biggest companies in the same sub-industry (or sector), over the chart period
+    if (on("stpeer") && BOTTOM - y > 100) {
+      let peers = Object.keys(H.stocks).filter((t) => t !== tk && P.px[t] && H.subOf(t) === sub && H.mcapOf(t) > 0);
+      if (peers.length < 3) peers = Object.keys(H.stocks).filter((t) => t !== tk && P.px[t] && H.stocks[t][5] && H.sectorOf(t) === sector);
+      const room = Math.max(2, Math.min(6, Math.floor((BOTTOM - y - 24) / 34) - 1));
+      const list = peers.sort((a, b) => H.mcapOf(b) - H.mcapOf(a)).slice(0, room).concat([tk]).map((t) => { const p2 = P.px[t], l2 = H.lastIdx(p2), a = at(p2, Math.max(0, l2 - n)); return [t, a && p2[l2] ? p2[l2] / a - 1 : null]; })
+        .filter((r) => r[1] != null).sort((a, b) => b[1] - a[1]);
+      if (list.length > 1) {
+        caps(c, `Against its rivals · ${periodName} · ${peers.length && H.subOf(peers[0]) === sub ? sub : sector}`, M, y, th.muted, 13);
+        const mx = Math.max(...list.map((r) => Math.abs(r[1])), 0.01), bw = W - 2 * M - 420, neg = list.some((r) => r[1] < 0), pos2 = list.some((r) => r[1] > 0);
+        const mid = M + 300 + (neg && pos2 ? bw / 2 : neg ? bw : 0), scale = neg && pos2 ? bw / 2 : bw;
+        list.forEach(([t, r], i) => { const ry = y + 16 + i * 34, me = t === tk;
+          if (me) { rr(c, M - 8, ry - 2, W - 2 * M + 16, 32, 8); c.fillStyle = th.soft; c.fill(); }
+          tx(c, t, M, ry + 21, { s: 16, w: 800, col: th.ink, f: MONO }); tx(c, H.coName(t), M + 80, ry + 21, { s: 15, w: me ? 800 : 500, col: me ? th.ink : th.ink2, max: 210 });
+          const bl = scale * Math.abs(r) / mx; rr(c, r >= 0 ? mid : mid - bl, ry + 8, Math.max(4, bl), 14, 7); c.fillStyle = me ? th.line : sgn(r, th); c.fill();
+          tx(c, pc(r, 0), W - M, ry + 21, { s: 16, w: 800, col: sgn(r, th), f: MONO, a: "right" }); });
+      }
+    }
+    footer(c, th, `Prices from Yahoo Finance, to the close on ${H.fmtDate(P.dates[li])}; company value from the stock list. Not financial advice.`);
+  }
+
   const DRAW = { today: (c, th) => drawMovers(c, th, 1), week: (c, th) => drawMovers(c, th, 5), industries: drawIndustries, ai: drawAI, aftermath: drawAftermath,
-    invest: drawInvest, prodmap: drawProdMap, prodchain: drawProdChain, aiwatch: drawAIWatch, bubble: drawBubble, holders: drawHolders, hype: drawHype };
+    invest: drawInvest, prodmap: drawProdMap, prodchain: drawProdChain, aiwatch: drawAIWatch, bubble: drawBubble, holders: drawHolders, hype: drawHype, stock: drawStock };
 
   // ---------- controls ----------
   const seg = (id, key, opts) => `<div class="seg" id="${id}" data-key="${key}" role="group">${opts.map(([v, l]) => `<button type="button" data-v="${v}">${l}</button>`).join("")}</div>`;
@@ -809,6 +952,10 @@
     const secs = [...new Set(Object.values(H.stocks).filter((x) => x[5] && x[1]).map((x) => x[1]))].sort();
     if (Q.msec !== "all" && !secs.includes(Q.msec)) Q.msec = "all";
     $("#mv_msec").innerHTML = `<option value="all">All sectors</option>` + secs.map((x) => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
+    // every stock with prices in an index, the AI list or an industry list, by name
+    const PX = await H.loadAllPrices(), pool = [...new Set(Object.keys(H.LIST_NAMES).flatMap((k) => H.listTks(PX, k)))].filter((t) => t !== "SPY" && t !== "QQQ" && t !== "DIA");
+    pool.sort((a, b) => H.coName(a).localeCompare(H.coName(b))); if (!pool.includes(Q.stk)) Q.stk = pool.includes("NVDA") ? "NVDA" : pool[0];
+    $("#mv_stk").innerHTML = pool.map((t) => `<option value="${esc(t)}">${esc(H.coName(t))} (${esc(t)})</option>`).join("");
     $("#mv_af").innerHTML = af.map((s) => `<option value="${esc(s.tk)}">${esc(s.name.replace(/ Common Stock$| Corporation.*$| Inc\..*$/, ""))} (${esc(s.tk)}) · ${H.pct(s.drop, 0)}</option>`).join("");
     const stories = (I && I.stories) || []; if (!stories.some((x) => x.id === Q.hlst) && stories[0]) Q.hlst = stories[0].id;
     $("#mv_hlst").innerHTML = stories.map((x) => `<option value="${esc(x.id)}">${esc(x.title)} · ${esc(H.fmtDate(x.date, { day: "numeric", month: "short" }))}</option>`).join("");
@@ -817,7 +964,7 @@
     const singles = $("#mv_item").innerHTML, fields = (label) => D2 ? `<optgroup label="A whole field">${D2.groups.map((g) => `<option value="grp:${esc(g.name)}">${esc(g.name)}: ${label}</option>`).join("")}</optgroup>` : "";
     $("#mv_pmi").innerHTML = D2 ? fields("who makes what") + singles : "";
     $("#mv_item").innerHTML = D2 ? fields("every supply chain") + singles : "";
-    $("#mv_msec").value = Q.msec; $("#mv_af").value = Q.af; $("#mv_deal").value = Q.deal; $("#mv_item").value = Q.item; $("#mv_pmi").value = Q.pmi; $("#mv_hlst").value = Q.hlst;
+    $("#mv_msec").value = Q.msec; $("#mv_af").value = Q.af; $("#mv_deal").value = Q.deal; $("#mv_item").value = Q.item; $("#mv_pmi").value = Q.pmi; $("#mv_stk").value = Q.stk; $("#mv_hlst").value = Q.hlst;
   }
   function sync() {
     $$("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === Q.view)));
@@ -840,7 +987,7 @@
     if (url) URL.revokeObjectURL(url); url = URL.createObjectURL(blob);
     img.src = url; img.hidden = false; empty.hidden = true; $("#mvSave").disabled = false; $("#mvCopy").disabled = false;
   }
-  const fileName = () => `harryv12-${Q.view}${Q.view === "aftermath" ? "-" + Q.af : Q.view === "prodmap" ? "-" + Q.pmi : Q.view === "prodchain" ? "-" + Q.item : ""}-${S().D.prices_through}.png`.toLowerCase().replace(/[^a-z0-9.-]+/g, "-");
+  const fileName = () => `harryv12-${Q.view}${Q.view === "aftermath" ? "-" + Q.af : Q.view === "stock" ? "-" + Q.stk : Q.view === "prodmap" ? "-" + Q.pmi : Q.view === "prodchain" ? "-" + Q.item : ""}-${S().D.prices_through}.png`.toLowerCase().replace(/[^a-z0-9.-]+/g, "-");
   function bind() {
     $$("[data-view]").forEach((b) => b.addEventListener("click", () => { Q.view = b.dataset.view; save(); render(); }));
     $$("#mvApp .seg[data-key]").forEach((g) => g.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; Q[g.dataset.key] = b.dataset.v; save(); render(); }));
