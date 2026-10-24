@@ -12,6 +12,12 @@ window.CTC_INVEST = {
       news: "Kirill Dmitriev, Putin's investment envoy, said at Russian Energy Week that the US and Russia are discussing joint data-centre projects, some possibly run on small nuclear power plants. Nothing is agreed, and he named US sanctions as the main obstacle.",
       angle: "Power and small-reactor companies could benefit if projects like this go ahead.",
       tickers: ["GEV", "CEG", "VST", "OKLO"],
+      // members whose committee touches this story; m is the member's Bioguide id (only members whose filings show the stock)
+      committees: [
+        { tk: "GEV", m: "M001157", role: "Foreign Affairs Committee", why: "Shapes Russia sanctions policy, the deal's main obstacle", short: "Russia sanctions" },
+        { tk: "GEV", m: "K000389", role: "Armed Services Committee", why: "Oversees the military, which is testing small nuclear reactors", short: "military reactors" },
+        { tk: "CEG", m: "C001047", role: "Chair, Environment and Public Works Committee", why: "Oversees the Nuclear Regulatory Commission, which licenses reactors", short: "nuclear regulator" }
+      ],
       sources: [
         { name: "TASS: Russia, US discuss joint data center projects (envoy)", url: "https://tass.com/economy/2203163" },
         { name: "Business Today, 18 Oct 2026: Russia in talks with US to power data centers with nuclear energy", url: "https://www.businesstoday.in/world/story/from-diesel-to-data-russia-in-talks-with-us-to-power-data-centers-with-nuclear-energy-562278-2026-10-18" },

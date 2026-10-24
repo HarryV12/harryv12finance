@@ -32,7 +32,7 @@
     { v: "prodchain", g: 2, t: "Production supply chain", s: "Each step from raw material to market, and where it depends on", f: ["item", "pcwho", "pctop"] },
     { v: "aiwatch", g: 3, t: "AI bubble watch", s: "The latest news on the AI labs' listings and the debt behind AI", f: ["awn", "awcw", "awlabs", "awwatch"] },
     { v: "bubble", g: 3, t: "Where is the AI bubble?", s: "The private AI labs ranked among America's biggest companies", f: ["bubub", "bun", "bucmp", "buyr"] },
-    { v: "holders", g: 3, t: "Who holds it", s: "A news story, the stocks it could move, and what Trump and Congress hold of them", f: ["hlst", "hlsince", "hltop"] },
+    { v: "holders", g: 3, t: "Who holds it", s: "A news story, the stocks it could move, and what Trump and Congress hold of them", f: ["hlst", "hlsince", "hltop", "hlcom"] },
     { v: "hype", g: 3, t: "Hype check", s: "Congress buys shared as tips, scored on how much they really mean", f: ["hy", "hyd", "hych", "hyn", "hyr", "hyone"] },
   ];
   const ON = [["1", "Show"], ["0", "Hide"]];
@@ -59,7 +59,7 @@
     awn: ["News items", [["2", "2"], ["3", "3"], ["4", "4"]]], awcw: ["CoreWeave figures", ON], awlabs: ["The private labs", ON], awwatch: ["What to watch", ON],
     bubub: ["Two-bubbles picture", ON], bun: ["Companies ranked", [["8", "8"], ["12", "12"], ["15", "15"]]], bucmp: ["Chipmakers vs data-centre renters", ON],
     buyr: ["Compare their moves over", [["63", "3 months"], ["126", "6 months"], ["252", "1 year"]]],
-    hlst: ["Story", "sel"], hlsince: ["Move since the news", ON], hltop: ["Biggest holders", ON],
+    hlst: ["Story", "sel"], hlsince: ["Move since the news", ON], hltop: ["Biggest holders", ON], hlcom: ["Committee links", ON],
     hy: ["Show", [["weak", "Weakest (most overhyped)"], ["strong", "Strongest"]]],
     hyd: ["Disclosed in the last", [["14", "14 days"], ["30", "30 days"], ["45", "45 days"]]],
     hych: ["Who", [["all", "Everyone"], ["H", "House"], ["S", "Senate"], ["E", "Officials"]]],
@@ -69,7 +69,7 @@
   const DEF = { view: "today", list: "sp", msec: "all", mn: "5", mrank: "pct", mheat: "1", midx: "1", ipd: "now", ind: "all", ibask: "1", ihead: "1", imkt: "1", iwhy: "1", ispy: "1",
     aip: "day", aisort: "move", ain: "32", aisp: "1", af: "", afr: "all", afcmp: "1", aftl: "1", afwhy: "1", deal: "0", ivnote: "1", ivst: "1", ivsum: "1",
     item: "chips", pmi: "chips", pmn: "8", pmbub: "1", pmlist: "1", pmwhy: "1", pcwho: "1", pctop: "1", awn: "4", awcw: "1", awlabs: "1", awwatch: "1",
-    bubub: "1", bun: "12", bucmp: "1", buyr: "252", hlst: "", hlsince: "1", hltop: "1", hy: "weak", hyd: "45", hych: "all", hyn: "5", hyr: "3", hyone: "1", theme: "light", ttl: {} };
+    bubub: "1", bun: "12", bucmp: "1", buyr: "252", hlst: "", hlsince: "1", hltop: "1", hlcom: "1", hy: "weak", hyd: "45", hych: "all", hyn: "5", hyr: "3", hyone: "1", theme: "light", ttl: {} };
   const on = (k) => Q[k] !== "0";
   let Q = { ...DEF };
   try { Q = { ...DEF, ...(JSON.parse(localStorage.getItem("hf-mviz") || "{}") || {}) }; } catch (e) { /* storage blocked */ }
@@ -764,8 +764,15 @@
       tx(c, `${r.n} member${r.n === 1 ? "" : "s"}`, cx, ry + 68, { s: 15, w: 600, col: th.ink2 });
       // the biggest holders
       if (on("hltop") && r.top.length) { const hx = M + 620; caps(c, "Biggest holders", hx, ry + 14, th.muted, 12);
-        r.top.forEach((x, j) => { const yy = ry + 30 + j * 34; c.fillStyle = x.m.party === "D" ? "#2f6fd6" : x.m.party === "R" ? "#d64545" : "#7a7f87"; c.beginPath(); c.arc(hx + 6, yy + 12, 6, 0, 7); c.fill();
+        r.top.forEach((x, j) => { const yy = ry + 24 + j * 30; c.fillStyle = x.m.party === "D" ? "#2f6fd6" : x.m.party === "R" ? "#d64545" : "#7a7f87"; c.beginPath(); c.arc(hx + 6, yy + 12, 6, 0, 7); c.fill();
           tx(c, H.surname(x.m.name), hx + 20, yy + 18, { s: 17, w: 700, col: th.ink, max: 170 }); tx(c, "≈" + H.usd(x.v), W - M - 20, yy + 18, { s: 17, w: 700, col: th.ink2, f: MONO, a: "right" }); }); }
+      // committee links along the bottom of the card
+      const cl = on("hlcom") ? r.links.filter((l) => l.short).slice(0, 2) : [];
+      if (cl.length && ch >= 190) { const ly = cy + ch - 20; c.fillStyle = th.grid; c.fillRect(M + 18, ly - 24, W - 2 * M - 36, 1);
+        let lx = M + 20; caps(c, "Committee", lx, ly, th.muted, 12); lx += 106;
+        cl.forEach((l) => { c.fillStyle = l.m.party === "D" ? "#2f6fd6" : l.m.party === "R" ? "#d64545" : "#7a7f87"; c.beginPath(); c.arc(lx + 6, ly - 5, 6, 0, 7); c.fill();
+          const nm = `${H.surname(l.m.name)} · ${l.c[0].replace(/ Committee$/, "")}: `; tx(c, nm, lx + 20, ly, { s: 15, w: 700, col: th.ink }); setF(c, 700, 15); const w1 = c.measureText(nm).width;
+          tx(c, l.short, lx + 20 + w1, ly, { s: 15, w: 600, col: th.ink2 }); setF(c, 600, 15); lx += 20 + w1 + c.measureText(l.short).width + 34; }); }
     });
     footer(c, th, `Holdings estimated from filings since ${H.fmtDate(H.D.start, { month: "short", year: "numeric" })}; shares held before, or from spin-offs, aren't counted. Not financial advice.`);
   }

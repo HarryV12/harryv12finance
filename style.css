@@ -722,6 +722,9 @@ details.mth[open] > summary::after { content: "−"; }
 .hl-table th { text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding: 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
 .hl-table td { padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .hl-table .r { text-align: right; white-space: nowrap; }
+.hl-com { min-width: 230px; }
+.hl-com > div + div { margin-top: 8px; }
+.hl-com .muted { display: block; }
 .hl-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; color: var(--ink); text-decoration: none; margin: 0 4px 4px 0; white-space: nowrap; }
 .pdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #7a7f87; margin-right: 5px; vertical-align: 1px; }
 .pdot.D { background: #2f6fd6; } .pdot.R { background: #d64545; }
