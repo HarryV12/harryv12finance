@@ -5,10 +5,10 @@ name: Daily market update
 
 on:
   workflow_dispatch: {}
-  # Turned on once the manual test runs pass. 22:15 UTC is after the 4:30 pm New York final close
-  # in both summer and winter time (10:15 pm UK in winter, 11:15 pm in summer).
-  # schedule:
-  #   - cron: "15 22 * * 1-5"
+  # 22:15 UTC, Monday to Friday: after the 4:30 pm New York final close in both summer and winter
+  # time (10:15 pm UK in winter, 11:15 pm in summer). GitHub may start it a few minutes late.
+  schedule:
+    - cron: "15 22 * * 1-5"
 
 permissions:
   contents: write
