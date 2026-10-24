@@ -1,0 +1,523 @@
+{
+ "_about": "Executive branch officials whose OGE transaction reports are loaded. 'party' is set only where certain; 'oversight' names an entry in executive_agencies.json; 'wiki' is the Wikipedia article used for the portrait.",
+ "Abizaid, Christine": {
+  "name": "Christine Abizaid",
+  "last": "Abizaid",
+  "role": "Counterterrorism Center Director",
+  "agency": "Office of Director of National Intelligence",
+  "oversight": "XINT",
+  "party": "",
+  "wiki": "Christine Abizaid",
+  "since_filings": "2024-04-05"
+ },
+ "Adeyemo, Adewale": {
+  "name": "Adewale Adeyemo",
+  "last": "Adeyemo",
+  "role": "Deputy Treasury Secretary",
+  "agency": "Department of The Treasury",
+  "oversight": "XTRE",
+  "party": "",
+  "wiki": "Wally Adeyemo",
+  "since_filings": "2023-12-13"
+ },
+ "Bailey, Sara": {
+  "name": "Sara Bailey",
+  "last": "Bailey",
+  "role": "Drug Control Policy Director",
+  "agency": "Office of National Drug Control Policy",
+  "oversight": "XDRG",
+  "party": "",
+  "wiki": "",
+  "since_filings": "2026-06-11"
+ },
+ "Beaudreau, Tommy": {
+  "name": "Tommy Beaudreau",
+  "last": "Beaudreau",
+  "role": "Deputy Interior Secretary",
+  "agency": "Department of The Interior",
+  "oversight": "XINR",
+  "party": "",
+  "wiki": "Tommy Beaudreau",
+  "since_filings": "2025-01-17"
+ },
+ "Bedford, Bryan": {
+  "name": "Bryan Bedford",
+  "last": "Bedford",
+  "role": "FAA Administrator",
+  "agency": "Department of Transportation",
+  "oversight": "XTRA",
+  "party": "",
+  "wiki": "Bryan Bedford",
+  "since_filings": "2026-04-09"
+ },
+ "Bessent, Scott": {
+  "name": "Scott Bessent",
+  "last": "Bessent",
+  "role": "Treasury Secretary",
+  "agency": "Department of The Treasury",
+  "oversight": "XTRE",
+  "party": "",
+  "wiki": "Scott Bessent",
+  "since_filings": "2025-12-31"
+ },
+ "Bhatt, Shailen": {
+  "name": "Shailen Bhatt",
+  "last": "Bhatt",
+  "role": "Highway Administrator",
+  "agency": "Department of Transportation",
+  "oversight": "XTRA",
+  "party": "",
+  "wiki": "Shailen Bhatt",
+  "since_filings": "2023-04-04"
+ },
+ "Bisignano, Frank J": {
+  "name": "Frank Bisignano",
+  "last": "Bisignano",
+  "role": "Social Security Commissioner",
+  "agency": "Social Security Administration",
+  "oversight": "XSSA",
+  "party": "",
+  "wiki": "Frank Bisignano",
+  "since_filings": "2026-08-08"
+ },
+ "Blanche, Todd": {
+  "name": "Todd Blanche",
+  "last": "Blanche",
+  "role": "Deputy Attorney General",
+  "agency": "Department of Justice",
+  "oversight": "XJUS",
+  "party": "",
+  "wiki": "Todd Blanche",
+  "since_filings": "2025-07-12"
+ },
+ "Bondi, Pam": {
+  "name": "Pam Bondi",
+  "last": "Bondi",
+  "role": "Attorney General",
+  "agency": "Department of Justice",
+  "oversight": "XJUS",
+  "party": "",
+  "wiki": "Pam Bondi",
+  "since_filings": "2025-05-14"
+ },
+ "Burgum, Douglas J": {
+  "name": "Doug Burgum",
+  "last": "Burgum",
+  "role": "Interior Secretary",
+  "agency": "Department of The Interior",
+  "oversight": "XINR",
+  "party": "",
+  "wiki": "Doug Burgum",
+  "since_filings": "2026-08-05"
+ },
+ "Burns, William J": {
+  "name": "William J. Burns",
+  "last": "Burns",
+  "role": "CIA Director",
+  "agency": "Central Intelligence Agency",
+  "oversight": "XINT",
+  "party": "",
+  "wiki": "William J. Burns (diplomat)",
+  "since_filings": "2023-03-04"
+ },
+ "Chavez-DeRemer, Lori": {
+  "name": "Lori Chavez-DeRemer",
+  "last": "Chavez-DeRemer",
+  "role": "Labor Secretary",
+  "agency": "Department of Labor",
+  "oversight": "XLAB",
+  "party": "",
+  "wiki": "Lori Chavez-DeRemer",
+  "since_filings": "2025-09-09"
+ },
+ "Criswell, Deanne": {
+  "name": "Deanne Criswell",
+  "last": "Criswell",
+  "role": "FEMA Administrator",
+  "agency": "Department of Homeland Security",
+  "oversight": "XDHS",
+  "party": "",
+  "wiki": "Deanne Criswell",
+  "since_filings": "2025-01-25"
+ },
+ "Del Toro, Carlos": {
+  "name": "Carlos Del Toro",
+  "last": "Del Toro",
+  "role": "Navy Secretary",
+  "agency": "Department of The Navy",
+  "oversight": "XDEF",
+  "party": "",
+  "wiki": "Carlos Del Toro",
+  "since_filings": "2023-08-17"
+ },
+ "Dixon, Stacey": {
+  "name": "Stacey Dixon",
+  "last": "Dixon",
+  "role": "Deputy Director of National Intelligence",
+  "agency": "Office of Director of National Intelligence",
+  "oversight": "XINT",
+  "party": "",
+  "wiki": "Stacey Dixon",
+  "since_filings": "2025-03-25"
+ },
+ "Duffy, Sean": {
+  "name": "Sean Duffy",
+  "last": "Duffy",
+  "role": "Transportation Secretary",
+  "agency": "Department of Transportation",
+  "oversight": "XTRA",
+  "party": "",
+  "wiki": "Sean Duffy",
+  "since_filings": "2026-08-08"
+ },
+ "Edgar, Troy D": {
+  "name": "Troy Edgar",
+  "last": "Edgar",
+  "role": "Deputy Homeland Security Secretary",
+  "agency": "Department of Homeland Security",
+  "oversight": "XDHS",
+  "party": "",
+  "wiki": "Troy Edgar",
+  "since_filings": "2025-05-14"
+ },
+ "Faulkender, Michael W": {
+  "name": "Michael Faulkender",
+  "last": "Faulkender",
+  "role": "Deputy Treasury Secretary",
+  "agency": "Department of The Treasury",
+  "oversight": "XTRE",
+  "party": "",
+  "wiki": "Michael Faulkender",
+  "since_filings": "2025-09-09"
+ },
+ "Fernandez, Nuria": {
+  "name": "Nuria Fernandez",
+  "last": "Fernandez",
+  "role": "Transit Administrator",
+  "agency": "Department of Transportation",
+  "oversight": "XTRA",
+  "party": "",
+  "wiki": "Nuria I. Fernandez",
+  "since_filings": "2024-03-22"
+ },
+ "Gabbard, Tulsi": {
+  "name": "Tulsi Gabbard",
+  "last": "Gabbard",
+  "role": "Director of National Intelligence",
+  "agency": "Office of Director of National Intelligence",
+  "oversight": "XINT",
+  "party": "",
+  "wiki": "Tulsi Gabbard",
+  "since_filings": "2025-06-03"
+ },
+ "Granholm, Jennifer": {
+  "name": "Jennifer Granholm",
+  "last": "Granholm",
+  "role": "Energy Secretary",
+  "agency": "Department of Energy",
+  "oversight": "XENE",
+  "party": "",
+  "wiki": "Jennifer Granholm",
+  "since_filings": "2025-01-07"
+ },
+ "Gupta, Rahul": {
+  "name": "Rahul Gupta",
+  "last": "Gupta",
+  "role": "Drug Control Policy Director",
+  "agency": "Office of National Drug Control Policy",
+  "oversight": "XDRG",
+  "party": "",
+  "wiki": "Rahul Gupta",
+  "since_filings": "2025-01-11"
+ },
+ "Hegseth, Pete": {
+  "name": "Pete Hegseth",
+  "last": "Hegseth",
+  "role": "Defense Secretary",
+  "agency": "Department of Defense/Office of The Secretary",
+  "oversight": "XDEF",
+  "party": "",
+  "wiki": "Pete Hegseth",
+  "since_filings": "2025-06-07"
+ },
+ "Isaacman, Jared": {
+  "name": "Jared Isaacman",
+  "last": "Isaacman",
+  "role": "NASA Administrator",
+  "agency": "National Aeronautics and Space Administration",
+  "oversight": "XSCI",
+  "party": "",
+  "wiki": "Jared Isaacman",
+  "since_filings": "2026-06-18"
+ },
+ "Kennedy, Robert F": {
+  "name": "Robert F. Kennedy Jr.",
+  "last": "Kennedy",
+  "role": "HHS Secretary",
+  "agency": "Department of Health and Human Services",
+  "oversight": "XHHS",
+  "party": "",
+  "wiki": "Robert F. Kennedy Jr.",
+  "since_filings": "2025-05-17"
+ },
+ "Kratsios, Michael J": {
+  "name": "Michael Kratsios",
+  "last": "Kratsios",
+  "role": "Science and Technology Policy Director",
+  "agency": "Office of Science and Technology Policy",
+  "oversight": "XSCI",
+  "party": "",
+  "wiki": "Michael Kratsios",
+  "since_filings": "2026-08-08"
+ },
+ "Kugler, Adriana": {
+  "name": "Adriana Kugler",
+  "last": "Kugler",
+  "role": "Federal Reserve Governor",
+  "agency": "Federal Reserve System Board of Governors",
+  "oversight": "XFED",
+  "party": "",
+  "wiki": "Adriana Kugler",
+  "since_filings": "2025-01-11"
+ },
+ "Kupor, Scott A": {
+  "name": "Scott Kupor",
+  "last": "Kupor",
+  "role": "OPM Director",
+  "agency": "Office of Personnel Management",
+  "oversight": "XOPM",
+  "party": "",
+  "wiki": "Scott Kupor",
+  "since_filings": "2026-09-30"
+ },
+ "Landau, Christopher": {
+  "name": "Christopher Landau",
+  "last": "Landau",
+  "role": "Deputy Secretary of State",
+  "agency": "Department of State",
+  "oversight": "XSTA",
+  "party": "",
+  "wiki": "Christopher Landau",
+  "since_filings": "2025-07-16"
+ },
+ "Lawrence, Paul R": {
+  "name": "Paul Lawrence",
+  "last": "Lawrence",
+  "role": "Deputy Veterans Affairs Secretary",
+  "agency": "Department of Veterans Affairs",
+  "oversight": "XVET",
+  "party": "",
+  "wiki": "Paul Lawrence (government official)",
+  "since_filings": "2025-07-11"
+ },
+ "Lutnick, Howard": {
+  "name": "Howard Lutnick",
+  "last": "Lutnick",
+  "role": "Commerce Secretary",
+  "agency": "Department of Commerce",
+  "oversight": "XCOM",
+  "party": "",
+  "wiki": "Howard Lutnick",
+  "since_filings": "2025-12-10"
+ },
+ "MacGregor, Katharine": {
+  "name": "Katharine MacGregor",
+  "last": "MacGregor",
+  "role": "Deputy Interior Secretary",
+  "agency": "Department of The Interior",
+  "oversight": "XINR",
+  "party": "",
+  "wiki": "Katharine MacGregor",
+  "since_filings": "2025-09-06"
+ },
+ "McMahon, Linda E": {
+  "name": "Linda McMahon",
+  "last": "McMahon",
+  "role": "Education Secretary",
+  "agency": "Department of Education",
+  "oversight": "XEDU",
+  "party": "",
+  "wiki": "Linda McMahon",
+  "since_filings": "2026-04-01"
+ },
+ "McMaster, Sean": {
+  "name": "Sean McMaster",
+  "last": "McMaster",
+  "role": "Highway Administrator",
+  "agency": "Department of Transportation",
+  "oversight": "XTRA",
+  "party": "",
+  "wiki": "",
+  "since_filings": "2026-09-09"
+ },
+ "Miran, Stephen I": {
+  "name": "Stephen Miran",
+  "last": "Miran",
+  "role": "Federal Reserve Governor",
+  "agency": "Federal Reserve System Board of Governors",
+  "oversight": "XFED",
+  "party": "",
+  "wiki": "Stephen Miran",
+  "since_filings": "2026-04-25"
+ },
+ "Mody, Arjun": {
+  "name": "Arjun Mody",
+  "last": "Mody",
+  "role": "Deputy Social Security Commissioner",
+  "agency": "Social Security Administration",
+  "oversight": "XSSA",
+  "party": "",
+  "wiki": "",
+  "since_filings": "2026-04-10"
+ },
+ "Mullin, Markwayne": {
+  "name": "Markwayne Mullin",
+  "last": "Mullin",
+  "role": "Homeland Security Secretary",
+  "agency": "Department of Homeland Security",
+  "oversight": "XDHS",
+  "party": "",
+  "wiki": "Markwayne Mullin",
+  "since_filings": "2026-07-25"
+ },
+ "Noem, Kristi": {
+  "name": "Kristi Noem",
+  "last": "Noem",
+  "role": "Homeland Security Secretary",
+  "agency": "Department of Homeland Security",
+  "oversight": "XDHS",
+  "party": "",
+  "wiki": "Kristi Noem",
+  "since_filings": "2025-08-02"
+ },
+ "Phelan, John": {
+  "name": "John Phelan",
+  "last": "Phelan",
+  "role": "Navy Secretary",
+  "agency": "Department of The Navy",
+  "oversight": "XDEF",
+  "party": "",
+  "wiki": "John C. Phelan",
+  "since_filings": "2026-06-05"
+ },
+ "Remy, Donald": {
+  "name": "Donald Remy",
+  "last": "Remy",
+  "role": "Deputy Veterans Affairs Secretary",
+  "agency": "Department of Veterans Affairs",
+  "oversight": "XVET",
+  "party": "",
+  "wiki": "Donald Remy",
+  "since_filings": "2024-03-29"
+ },
+ "Sherman, Wendy R": {
+  "name": "Wendy Sherman",
+  "last": "Sherman",
+  "role": "Deputy Secretary of State",
+  "agency": "Department of State",
+  "oversight": "XSTA",
+  "party": "",
+  "wiki": "Wendy Sherman",
+  "since_filings": "2023-12-22"
+ },
+ "Sonderling, Keith": {
+  "name": "Keith Sonderling",
+  "last": "Sonderling",
+  "role": "Deputy Labor Secretary",
+  "agency": "Department of Labor",
+  "oversight": "XLAB",
+  "party": "",
+  "wiki": "Keith Sonderling",
+  "since_filings": "2025-05-14"
+ },
+ "Trump, Donald J": {
+  "name": "Donald J. Trump",
+  "last": "Trump",
+  "role": "President",
+  "agency": "White House Office",
+  "oversight": "XPRES",
+  "party": "R",
+  "wiki": "Donald Trump",
+  "since_filings": "2026-10-08"
+ },
+ "Turner, Eric Scott": {
+  "name": "Scott Turner",
+  "last": "Turner",
+  "role": "HUD Secretary",
+  "agency": "Department of Housing and Urban Development",
+  "oversight": "XHUD",
+  "party": "",
+  "wiki": "Scott Turner (politician)",
+  "since_filings": "2026-04-01"
+ },
+ "Ueland, Eric M": {
+  "name": "Eric Ueland",
+  "last": "Ueland",
+  "role": "OMB Deputy Director",
+  "agency": "Office of Management and Budget",
+  "oversight": "XOMB",
+  "party": "",
+  "wiki": "Eric Ueland",
+  "since_filings": "2026-09-10"
+ },
+ "Vaden, Stephen A": {
+  "name": "Stephen Vaden",
+  "last": "Vaden",
+  "role": "Deputy Agriculture Secretary",
+  "agency": "Department of Agriculture",
+  "oversight": "XAGR",
+  "party": "",
+  "wiki": "Stephen Vaden",
+  "since_filings": "2026-04-17"
+ },
+ "Vilsack, Thomas J": {
+  "name": "Tom Vilsack",
+  "last": "Vilsack",
+  "role": "Agriculture Secretary",
+  "agency": "Department of Agriculture",
+  "oversight": "XAGR",
+  "party": "",
+  "wiki": "Tom Vilsack",
+  "since_filings": "2023-12-23"
+ },
+ "Warsh, Kevin": {
+  "name": "Kevin Warsh",
+  "last": "Warsh",
+  "role": "Federal Reserve Chair",
+  "agency": "Federal Reserve System Board of Governors",
+  "oversight": "XFED",
+  "party": "",
+  "wiki": "Kevin Warsh",
+  "since_filings": "2026-09-10"
+ },
+ "Whitaker, Michael": {
+  "name": "Michael Whitaker",
+  "last": "Whitaker",
+  "role": "FAA Administrator",
+  "agency": "Department of Transportation",
+  "oversight": "XTRA",
+  "party": "",
+  "wiki": "Michael Whitaker (government official)",
+  "since_filings": "2025-02-19"
+ },
+ "Wright, Christopher A": {
+  "name": "Chris Wright",
+  "last": "Wright",
+  "role": "Energy Secretary",
+  "agency": "Department of Energy",
+  "oversight": "XENE",
+  "party": "",
+  "wiki": "Chris Wright",
+  "since_filings": "2026-04-01"
+ },
+ "Zeldin, Lee": {
+  "name": "Lee Zeldin",
+  "last": "Zeldin",
+  "role": "EPA Administrator",
+  "agency": "Environmental Protection Agency",
+  "oversight": "XEPA",
+  "party": "",
+  "wiki": "Lee Zeldin",
+  "since_filings": "2025-11-18"
+ }
+}

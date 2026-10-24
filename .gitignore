@@ -4,3 +4,8 @@ photos/
 *.tmp
 .DS_Store
 Thumbs.db
+
+# pipeline working files (the news cache in _pipeline/cache/news is kept)
+_pipeline/logs/
+_pipeline/cache/prices/
+__pycache__/

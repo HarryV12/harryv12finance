@@ -1,0 +1,51 @@
+# Weekday market update: prices, Market movers, market drops and industry moves with headlines,
+# extra prices, Aftermath. Runs _pipeline/pipeline/daily.py and commits what changed; GitHub Pages
+# then republishes the site. Congress, Senate and officials' filings are refreshed on the PC, weekly.
+name: Daily market update
+
+on:
+  workflow_dispatch: {}
+  # Turned on once the manual test runs pass. 22:15 UTC is after the 4:30 pm New York final close
+  # in both summer and winter time (10:15 pm UK in winter, 11:15 pm in summer).
+  # schedule:
+  #   - cron: "15 22 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: site-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+          cache-dependency-path: _pipeline/requirements.txt
+
+      - name: Install packages
+        run: pip install -r _pipeline/requirements.txt
+
+      - name: Update market data
+        run: python -I -X utf8 _pipeline/pipeline/daily.py
+
+      - name: Commit and push what changed
+        run: |
+          git config user.name "HarryV12"
+          git config user.email "304028176+HarryV12@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -q -m "Daily market update $(date -u +%Y-%m-%d)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          git pull -q --rebase origin main
+          git push -q origin HEAD:main
+
+      - name: Show the to-do report
+        if: always()
+        run: cat _pipeline/logs/freshness.txt 2>/dev/null || true

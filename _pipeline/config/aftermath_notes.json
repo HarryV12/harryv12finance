@@ -1,0 +1,283 @@
+{
+ "_about": "What led each Aftermath stock to fall: a one-line cause and a dated timeline, written from the news. Keyed by ticker as in site/aftermath.js. 'clear': false when no single reported event explains the fall. 'why': the mechanism, why those events cut the share price (no figures that change daily).",
+ "RR.L": {
+  "cause": "Profit-taking after a record run, not one piece of bad news",
+  "clear": false,
+  "summary": "Rolls-Royce shares rose about 2.6 times in 18 months (from about 595p in February 2025) to a record 1,570p on 5 August 2026. They then slid about 26% without a single bad announcement, even though it had just reported a 46% profit rise and kept buying back shares: investors sold richly priced winners as markets turned risk-off, and aerospace stocks fell with it.",
+  "events": [
+   {
+    "date": "2026-08-05",
+    "kind": "peak",
+    "text": "Shares close at a record 1,570p, up about 31% in 2026"
+   },
+   {
+    "date": "2026-08-17",
+    "kind": "good",
+    "text": "New engine project announced; shares still near their record"
+   },
+   {
+    "date": "2026-08-31",
+    "kind": "good",
+    "text": "$1 billion expansion of its Indiana factory announced"
+   },
+   {
+    "date": "2026-10-23",
+    "kind": "bad",
+    "text": "Shares fall 7.6% in a day (1,260p to 1,164p); no cause was announced"
+   }
+  ],
+  "why": "When a share has more than doubled, it takes less bad news to set off selling: holders who are sitting on big gains lock them in as soon as the mood turns, and a richly priced stock has further to fall when buyers step back. Nothing in Rolls-Royce's own news got worse (profits, buybacks and new projects were all good), and its industry fell far less over the same days, so most of the fall came from the price having run ahead, not from the business."
+ },
+ "NOVO-B.CO": {
+  "cause": "A failed heart-drug trial, then disappointing Wegovy pill sales",
+  "clear": true,
+  "summary": "Two blows in one week: its heart medicine failed a key trial (about $30 billion of value lost in a day), then the new Wegovy pill sold less than hoped even as guidance rose, as competition from Eli Lilly intensified.",
+  "events": [
+   {
+    "date": "2026-07-29",
+    "kind": "peak",
+    "text": "Shares at their high before results"
+   },
+   {
+    "date": "2026-07-31",
+    "kind": "bad",
+    "text": "Heart medicine fails its trial; shares drop about 10%, wiping out about $30 billion"
+   },
+   {
+    "date": "2026-08-04",
+    "kind": "bad",
+    "text": "Raises full-year guidance, but Wegovy pill sales miss; shares slide again as the battle with Eli Lilly heats up"
+   }
+  ],
+  "why": "Most of Novo Nordisk's value rests on what investors expect its obesity and heart medicines to earn in future. A failed trial takes a future product's sales out of that forecast in one go, and weaker-than-hoped Wegovy pill sales suggested Eli Lilly is winning customers in the same market. Both lowered the growth investors were paying for, while other drug stocks and the S&P 500 rose over the same days, so the fall was specific to Novo."
+ },
+ "PCG": {
+  "cause": "California's wildfire law left PG&E exposed to fire lawsuits",
+  "clear": true,
+  "summary": "Investors expected California to cap utilities' wildfire liability. Lawmakers amended the bill (SB 492) to drop the protections, PG&E fell about 20% in a day, then cut planned spending and launched a strategic review; four banks downgraded it.",
+  "events": [
+   {
+    "date": "2026-08-25",
+    "kind": "peak",
+    "text": "Shares at their high while the wildfire bill is debated"
+   },
+   {
+    "date": "2026-08-31",
+    "kind": "bad",
+    "text": "SB 492 amended to drop limits on wildfire lawsuits; shares fall about 20%, the worst day since March 2020"
+   },
+   {
+    "date": "2026-09-15",
+    "kind": "bad",
+    "text": "Mid-September: the state Assembly's decision on the bill sends shares to their lowest since April 2025"
+   },
+   {
+    "date": "2026-09-23",
+    "kind": "bad",
+    "text": "PG&E defers about $2 billion of 2027 spending and starts a strategic review; shares fall 18.6% in a day. Bank of America, Mizuho, BMO and Truist downgrade the stock"
+   }
+  ],
+  "why": "Investors own utilities for steady, predictable profits. Without a legal cap on wildfire claims, a single large fire could cost more than the company is worth, as it did when wildfire lawsuits pushed PG&E into bankruptcy in 2019, so investors now demand a much bigger discount. Putting off about $2 billion of spending also slows growth, because a utility's allowed profit is set on what it has invested, and the downgrades that followed added selling. Other utilities rose over the same days."
+ },
+ "TMUS": {
+  "cause": "SpaceX's Starlink phone service threatens the wireless business",
+  "clear": true,
+  "summary": "SpaceX moving into mobile service raised the fear of a new low-cost rival for all US carriers, and customers leaving (churn) worried investors even when T-Mobile beat earnings; talk of a merger with its parent Deutsche Telekom added uncertainty.",
+  "events": [
+   {
+    "date": "2026-04-29",
+    "kind": "peak",
+    "text": "Shares at their high"
+   },
+   {
+    "date": "2026-06-11",
+    "kind": "bad",
+    "text": "Report that Deutsche Telekom's CEO wants to merge with T-Mobile US"
+   },
+   {
+    "date": "2026-06-29",
+    "kind": "bad",
+    "text": "Starlink mobile threat: Verizon falls 7%, AT&T hits a 52-week low, T-Mobile slips"
+   },
+   {
+    "date": "2026-07-23",
+    "kind": "bad",
+    "text": "Beats earnings but falls: churn worries, and the CEO rules out an expanded Starlink deal"
+   },
+   {
+    "date": "2026-08-05",
+    "kind": "bad",
+    "text": "SpaceX's mobile plans jolt the telecom market again"
+   },
+   {
+    "date": "2026-09-02",
+    "kind": "good",
+    "text": "Activist Elliott urges Deutsche Telekom to drop the merger; shares bounce briefly"
+   }
+  ],
+  "why": "Phone companies are valued on steady subscriber growth and stable prices. A satellite service that can offer mobile coverage anywhere could become a low-cost rival and force price cuts across the industry, and customers leaving (churn) is the first sign investors watch for. That is why the whole wireless industry fell while the S&P 500 rose, with T-Mobile falling further; uncertainty over a merger with its parent Deutsche Telekom gave investors another reason to wait."
+ },
+ "BAC": {
+  "cause": "Weaker deal fees and fears AI agents will move customers' cash",
+  "clear": true,
+  "summary": "The CEO warned investment-banking fees would fall more than 10% in the third quarter, then Meta's new AI agent (Muse) raised fears that AI assistants will move customers' low-interest deposits to better-paying accounts. Rising bond yields added pressure.",
+  "events": [
+   {
+    "date": "2026-08-12",
+    "kind": "peak",
+    "text": "Shares at their high"
+   },
+   {
+    "date": "2026-09-14",
+    "kind": "bad",
+    "text": "CEO says third-quarter investment-banking fees will fall more than 10%; bank stocks sell off"
+   },
+   {
+    "date": "2026-09-23",
+    "kind": "bad",
+    "text": "Meta's Muse AI agent fuels fears AI will pull deposits from banks"
+   },
+   {
+    "date": "2026-10-01",
+    "kind": "bad",
+    "text": "Bank of America falls 3% and Citi 4% as AI agents challenge 'deposit inertia'"
+   }
+  ],
+  "why": "Banks make much of their profit on the gap between the little they pay on deposits and what they earn lending that money out. Cash that sits in low-interest accounts out of habit is the cheapest money a bank has; if AI assistants start moving it automatically to better-paying accounts, that gap shrinks. Smaller investment-banking fees cut the bank's other big earner at the same time, so both of its main profit sources looked weaker; other large banks fell too, though by much less."
+ },
+ "MCD": {
+  "cause": "Flat customer traffic and an $8.5 billion spending plan",
+  "clear": true,
+  "summary": "Second-quarter results showed weak execution, and at its investor day McDonald's said inflation would keep customer traffic flat while it spends $8.5 billion supporting franchisees and upgrading restaurants. The shares hit two-year lows.",
+  "events": [
+   {
+    "date": "2026-04-24",
+    "kind": "peak",
+    "text": "Shares at their high"
+   },
+   {
+    "date": "2026-08-16",
+    "kind": "bad",
+    "text": "Commentators criticise execution in its second-quarter results"
+   },
+   {
+    "date": "2026-09-16",
+    "kind": "bad",
+    "text": "Shares at two-year lows"
+   },
+   {
+    "date": "2026-09-23",
+    "kind": "bad",
+    "text": "Investor day: $8.5bn plan and flat traffic expected; shares fall 4%"
+   }
+  ],
+  "why": "McDonald's is valued as a steady grower. Flat customer traffic means sales can only grow through higher prices, which inflation-squeezed customers resist, and the $8.5 billion plan means more money going back into restaurants and franchisees rather than to shareholders for now. Other restaurant stocks and the S&P 500 rose over the same days, so investors marked down McDonald's own growth outlook."
+ },
+ "VICI": {
+  "cause": "Its two biggest tenants (Caesars and MGM) are being taken private",
+  "clear": true,
+  "summary": "About two-thirds of VICI's rent comes from Caesars (36%) and MGM. Both are going through take-private deals, which puts the Caesars lease terms in doubt, and high interest rates weigh on property stocks. Results and the dividend kept rising, but the shares fell anyway.",
+  "events": [
+   {
+    "date": "2026-04-30",
+    "kind": "peak",
+    "text": "First-quarter results in line; shares at their high"
+   },
+   {
+    "date": "2026-06-11",
+    "kind": "bad",
+    "text": "Shares sink while the market gains"
+   },
+   {
+    "date": "2026-07-30",
+    "kind": "bad",
+    "text": "Late July: second-quarter AFFO up 4.6%, but shares fall more than 3%"
+   },
+   {
+    "date": "2026-09-05",
+    "kind": "good",
+    "text": "Early September: dividend raised to $0.46 a quarter"
+   },
+   {
+    "date": "2026-09-30",
+    "kind": "bad",
+    "text": "Down about 24% over the year as Caesars and MGM move toward take-private deals"
+   }
+  ],
+  "why": "A landlord that gets about two-thirds of its rent from two tenants depends on their finances and their leases. Take-private deals often add debt to the companies being bought, which raises the risk that rent terms are renegotiated, and the Caesars lease is already in question. Higher interest rates also make a dividend-paying property stock less attractive next to bonds, so the shares fell even as results and the dividend kept rising."
+ },
+ "PCAR": {
+  "cause": "Slow truck demand after a strong run, no single bad report",
+  "clear": false,
+  "summary": "PACCAR beat second-quarter estimates on its peak day, then drifted down as analysts called the stock fully valued and truck demand for 2026 looked flat (230,000–270,000 trucks vs 232,800 in 2025). No single announcement explains the fall.",
+  "events": [
+   {
+    "date": "2026-07-28",
+    "kind": "peak",
+    "text": "Beats second-quarter estimates; shares at their high"
+   },
+   {
+    "date": "2026-08-12",
+    "kind": "bad",
+    "text": "Analysts say the 'clean truck' story is fully priced in"
+   },
+   {
+    "date": "2026-08-27",
+    "kind": "bad",
+    "text": "Shares fall while the market rises"
+   }
+  ],
+  "why": "Truck makers are cyclical: their profits follow how many trucks fleets buy. With 2026 demand expected at about the 2025 level (230,000–270,000 trucks against 232,800), there was little growth left to justify the price after a strong run, so once analysts called the stock fully valued, investors moved on and the shares drifted down while the S&P 500 rose. No single report explains it."
+ },
+ "SCHW": {
+  "cause": "Fears AI tools will take over cheap money management",
+  "clear": true,
+  "summary": "New AI money-management tools (Meta's Muse agent, an Altruist AI tool) raised fears that brokers will lose clients and the cash they earn on; Schwab was reported to fall about 11% in one week. A flattening yield curve hurt financial stocks too. Schwab's CEO later said outside AI agents will only be allowed to check balances, not move customers' money.",
+  "events": [
+   {
+    "date": "2026-08-24",
+    "kind": "peak",
+    "text": "Shares at their high"
+   },
+   {
+    "date": "2026-09-22",
+    "kind": "bad",
+    "text": "Financial stocks fall on AI fears and a flattening yield curve"
+   },
+   {
+    "date": "2026-09-23",
+    "kind": "bad",
+    "text": "Meta's Muse AI agent reignites disruption fears; traders target brokers"
+   }
+  ],
+  "why": "Schwab earns a large part of its money on clients' uninvested cash, which it puts to work at higher rates than it pays, plus fees for managing money. AI agents that can move idle cash or manage portfolios cheaply threaten both, and a flatter yield curve narrows what it earns on that cash. Schwab's later statement that outside AI agents will only be able to check balances, not move money, addressed the cash fear but came after most of the fall."
+ },
+ "MS": {
+  "cause": "Sold after record profits, then hit by AI fears for wealth management",
+  "clear": true,
+  "summary": "Morgan Stanley peaked the day before reporting a 60% jump in quarterly profit ($5.6 billion) and fell as investors took profits. AI tools aimed at financial advisers then raised fears for its wealth business, and rising yields weighed on banks.",
+  "events": [
+   {
+    "date": "2026-07-15",
+    "kind": "peak",
+    "text": "Shares at their high"
+   },
+   {
+    "date": "2026-07-16",
+    "kind": "good",
+    "text": "Second-quarter profit up 60% to $5.6bn, but shares fall as investors take profits"
+   },
+   {
+    "date": "2026-09-23",
+    "kind": "bad",
+    "text": "Around late September: AI money-management tools hit wealth managers; Morgan Stanley reported down about 5%"
+   },
+   {
+    "date": "2026-10-01",
+    "kind": "bad",
+    "text": "Bank stocks fall again as Treasury yields rise"
+   }
+  ],
+  "why": "After a record quarter, expectations are at their highest, so even very good results can bring selling as investors take profits. Wealth management brings in close to half of Morgan Stanley's revenue, so AI tools that could take over parts of a financial adviser's job hit the core of its business, and rising bond yields weighed on all bank shares."
+ }
+}

@@ -1,0 +1,149 @@
+{
+  "_about": "Which industries each House committee oversees. A trade counts as 'in their committee's area' when the stock's Nasdaq industry, its S&P 500 GICS sub-industry, or its ticker is listed under one of the member's committees. Edit freely and re-run the build. Committees with empty lists are too broad (they touch everything) and never match.",
+  "HSAG": {
+    "name": "Agriculture",
+    "oversees": "Farming, food, forestry, rural development, commodity futures (CFTC)",
+    "industries": ["Farming/Seeds/Milling", "Agricultural Chemicals", "Meat/Poultry/Fish", "Packaged Foods", "Specialty Foods", "Food Distributors", "Construction/Ag Equipment/Trucks", "Forest Products", "Tobacco"],
+    "gics": ["Agricultural Products & Services", "Agricultural & Farm Machinery", "Fertilizers & Agricultural Chemicals", "Packaged Foods & Meats", "Tobacco"],
+    "tickers": ["CME", "ICE", "CBOE", "COIN", "HOOD", "DE", "ADM", "BG", "CTVA", "FMC", "MOS", "CF", "NTR", "TSN", "HRL", "AGCO", "CNH"]
+  },
+  "HSAS": {
+    "name": "Armed Services",
+    "oversees": "The military, defense spending and defense contractors",
+    "industries": ["Aerospace", "Military/Government/Technical", "Ordnance And Accessories"],
+    "gics": ["Aerospace & Defense"],
+    "tickers": ["LMT", "RTX", "GD", "NOC", "LHX", "HII", "BA", "PLTR", "LDOS", "BAH", "SAIC", "CACI", "KTOS", "AVAV", "TXT", "HWM", "TDG", "HEI", "CW", "MRCY", "BWXT", "AXON", "RKLB", "KRMN", "ANDURIL"]
+  },
+  "HSBA": {
+    "name": "Financial Services",
+    "oversees": "Banks, insurance, securities markets, housing finance, crypto",
+    "industries": ["Banks", "Commercial Banks", "Major Banks", "Savings Institutions", "Finance Companies", "Finance/Investors Services", "Finance: Consumer Services", "Investment Bankers/Brokers/Service", "Investment Managers", "Diversified Financial Services", "Life Insurance", "Property-Casualty Insurers", "Specialty Insurers", "Accident &Health Insurance", "Real Estate", "Real Estate Investment Trusts", "Homebuilding", "Blank Checks", "Cryptocurrency"],
+    "gics": ["Diversified Banks", "Regional Banks", "Investment Banking & Brokerage", "Asset Management & Custody Banks", "Consumer Finance", "Transaction & Payment Processing Services", "Financial Exchanges & Data", "Multi-line Insurance", "Property & Casualty Insurance", "Life & Health Insurance", "Reinsurance", "Insurance Brokers", "Mortgage REITs", "Homebuilding"],
+    "tickers": ["COIN", "HOOD", "MSTR", "SQ", "XYZ", "PYPL", "SOFI", "AFRM", "UPST", "FNMA", "FMCC", "CRCL", "GLXY"]
+  },
+  "HSIF": {
+    "name": "Energy and Commerce",
+    "oversees": "Energy, utilities, health care and drugs (FDA, Medicare/Medicaid), telecom and media, autos and consumer protection",
+    "industries": ["Oil & Gas Production", "Integrated oil Companies", "Oil Refining/Marketing", "Oilfield Services/Equipment", "Coal Mining", "Natural Gas Distribution", "Oil/Gas Transmission", "Electric Utilities: Central", "Power Generation", "Water Supply", "Medicinal Chemicals and Botanical Products", "Biotechnology: Biological Products (No Diagnostic Substances)", "Biotechnology: Commercial Physical & Biological Resarch", "Biotechnology: Electromedical & Electrotherapeutic Apparatus", "Biotechnology: In Vitro & In Vivo Diagnostic Substances", "Biotechnology: Pharmaceutical Preparations", "Hospital/Nursing Management", "Managed Health Care", "Medical Electronics", "Medical Specialities", "Medical/Dental Instruments", "Medical/Nursing Services", "Misc Health and Biotechnology Services", "Ophthalmic Goods", "Other Pharmaceuticals", "Pharmaceuticals and Biotechnology", "Accident &Health Insurance", "Retail-Drug Stores and Proprietary Stores", "Telecommunications Equipment", "Cable & Other Pay Television Services", "Broadcasting", "Radio And Television Broadcasting And Communications Equipment", "Computer Communications Equipment", "Auto Manufacturing", "Motor Vehicles"],
+    "gics": ["Oil & Gas Exploration & Production", "Integrated Oil & Gas", "Oil & Gas Refining & Marketing", "Oil & Gas Equipment & Services", "Oil & Gas Storage & Transportation", "Electric Utilities", "Multi-Utilities", "Gas Utilities", "Independent Power Producers & Energy Traders", "Water Utilities", "Pharmaceuticals", "Biotechnology", "Health Care Equipment", "Health Care Supplies", "Health Care Facilities", "Health Care Services", "Managed Health Care", "Health Care Distributors", "Life Sciences Tools & Services", "Integrated Telecommunication Services", "Wireless Telecommunication Services", "Cable & Satellite", "Broadcasting", "Automobile Manufacturers"],
+    "tickers": ["CEG", "VST", "NRG", "OKLO", "SMR", "NNE", "LEU", "CCJ", "BWXT", "TSLA", "RIVN", "LCID"]
+  },
+  "HSPW": {
+    "name": "Transportation and Infrastructure",
+    "oversees": "Aviation, rail, trucking, shipping, highways, pipelines safety, water infrastructure",
+    "industries": ["Railroads", "Trucking Freight/Courier Services", "Air Freight/Delivery Services", "Integrated Freight & Logistics", "Marine Transportation", "Transportation Services", "Other Transportation", "Engineering & Construction", "Water Sewer Pipeline Comm & Power Line Construction", "Mining & Quarrying of Nonmetallic Minerals (No Fuels)", "Building Materials", "Construction/Ag Equipment/Trucks", "Oil/Gas Transmission"],
+    "gics": ["Rail Transportation", "Cargo Ground Transportation", "Air Freight & Logistics", "Passenger Airlines", "Marine Transportation", "Construction & Engineering", "Construction Materials", "Construction Machinery & Heavy Transportation Equipment", "Oil & Gas Storage & Transportation", "Passenger Ground Transportation"],
+    "tickers": ["DAL", "UAL", "AAL", "LUV", "ALK", "JBLU", "BA", "UNP", "CSX", "NSC", "UBER", "LYFT", "JOBY", "ACHR", "VMC", "MLM"]
+  },
+  "HSII": {
+    "name": "Natural Resources",
+    "oversees": "Mining, oil and gas on federal land, forests, water, fisheries",
+    "industries": ["Metal Mining", "Precious Metals", "Other Metals and Minerals", "Coal Mining", "Oil & Gas Production", "Integrated oil Companies", "Forest Products", "Paper", "Mining & Quarrying of Nonmetallic Minerals (No Fuels)", "Water Supply", "Steel/Iron Ore", "Aluminum"],
+    "gics": ["Gold", "Silver", "Copper", "Diversified Metals & Mining", "Coal & Consumable Fuels", "Oil & Gas Exploration & Production", "Integrated Oil & Gas", "Forest Products", "Paper & Plastic Packaging Products & Materials", "Timber REITs", "Water Utilities", "Steel", "Aluminum"],
+    "tickers": ["MP", "USAR", "UAMY", "NEM", "FCX", "CCJ", "UEC", "UUUU", "LAC", "ALB", "WY", "RYN", "PCH"]
+  },
+  "HSSY": {
+    "name": "Science, Space, and Technology",
+    "oversees": "NASA and space, federal research, energy R&D, emerging tech (quantum, AI)",
+    "industries": ["Aerospace", "Semiconductors", "Computer Manufacturing", "Precision Instruments", "Biotechnology: Laboratory Analytical Instruments", "Biotechnology: Commercial Physical & Biological Resarch"],
+    "gics": ["Aerospace & Defense", "Semiconductors", "Semiconductor Materials & Equipment", "Life Sciences Tools & Services"],
+    "tickers": ["RKLB", "ASTS", "LUNR", "RDW", "PL", "SPCE", "BKSY", "IONQ", "RGTI", "QBTS", "QUBT", "ARQQ", "OKLO", "SMR", "NNE"]
+  },
+  "HSHM": {
+    "name": "Homeland Security",
+    "oversees": "Border security, cybersecurity, emergency management, transport security",
+    "industries": ["Military/Government/Technical"],
+    "gics": [],
+    "tickers": ["CRWD", "PANW", "FTNT", "ZS", "S", "OKTA", "CYBR", "NET", "QLYS", "TENB", "RPD", "VRNS", "LDOS", "BAH", "SAIC", "CACI", "AXON", "MSI", "GEO", "CXW", "PLTR", "SMTH"]
+  },
+  "HLIG": {
+    "name": "Intelligence (Permanent Select)",
+    "oversees": "Intelligence agencies, their contractors and cyber operations",
+    "industries": ["Military/Government/Technical", "Ordnance And Accessories"],
+    "gics": ["Aerospace & Defense"],
+    "tickers": ["PLTR", "LDOS", "BAH", "SAIC", "CACI", "PSN", "CRWD", "PANW", "FTNT", "ZS", "BKSY", "PL", "MAXR"]
+  },
+  "HSFA": {
+    "name": "Foreign Affairs",
+    "oversees": "Diplomacy, foreign aid, arms sales and export controls",
+    "industries": ["Military/Government/Technical", "Ordnance And Accessories", "Aerospace", "Semiconductors"],
+    "gics": ["Aerospace & Defense", "Semiconductors", "Semiconductor Materials & Equipment"],
+    "tickers": ["LMT", "RTX", "GD", "NOC", "BA", "NVDA", "AMD", "INTC", "ASML", "AMAT", "LRCX", "KLAC"]
+  },
+  "HSZS": {
+    "name": "Select Committee on the CCP",
+    "oversees": "US-China competition: chips, critical minerals, supply chains, Chinese companies",
+    "industries": ["Semiconductors"],
+    "gics": ["Semiconductors", "Semiconductor Materials & Equipment"],
+    "tickers": ["MP", "USAR", "UAMY", "BABA", "PDD", "JD", "BIDU", "NIO", "XPEV", "LI", "TSM", "NVDA", "AMD", "INTC", "ASML", "AMAT", "LRCX", "KLAC", "MU"]
+  },
+  "HSED": {
+    "name": "Education and Workforce",
+    "oversees": "Schools, colleges, student loans, labor law, employer health plans",
+    "industries": [],
+    "gics": ["Education Services", "Human Resource & Employment Services"],
+    "tickers": ["LOPE", "STRA", "ATGE", "LRN", "PRDO", "APEI", "UTI", "COUR", "CHGG", "DUOL", "NNI", "SLM", "NAVI"]
+  },
+  "HSVR": {
+    "name": "Veterans' Affairs",
+    "oversees": "The VA health system and veterans' benefits",
+    "industries": ["Hospital/Nursing Management", "Medical/Nursing Services"],
+    "gics": ["Health Care Facilities", "Health Care Services"],
+    "tickers": []
+  },
+  "HSWM": {
+    "name": "Ways and Means",
+    "oversees": "Taxes, tariffs and trade, Medicare and Social Security (only the Medicare-linked industries are matched; taxes and tariffs touch everything)",
+    "industries": ["Managed Health Care", "Accident &Health Insurance", "Hospital/Nursing Management", "Medical/Nursing Services"],
+    "gics": ["Managed Health Care", "Health Care Facilities", "Health Care Services"],
+    "tickers": []
+  },
+  "HSJU": {
+    "name": "Judiciary",
+    "oversees": "Courts, antitrust, immigration, intellectual property (matched: big-tech antitrust targets and private prisons)",
+    "industries": [],
+    "gics": [],
+    "tickers": ["GOOGL", "GOOG", "META", "AMZN", "AAPL", "MSFT", "GEO", "CXW"]
+  },
+  "HSSM": {"name": "Small Business", "oversees": "Too broad to match", "industries": [], "gics": [], "tickers": []},
+  "HSAP": {"name": "Appropriations", "oversees": "All federal spending - too broad to match", "industries": [], "gics": [], "tickers": []},
+  "HSBU": {"name": "Budget", "oversees": "Too broad to match", "industries": [], "gics": [], "tickers": []},
+  "HSGO": {"name": "Oversight and Government Reform", "oversees": "Too broad to match", "industries": [], "gics": [], "tickers": []},
+  "HSHA": {"name": "House Administration", "oversees": "Not industry-related", "industries": [], "gics": [], "tickers": []},
+  "HSRU": {"name": "Rules", "oversees": "Not industry-related", "industries": [], "gics": [], "tickers": []},
+  "HSSO": {"name": "Ethics", "oversees": "Not industry-related", "industries": [], "gics": [], "tickers": []},
+  "HSQJ": {"name": "Select Subcommittee on January 6", "oversees": "Not industry-related", "industries": [], "gics": [], "tickers": []},
+
+  "_senate": "Senate committees. \"like\" copies the industry, GICS and ticker lists of the House committees named, then adds any lists given here.",
+  "SSAF": {"name": "Senate Agriculture, Nutrition, and Forestry", "oversees": "Farming, food, forestry, commodity futures (CFTC)", "like": ["HSAG"]},
+  "SSAS": {"name": "Senate Armed Services", "oversees": "The military, defense spending and defense contractors", "like": ["HSAS"]},
+  "SSBK": {"name": "Senate Banking, Housing, and Urban Affairs", "oversees": "Banks, insurance, securities markets, housing finance, crypto", "like": ["HSBA"]},
+  "SSCM": {"name": "Senate Commerce, Science, and Transportation", "oversees": "Transportation, telecom, space and science, consumer protection", "like": ["HSPW", "HSSY"],
+    "industries": ["Telecommunications Equipment", "Cable & Other Pay Television Services", "Broadcasting", "Computer Communications Equipment", "Auto Manufacturing", "Motor Vehicles"],
+    "gics": ["Integrated Telecommunication Services", "Wireless Telecommunication Services", "Cable & Satellite", "Broadcasting", "Automobile Manufacturers"],
+    "tickers": ["TSLA", "RIVN", "LCID"]},
+  "SSEG": {"name": "Senate Energy and Natural Resources", "oversees": "Energy production, mining, public lands, nuclear power", "like": ["HSII"],
+    "industries": ["Oil Refining/Marketing", "Oilfield Services/Equipment", "Natural Gas Distribution", "Oil/Gas Transmission", "Electric Utilities: Central", "Power Generation"],
+    "gics": ["Oil & Gas Refining & Marketing", "Oil & Gas Equipment & Services", "Oil & Gas Storage & Transportation", "Electric Utilities", "Multi-Utilities", "Gas Utilities", "Independent Power Producers & Energy Traders"],
+    "tickers": ["CEG", "VST", "NRG", "OKLO", "SMR", "NNE", "LEU", "CCJ", "BWXT"]},
+  "SSEV": {"name": "Senate Environment and Public Works", "oversees": "Highways, water infrastructure, environmental rules", "like": ["HSPW"],
+    "industries": ["Water Supply", "Environmental Services", "Pollution Control Equipment"], "gics": ["Water Utilities", "Environmental & Facilities Services"]},
+  "SSFI": {"name": "Senate Finance", "oversees": "Taxes, tariffs and trade, Medicare and Medicaid (only the health-care industries are matched)", "like": ["HSWM"]},
+  "SSFR": {"name": "Senate Foreign Relations", "oversees": "Diplomacy, treaties, arms sales and export controls", "like": ["HSFA"]},
+  "SSGA": {"name": "Senate Homeland Security and Governmental Affairs", "oversees": "Border security, cybersecurity, federal contracting", "like": ["HSHM"]},
+  "SSHR": {"name": "Senate Health, Education, Labor, and Pensions", "oversees": "Drugs and medical devices (FDA), health care, education, labor",
+    "like": ["HSED"],
+    "industries": ["Medicinal Chemicals and Botanical Products", "Biotechnology: Biological Products (No Diagnostic Substances)", "Biotechnology: In Vitro & In Vivo Diagnostic Substances", "Biotechnology: Pharmaceutical Preparations", "Biotechnology: Electromedical & Electrotherapeutic Apparatus", "Hospital/Nursing Management", "Managed Health Care", "Medical Electronics", "Medical Specialities", "Medical/Dental Instruments", "Medical/Nursing Services", "Other Pharmaceuticals", "Pharmaceuticals and Biotechnology"],
+    "gics": ["Pharmaceuticals", "Biotechnology", "Health Care Equipment", "Health Care Supplies", "Health Care Facilities", "Health Care Services", "Managed Health Care", "Life Sciences Tools & Services"]},
+  "SLIN": {"name": "Senate Intelligence", "oversees": "Intelligence agencies, their contractors and cyber operations", "like": ["HLIG"]},
+  "SSJU": {"name": "Senate Judiciary", "oversees": "Courts, antitrust, immigration, intellectual property", "like": ["HSJU"]},
+  "SSVA": {"name": "Senate Veterans' Affairs", "oversees": "The VA health system and veterans' benefits", "like": ["HSVR"]},
+  "SSAP": {"name": "Senate Appropriations", "oversees": "All federal spending - too broad to match"},
+  "SSBU": {"name": "Senate Budget", "oversees": "Too broad to match"},
+  "SSRA": {"name": "Senate Rules and Administration", "oversees": "Not industry-related"},
+  "SSSB": {"name": "Senate Small Business and Entrepreneurship", "oversees": "Too broad to match"},
+  "SLET": {"name": "Senate Ethics", "oversees": "Not industry-related"},
+  "SLIA": {"name": "Senate Indian Affairs", "oversees": "Not industry-related"},
+  "SPAG": {"name": "Senate Aging", "oversees": "Too broad to match"},
+  "SCNC": {"name": "Senate Caucus on International Narcotics Control", "oversees": "Not industry-related"}
+}

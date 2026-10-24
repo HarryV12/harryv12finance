@@ -1,0 +1,351 @@
+{
+ "_about": "Cause-and-effect points for each move: what was said or done, and what it did to prices (numbers from the site's price data over the move's days). Written from that week's headlines. Key as in move_summaries.json.",
+ "ai|2026-10-12": [
+  "Broadcom's and Intel's CEOs warned that the money funding AI data centres may not keep flowing → investors questioned how long chip orders can grow → Broadcom −9%, Intel −14%, and the chip-equipment makers that depend on new factories fell hardest: Applied Materials −19%, Lam Research −17%.",
+  "Microsoft said it is developing its own AI chip → a big customer needing fewer Nvidia chips → Nvidia −7%, while Microsoft itself barely moved (−1%).",
+  "Chinese memory maker CXMT showed progress on a new design and Huawei closed the gap with Nvidia in China → memory chip prices could fall → Micron −15%.",
+  "Oil near $110 a barrel → higher costs and inflation fears → investors sold the most expensive stocks first; the Nasdaq 100 fell 5.5% vs 2.0% for the S&P 500, while energy stocks rose 4.9%.",
+  "Investors moved money into safety → long-term Treasury bonds rose 2.7%."
+ ],
+ "ai|2026-09-16": [
+  "The Federal Reserve's meeting calmed rate worries and bond yields fell → long-term Treasury bonds rose 1.3% → expensive growth stocks became more attractive again.",
+  "Investors decided earlier fears about AI spending were overdone → buyers returned to the chipmakers that had fallen most: Intel +28%, AMD +24%, Arm +38%.",
+  "Money came out of energy (energy stocks −5.7%) and went back into tech, pushing the Nasdaq to a record high (+6.2% for the Nasdaq 100)."
+ ],
+ "ai|2026-07-29": [
+  "Strong demand for memory chips → Micron +9%, and South Korea's SK Hynix and Samsung had their best days on record.",
+  "Earnings beat expectations → Palantir +32%, Microsoft +25%, Oracle +21%.",
+  "Analysts (Goldman Sachs among them) said the July sell-off had gone too far → dip-buying across the basket: Marvell +25%, Lam Research +18%."
+ ],
+ "ai|2026-07-23": [
+  "Investors worried Big Tech's AI spending was too high just before those companies reported earnings → they sold the suppliers first: Micron −23%, Marvell −23%, AMD −22%, Applied Materials −21%.",
+  "The Iran war pushed oil up, which lifted bond yields → higher rates hurt expensive tech most → Nasdaq 100 −6.2% vs S&P 500 −2.4%.",
+  "Even strong earnings didn't help: the semiconductor index fell 6% in one day despite good results, a sign investors were selling on valuation, not on bad numbers."
+ ],
+ "ai|2026-06-04": [
+  "Broadcom's results disappointed the market → Broadcom −22% and the chips tied to it fell: Arm −25%, Super Micro −38%, Marvell −16%.",
+  "Odds of a Fed rate hike rose → the Nasdaq and S&P 500 had their worst day of the year (S&P 500 −3.8% over the move).",
+  "Gold fell 8.2% at the same time, so investors were selling winners across markets, not only tech."
+ ],
+ "ai|2026-05-19": [
+  "Fear of missing out before Nvidia's results drove a buying frenzy in smaller chip names → Arm +87%, Marvell +72%, Super Micro +63%, Micron +56%.",
+  "Nvidia itself was flat (0%), so the rally was speculation on suppliers rather than on Nvidia's own business.",
+  "Bond yields fell (long-term Treasuries +2.9%), which made pricey growth stocks easier to justify; short sellers and some experts warned prices had moved too fast."
+ ],
+ "ai|2026-04-30": [
+  "Big Tech companies said they would keep spending heavily on AI data centres → their suppliers rose: Micron +29%, AMD +25%, Super Micro +32%.",
+  "AMD and Qualcomm reported strong results → AMD +25%, Intel +19%.",
+  "Meta fell 8% at the same time, because investors worried about how much it is spending on AI."
+ ],
+ "ai|2026-04-08": [
+  "President Trump announced a ceasefire with Iran → oil fell and energy stocks dropped 7.0% → fears about inflation and the economy eased → tech led the rebound (Nasdaq 100 +6.8%).",
+  "TSMC reported strong monthly sales → proof AI chip demand was still growing → Micron +23%, Marvell +22%, Lam Research +21%.",
+  "Palantir was the exception (−10%), on worries about its high valuation."
+ ],
+ "ai|2025-09-04": [
+  "Oracle forecast its AI-driven cloud revenue would jump to $144 billion → Oracle +47% over the move, including a 36% jump on 10 Sep, its best day since 1992.",
+  "Broadcom revealed a $10 billion custom AI chip order → Broadcom +22%.",
+  "Investors took both as proof AI spending was still rising → Micron +18%, Arm +17%, TSMC +13%; long-term Treasury bonds also rose 3.7% as yields fell."
+ ],
+ "ai|2025-05-07": [
+  "The Trump administration moved to scrap Biden-era limits on exporting AI chips → more countries can buy US chips → Nvidia +19%, AMD +19%.",
+  "Nvidia and AMD signed large chip deals with Saudi Arabia → new buyers outside China → Super Micro +37%, Palantir +20%.",
+  "The US–China trade truce lifted the whole market (S&P 500 +5.2%); gold fell 7.1% as fear eased."
+ ],
+ "ai|2025-04-22": [
+  "The trade war eased and President Trump softened his tone on China and on the Fed → the whole market rebounded (S&P 500 +7.2%).",
+  "Wall Street (Morgan Stanley among them) called fears of an AI slowdown overdone → Palantir +24%, Super Micro +24%, Micron +20%, Nvidia +15%."
+ ],
+ "ai|2025-04-07": [
+  "President Trump paused most of his new tariffs for 90 days → the biggest one-day rally in years (S&P 500 +8.6%, Nasdaq 100 +10.3%).",
+  "Reports said he would hold off on curbing Nvidia's H20 chip sales to China → Nvidia +21%, Broadcom +27%.",
+  "Long-term Treasury bonds fell 4.3% at the same time: bond investors were still nervous even as stocks bounced."
+ ],
+ "ai|2025-03-31": [
+  "President Trump announced sweeping 'Liberation Day' tariffs on almost every country → fears of a global recession → the S&P 500 fell 9.1%.",
+  "Chipmakers rely on factories in Asia and global sales → Micron −27%, Marvell −20%, Arm −19%, Nvidia −14%, even though chips were partly exempt from the tariffs.",
+  "Investors fled to safety: long-term Treasury bonds +3.4%, high-yield bonds −2.1%, energy stocks −14.8% on recession fears."
+ ],
+ "ai|2025-02-21": [
+  "Reports of possible new US export controls on chips → fewer sales to China → Nvidia −14%, AMD −13%, Broadcom −13%.",
+  "Lingering doubts after DeepSeek about how much AI computing is really needed → Super Micro −28%, Palantir −20%.",
+  "Weak US economic data pushed investors into bonds (long-term Treasuries +3.1%); the Nasdaq 100 fell 6.9%."
+ ],
+ "ai|2025-01-15": [
+  "President Trump announced the $500 billion 'Stargate' AI data-centre project with OpenAI, Oracle and SoftBank → Oracle +18%, Arm +28% (SoftBank owns most of Arm).",
+  "Strong bank earnings and milder inflation data lifted the whole market (S&P 500 +4.2%), adding to the AI rally: Nvidia +12%, Palantir +17%."
+ ],
+ "defense|2026-08-17": [
+  "L3Harris's CEO stepped down after a conduct review → L3Harris −10%.",
+  "Lockheed Martin dropped (−9%) and drone maker AeroVironment fell 24% as investors took profits after a strong run.",
+  "Investors moved into gold (+6.6%) and Treasury bonds (+1.7%) rather than defense stocks."
+ ],
+ "defense|2026-07-31": [
+  "Strong quarterly results from defense tech and services firms → Leidos +24%, Booz Allen +14%, AeroVironment +29%, Kratos rallied on an upgrade.",
+  "SpaceX and contractors passed a 'Golden Dome' missile-defense test → hopes of big new contracts.",
+  "Palantir, which sells to the military, rose 43% after crushing earnings."
+ ],
+ "defense|2026-07-20": [
+  "Lockheed Martin reported a record order backlog → Lockheed +14%, its biggest one-day jump in nearly 25 years.",
+  "That lifted the rest of the sector even as the Nasdaq fell 2.9%: RTX +13%, Booz Allen +12%, Huntington Ingalls +11%."
+ ],
+ "defense|2026-06-26": [
+  "AeroVironment posted a record quarter → AeroVironment +40%.",
+  "NATO members prepared to commit to more defense spending at their summit, and the UK added $20 billion → Northrop +10%, General Dynamics +9%, Leidos +9%."
+ ],
+ "defense|2026-06-12": [
+  "Talk of an Iran peace deal → less expected demand for weapons → the sector fell into a bear market.",
+  "Germany reportedly scrapped warship orders → European defense fell (Rheinmetall −18% in a day) and US names followed: Booz Allen −23%, AeroVironment −26%, Leidos −18%.",
+  "Energy stocks also fell 4.6% on the peace talk, while the S&P 500 was flat (−0.2%): this was a war-trade unwind, not a market sell-off."
+ ],
+ "defense|2026-04-16": [
+  "Worries about the Pentagon's budget request before Defense Secretary Hegseth's testimony → the big prime contractors fell: Lockheed −16%, Northrop −15%, RTX −13%.",
+  "Investors also reassessed who really profits from the Iran war; defense fell even as the S&P 500 rose 2.2%."
+ ],
+ "defense|2026-02-12": [
+  "Investors looked for companies that benefit from conflict and bigger military budgets while the market slipped (S&P 500 −1.1%) → Huntington Ingalls +13%, Northrop +9%, AeroVironment +16%."
+ ],
+ "defense|2025-12-30": [
+  "President Trump floated a $1.5 trillion defense budget → Lockheed +18%, Huntington Ingalls +21%, L3Harris +15%.",
+  "The US struck Venezuela, raising war risks → drone maker AeroVironment +52%; oil and energy stocks also rose (+6.7%) and gold +6.2%."
+ ],
+ "defense|2025-09-30": [
+  "More military spending promised abroad (Japan's new leader, Canada, Europe) → AeroVironment +27%, Leidos +7%."
+ ],
+ "defense|2025-06-25": [
+  "NATO members agreed to raise defense spending toward 5% of GDP → steady gains for the big contractors (+2–4%).",
+  "AeroVironment also beat earnings expectations → +47%."
+ ],
+ "defense|2025-04-07": [
+  "The 90-day tariff pause lifted the whole market (S&P 500 +6.7%).",
+  "Europe's push to spend more on defense, partly from a loss of trust in the US, added to it → Huntington Ingalls +19%, AeroVironment +28%, Palantir +25%."
+ ],
+ "banks|2025-05-07": [
+  "The US and China agreed a trade truce → recession fears faded → investment banks that earn from deals rose most: Goldman +11%, Morgan Stanley +11%, Bank of America +10%."
+ ],
+ "banks|2025-04-22": [
+  "The trade war eased and hedge funds returned to bank shares (Goldman reported) → Citi +9%, Goldman +9%, Wells Fargo +8%."
+ ],
+ "banks|2025-04-09": [
+  "President Trump paused most tariffs for 90 days → the market jumped 10.5% in a day; banks rose with it (Goldman +12%, Morgan Stanley +11%).",
+  "A week later Citigroup's results showed the market chaos had lifted its trading revenue."
+ ],
+ "banks|2025-03-28": [
+  "The 'Liberation Day' tariffs raised the risk of a recession → fewer loans and more defaults → Bank of America −19%, Citi −19%.",
+  "Mergers and stock sales froze → less fee income for investment banks → Goldman −16%, Morgan Stanley −16%.",
+  "Credit markets showed stress: high-yield bonds −2.3%."
+ ],
+ "banks|2025-03-03": [
+  "Tariff threats and weak economic data raised recession fears → banks fell more than twice as much as the market (−12.6% vs −5.7%): Citi −16%, Morgan Stanley −16%, Goldman −15%."
+ ],
+ "banks|2025-01-13": [
+  "The big banks reported strong fourth-quarter profits → Citi +14%, Goldman +13%, Wells Fargo +11%.",
+  "A milder inflation report raised hopes of rate cuts → the market rose 3.9% and bonds rallied (+2.9%)."
+ ],
+ "oil|2026-08-06": [
+  "The Iran ceasefire ended and a deal to reopen the Strait of Hormuz, a key oil shipping route, stayed out of reach → oil prices rose about 5% in a day.",
+  "Refiners earned record profits on high fuel prices → Marathon Petroleum +19%, Phillips 66 +15%; producers rose less (Exxon +6%, Chevron +7%).",
+  "Higher oil pushed bond yields up (Treasuries −1.2%), which weighed on other stocks."
+ ],
+ "oil|2026-07-07": [
+  "Renewed US–Iran fighting lifted oil prices; Goldman said oil could pass $120 if Hormuz shipping stays disrupted → Occidental +12%, Phillips 66 +12%, Chevron +8%.",
+  "Oil stocks rose while the S&P 500 fell 0.3%."
+ ],
+ "oil|2026-03-23": [
+  "Oil prices swung on mixed signals about Iran peace talks, but stayed high → oilfield service firms jumped: Schlumberger +15%, Halliburton +11%.",
+  "The rest of the market fell (S&P 500 −2.2%), so oil stocks were one of the few places to hide."
+ ],
+ "oil|2025-12-29": [
+  "The US struck Venezuela and President Trump promised US companies would revive its oil industry → oilfield service firms that would do the work rose most: Schlumberger +16%, Halliburton +14%; Chevron, already in Venezuela, +9%."
+ ],
+ "oil|2025-05-07": [
+  "The US–China trade truce raised hopes for fuel demand → refiners rose most: Phillips 66 +19%, Marathon Petroleum +13%, Occidental +13%."
+ ],
+ "oil|2025-03-28": [
+  "The 'Liberation Day' tariffs raised fears of a global recession → less demand for fuel.",
+  "At the same time OPEC+ surprised by pumping more oil → oil had its steepest fall in 3 years.",
+  "Result: Occidental −27%, Phillips 66 −26%, Schlumberger −24%, Exxon −15%; energy stocks overall −17.7%."
+ ],
+ "health|2026-10-09": [
+  "Investors pulled money out of AI and chip stocks (Nasdaq 100 −4.0%) and moved it into steadier sectors → UnitedHealth +13%, Lilly +10%, Pfizer +8%.",
+  "Moderna rose 23% on its own news."
+ ],
+ "health|2026-08-17": [
+  "Moderna's melanoma vaccine succeeded in a trial → Moderna +119%.",
+  "With chip stocks in a bear market, investors bought big drugmakers as a safer place: Merck +11%, Lilly +6%, AbbVie +6%."
+ ],
+ "health|2026-06-22": [
+  "Investors moved out of tech into healthcare as a safe haven → AbbVie +17%, Merck +14%, J&J +13%, Lilly +12%, several to record highs."
+ ],
+ "health|2025-11-06": [
+  "Investors rotated out of expensive tech (Nasdaq 100 −0.4%) into healthcare → Lilly +10%, Merck +8%, AbbVie +8%.",
+  "Hopes for an end to the government shutdown helped too."
+ ],
+ "health|2025-09-25": [
+  "Pfizer struck a deal with President Trump on US drug prices → a big worry for drugmakers was removed → Pfizer +14%, Lilly +13%, Merck +12%, Thermo Fisher +16%."
+ ],
+ "health|2025-08-11": [
+  "Warren Buffett's Berkshire Hathaway revealed a new stake in UnitedHealth → UnitedHealth +21%, its best day since 2020.",
+  "Lilly also rose 13%."
+ ],
+ "health|2025-05-05": [
+  "President Trump ordered lower US drug prices → drugmakers fell: Lilly −13%, Merck −12%, AbbVie −11%.",
+  "UnitedHealth's CEO left abruptly, the company pulled its forecast and reports of a Medicare fraud probe followed → UnitedHealth −23%.",
+  "This happened while the market rose 3.7%: it was healthcare's own bad news."
+ ],
+ "health|2025-03-31": [
+  "President Trump threatened tariffs on imported medicines → drugmakers fell: AbbVie −14%, Pfizer −13%, Merck −12%.",
+  "A top FDA vaccine official resigned in protest at RFK Jr. → Moderna −21%.",
+  "Health insurers went the other way after a Medicare pay rise (UnitedHealth +7%)."
+ ],
+ "health|2025-01-21": [
+  "Abbott reported strong results → Abbott +14%.",
+  "Excitement over weight-loss drugs continued → Lilly +11%; Moderna +22%."
+ ],
+ "drop|2026-10-22": [
+  "Meta's results showed even bigger AI spending plans → Meta −8%, and investors questioned AI returns again → Nvidia −5%, Broadcom −5%, Amazon −5%.",
+  "Oil prices surged → energy stocks +1.7% while the Nasdaq 100 fell 2.9%.",
+  "Investors moved into safe Treasury bonds (+1.4%); hedge funds had their widest one-day losses since Covid."
+ ],
+ "drop|2026-10-12": [
+  "Broadcom's and Intel's CEOs warned about how AI spending is funded → Broadcom −9%, Oracle −9%, Nvidia −7%.",
+  "Chinese chipmakers showed progress → memory chip stocks fell.",
+  "Oil near $110 → energy stocks +4.9% and Exxon +6%, while the Nasdaq 100 fell 5.5% against 2.0% for the S&P 500.",
+  "Safe-haven buying: long-term Treasury bonds +2.7%."
+ ],
+ "drop|2026-07-13": [
+  "The war with Iran escalated → oil jumped → Exxon +13%, energy stocks +6.5%.",
+  "The Fed paused instead of cutting rates → long-term Treasury bonds fell 1.9% (yields rose) → expensive growth stocks fell most: Tesla −27%, Oracle −16%, Meta −12%, Nvidia −10%.",
+  "Apple rose 7%: investors treated it as a safer tech stock. The Nasdaq 100 fell 8.8%, far more than the S&P 500's 3.4%."
+ ],
+ "drop|2026-06-23": [
+  "Fears of a memory-chip shortage and doubts about AI → Oracle −15%, Nvidia −8%, Broadcom −7%; Micron and Sandisk were among the biggest losers.",
+  "South Korea's chip-heavy market plunged about 10% → the sell-off went global.",
+  "Investors moved into Treasury bonds (+1.5%)."
+ ],
+ "drop|2026-06-01": [
+  "Another wave of AI-stock selling → Broadcom −17%, Microsoft −12%, Amazon −12%, Meta −10%.",
+  "South Korea's market crashed and Iran negotiations added uncertainty.",
+  "Gold fell 10.2% at the same time: investors sold winners everywhere. Banks (JPMorgan +3%) and oil (Exxon +4%) rose."
+ ],
+ "drop|2026-03-26": [
+  "The Iran war widened → oil rose (Exxon +5%) and investors dumped high-flying chip stocks → Meta −10%, Nvidia −8%, Broadcom −8%, Tesla −8%.",
+  "The Nasdaq fell into a correction, 10% below its record."
+ ],
+ "drop|2026-03-12": [
+  "The Iran war sent oil to $100 a barrel → energy stocks +0.9% while most others fell.",
+  "Worries about private credit funds (investors pulling money out) → banks fell (JPMorgan −2%) and high-yield bonds −0.6%."
+ ],
+ "drop|2026-02-12": [
+  "New AI tools raised fears that AI will replace whole industries → software, real-estate, trucking and memory stocks fell.",
+  "Gold, silver and crypto crashed at the same time (gold −3.5%) → investors were selling across markets; Apple −5%."
+ ],
+ "drop|2026-01-29": [
+  "Big Tech announced even bigger AI budgets → investors worried about the payoff → Microsoft −18%, Oracle −21%, Nvidia −10%.",
+  "New AI models (Anthropic's Claude Opus 4.6 among them) raised fears they will replace software companies → US software stocks lost about $1 trillion in a week.",
+  "Apple (+8%), JPMorgan (+3%) and Exxon (+6%) rose: money moved out of AI-exposed stocks. Gold fell 10.7%."
+ ],
+ "drop|2026-01-20": [
+  "President Trump threatened tariffs on European countries over Greenland → Wall Street's biggest daily drop in three months (S&P 500 −2.0%), led by tech: Oracle −6%, Broadcom −5%, Nvidia −4%.",
+  "Bond prices fell too (Treasuries −1.3%) and gold rose 3.8% as a safe haven.",
+  "Stocks rebounded once Trump announced a Greenland framework."
+ ],
+ "drop|2025-12-11": [
+  "Oracle reported problems funding its AI data centres → Oracle −20%.",
+  "Broadcom warned its profit margins would shrink → Broadcom −21%, and investors worried AI spending wasn't paying off → Nvidia −7%, Alphabet −7%.",
+  "The Fed cut rates but signalled fewer cuts ahead."
+ ],
+ "drop|2025-11-13": [
+  "Investors scaled back hopes for a December Fed rate cut → the market fell 4.5%.",
+  "Nvidia reported very strong results but its stock still fell (−7%): investors were already worried about an AI bubble.",
+  "A crypto sell-off spread to stocks; Amazon −11%, JPMorgan −7%."
+ ],
+ "drop|2025-11-04": [
+  "The CEOs of Goldman Sachs and Morgan Stanley warned of a 10–20% market correction → highly valued AI stocks fell: Nvidia −4%, Palantir tumbled; SoftBank −10% in Tokyo."
+ ],
+ "drop|2025-10-10": [
+  "President Trump threatened big new tariffs on China after China tightened rare-earth export rules → about $2 trillion was wiped off US stocks in a day.",
+  "Chipmakers with China exposure fell most (Broadcom −6%, Nvidia −5%); investors moved into Treasury bonds (+1.6%)."
+ ],
+ "drop|2025-08-01": [
+  "President Trump unveiled new tariffs on dozens of countries → stocks fell.",
+  "The monthly jobs report was weak and earlier months were revised down → recession fears; bonds rose (+1.4%).",
+  "Amazon fell 8% after its cloud results raised questions about its AI plans."
+ ],
+ "drop|2025-05-21": [
+  "The US lost its last top credit rating and Trump's tax bill raised worries about government debt → a weak Treasury auction → long-term bond prices fell 1.7% (yields rose).",
+  "Higher yields hurt stocks broadly: real estate, healthcare and banks fell most."
+ ],
+ "drop|2025-03-28": [
+  "President Trump's 'Liberation Day' tariffs hit almost every country → fears of a global trade war and recession → the S&P 500 fell 12.5% in seven trading days.",
+  "Companies that make goods abroad fell most: Apple −23%, Tesla −19%, Amazon −15%.",
+  "Oil also crashed on recession fears and an OPEC+ output increase → Exxon −15%, energy stocks −17.7%.",
+  "Credit markets showed stress: high-yield bonds −3.6%."
+ ],
+ "drop|2025-02-21": [
+  "Tariff threats against Canada, Mexico and China hit business and consumer confidence → the S&P 500 fell into a correction (−9.7%).",
+  "Weak economic data raised fears of a slowdown → investors moved into Treasury bonds (+2.7%).",
+  "The most expensive stocks fell most: Tesla −32%, Nvidia −17%, Oracle −16%."
+ ],
+ "drop|2025-01-27": [
+  "China's DeepSeek released an AI model that matched US models at a fraction of the cost → investors questioned whether so many expensive AI chips are needed.",
+  "Nvidia −17% in one day (about $590 billion, the biggest one-day loss in history), Broadcom −17%, Oracle −14%.",
+  "Apple (+3%) and Meta (+2%) rose: cheaper AI helps companies that use it."
+ ],
+ "drop|2025-01-10": [
+  "A stronger-than-expected jobs report → fewer rate cuts expected → the 10-year Treasury yield neared 5% (long-term bonds −0.7%) → stocks fell 1.5%."
+ ],
+ "now|ai|2026-10-23": [
+  "Chip stocks fell for 8 straight days up to 16 Oct, matching their worst streak since 2008 (about $2 trillion erased); the basket is down 15.2% over the past month.",
+  "AI stocks bounced on 19 Oct (CoreWeave got a Goldman upgrade), then slid after Tesla's and Meta's results on 22 Oct revived spending worries.",
+  "Over the week the chip-equipment makers fell most: Lam Research −12.8%, KLA −12.2%, Applied Materials −7.8%, Arm −7.7%."
+ ],
+ "now|defense|2026-10-23": [
+  "Defense companies reported third-quarter results (Northrop's were called 'good enough'; Lockheed raised its guidance) → Lockheed +9.4%, Leidos +9.0%, Northrop +6.1% this week.",
+  "Goldman Sachs told investors worried about the AI rally failing to buy defensive stocks; defense rose 3.8% while the S&P 500 fell 0.4%.",
+  "On 19 Oct defense dipped on bets that Democrats sweep the elections and spend less on the military."
+ ],
+ "now|banks|2026-10-23": [
+  "The big US banks had their longest losing streak since 2008 despite decent earnings → Citi −2.9%, JPMorgan −2.4% this week; −3.6% for the basket over the month.",
+  "Regional banks went the other way: KRE +3.8%, PNC +3.3%."
+ ],
+ "now|oil|2026-10-23": [
+  "Middle East and Russia–Ukraine tensions kept oil near $110 → the basket is up 11.7% over the past month.",
+  "US emergency oil reserves fell to their lowest since 1982 → less cushion if supply is cut.",
+  "On 19 Oct oil dipped when President Trump put Russia sanctions on hold; this week oilfield services still led: Schlumberger +7.2%, Halliburton +4.2%, Chevron +3.7%."
+ ],
+ "now|health|2026-10-23": [
+  "Investors kept moving money out of AI and chip stocks into healthcare → healthcare led the market on 20 Oct.",
+  "UnitedHealth +4.2% and J&J +3.2% this week; the basket is up 4.2% over the past month."
+ ],
+ "today|all|2026-10-23": [
+  "Meta's and Tesla's results on 22 Oct revived worries about how much is being spent on AI → AI-linked stocks stayed under pressure: Bloom Energy, which supplies power to data centres, −11.2%.",
+  "Oil prices jumped again → oil stocks +2.9% while the S&P 500 fell 0.5%.",
+  "Telecoms fell sharply: AT&T −8.0%, T-Mobile −7.7% (the news we have doesn't yet say why).",
+  "Cybersecurity went the other way: CrowdStrike +8.3%."
+ ],
+ "now|all|2026-10-23": [
+  "Fears about AI spending spread from chipmakers to the companies that build AI data centres and their power: Howmet −15.9%, Quanta Services −13.5%, Lam Research −12.8% this week.",
+  "Rising financing costs were reported to threaten the AI spending boom, and investor Michael Burry warned of a 2000-style crash → investors cut risk before Big Tech's earnings.",
+  "Cybersecurity bucked the trend: CrowdStrike +13.3%.",
+  "The S&P 500 ended the week only −0.4% because money moved into defensive sectors: healthcare +0.9%, defense +3.8%, oil +2.0%."
+ ],
+ "today|ai|2026-10-23": [
+  "After an 8-day losing streak, buyers returned to the biggest losers → Micron +2.5%, Marvell +2.3%, AMD +1.7%.",
+  "The rebound was small: AI stocks had slid on 22 Oct as spending worries festered after Tesla's and Meta's earnings, and Super Micro still fell 2.3%."
+ ],
+ "today|defense|2026-10-23": [
+  "Lockheed Martin raised its guidance → Lockheed +2.4% today, on top of +9.4% this week.",
+  "Drone maker AeroVironment +4.7%; RTX −1.9% and Huntington Ingalls −1.7% went the other way."
+ ],
+ "today|banks|2026-10-23": [
+  "A day after European banks tumbled as oil climbed (22 Oct), US investment banks fell most: Morgan Stanley −2.4%, Goldman Sachs −1.8%, Citi −1.5%, JPMorgan −1.5%."
+ ],
+ "today|oil|2026-10-23": [
+  "US crude stockpiles fell more than expected (reported 21 Oct) and oil prices jumped again on 22 Oct → oil stocks +2.9% today while the S&P 500 fell 0.5%.",
+  "Oilfield service companies, which gain when drilling picks up, led: Schlumberger +7.1%, Halliburton +5.2%; producers ConocoPhillips +3.6%, EOG +3.2%."
+ ],
+ "today|health|2026-10-23": [
+  "After a strong month (+4.2%), the biggest names slipped: Lilly −2.5%, UnitedHealth −1.6%, J&J −1.4%, Merck −1.3%."
+ ]
+}

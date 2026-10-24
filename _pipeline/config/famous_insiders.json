@@ -1,0 +1,32 @@
+{
+ "_about": "Well-known business people and investors whose own trades are public through SEC Form 4 (company insiders, and investors owning over 10% of a company). 'ticker' is a company they file for, used to look up their SEC id; 'match' picks them out of that company's insider list; 'wiki' is the Wikipedia article for a portrait (used only when the photo is public domain). 'note' (optional) is shown on their card.",
+ "people": [
+  {"name": "Elon Musk","ticker": "TSLA","match": "^Musk-Elon","role": "Tesla CEO","wiki": "Elon Musk"},
+  {"name": "Kimbal Musk","ticker": "TSLA","match": "^Musk-Kimbal","role": "Tesla director","wiki": "Kimbal Musk"},
+  {"name": "Robyn Denholm","ticker": "TSLA","match": "^Denholm","role": "Tesla chair","wiki": "Robyn Denholm"},
+  {"name": "Mark Zuckerberg","ticker": "META","match": "^Zuckerberg","role": "Meta CEO","wiki": "Mark Zuckerberg"},
+  {"name": "Jeff Bezos","ticker": "AMZN","match": "^Bezos","role": "Amazon founder","wiki": "Jeff Bezos"},
+  {"name": "Andy Jassy","ticker": "AMZN","match": "^Jassy","role": "Amazon CEO","wiki": "Andy Jassy"},
+  {"name": "Jensen Huang","ticker": "NVDA","match": "^Huang-Jen","role": "Nvidia CEO","wiki": "Jensen Huang"},
+  {"name": "Larry Ellison","ticker": "ORCL","match": "^Ellison-Lawrence","role": "Oracle founder","wiki": "Larry Ellison"},
+  {"name": "Tim Cook","ticker": "AAPL","match": "^Cook-Timothy","role": "Apple CEO","wiki": "Tim Cook"},
+  {"name": "Satya Nadella","ticker": "MSFT","match": "^Nadella","role": "Microsoft CEO","wiki": "Satya Nadella"},
+  {"name": "Sundar Pichai","ticker": "GOOGL","match": "^Pichai","role": "Alphabet CEO","wiki": "Sundar Pichai"},
+  {"name": "Lisa Su","ticker": "AMD","match": "^Su-Lisa","role": "AMD CEO","wiki": "Lisa Su"},
+  {"name": "Jamie Dimon","ticker": "JPM","match": "^Dimon","role": "JPMorgan CEO","wiki": "Jamie Dimon"},
+  {"name": "Michael Saylor","ticker": "MSTR","match": "^Saylor","role": "Strategy chairman","wiki": "Michael J. Saylor"},
+  {"name": "Peter Thiel","ticker": "PLTR","match": "^Thiel","role": "Palantir co-founder","wiki": "Peter Thiel"},
+  {"name": "Alex Karp","ticker": "PLTR","match": "^Karp","role": "Palantir CEO","wiki": "Alex Karp"},
+  {"name": "Brian Armstrong","ticker": "COIN","match": "^Armstrong-Brian","role": "Coinbase CEO","wiki": "Brian Armstrong (businessman)"},
+  {"name": "Ryan Cohen","ticker": "GME","match": "^Cohen-Ryan","role": "GameStop CEO","wiki": "Ryan Cohen"},
+  {"name": "Michael Dell","ticker": "DELL","match": "^Dell-Michael","role": "Dell CEO","wiki": "Michael Dell"},
+  {"name": "Marc Benioff","ticker": "CRM","match": "^Benioff","role": "Salesforce CEO","wiki": "Marc Benioff"},
+  {"name": "Jack Dorsey","ticker": "XYZ","match": "^Dorsey","role": "Block CEO","wiki": "Jack Dorsey"},
+  {"name": "Reed Hastings","ticker": "NFLX","match": "^Hastings-Reed","role": "Netflix chairman","wiki": "Reed Hastings"},
+  {"name": "Brian Chesky","ticker": "ABNB","match": "^Chesky","role": "Airbnb CEO","wiki": "Brian Chesky"},
+  {"name": "Mary Barra","ticker": "GM","match": "^Barra","role": "GM CEO","wiki": "Mary Barra"},
+  {"name": "Warren Buffett","ticker": "OXY","match": "^Berkshire-Hathaway","role": "Berkshire Hathaway chairman","wiki": "Warren Buffett","note": "These are Berkshire Hathaway's trades, as an owner of more than 10% of each company; Buffett built and chairs Berkshire."},
+  {"name": "Bill Ackman","ticker": "HHH","match": "^Pershing-Square","role": "Pershing Square CEO","wiki": "Bill Ackman","note": "These are trades by Pershing Square, Ackman's investment firm, as an owner of more than 10% of each company."},
+  {"name": "Carl Icahn","ticker": "IEP","match": "^Icahn-Carl","role": "Activist investor","wiki": "Carl Icahn","note": "Includes trades by Icahn's investment companies, as an owner of more than 10% of each company."}
+ ]
+}
