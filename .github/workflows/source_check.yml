@@ -1,0 +1,17 @@
+# Checks that the sites the daily update downloads from answer GitHub's servers. Run by hand.
+name: Source check
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Ask each source once
+        run: |
+          ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
+          check() { code=$(curl -s -o /tmp/out -w "%{http_code}" -A "$ua" --max-time 40 "$2"); echo "$1: HTTP $code, $(wc -c < /tmp/out) bytes, $(grep -o '<item>' /tmp/out | wc -l) news items"; }
+          check "Google News RSS" "https://news.google.com/rss/search?q=stock+market+after:2026-10-20+before:2026-10-24&hl=en-US&gl=US&ceid=US:en"
+          check "Yahoo Finance chart" "https://query1.finance.yahoo.com/v8/finance/chart/SPY?range=5d&interval=1d"
