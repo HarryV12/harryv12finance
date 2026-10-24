@@ -4741,7 +4741,7 @@
     for (const [id, key] of [["pSells", "sells"], ["pKept", "kept"], ["pNoBig", "noBig"]]) $("#" + id).addEventListener("change", (e) => { P[key] = e.target.checked; save(); renderPost(); });
     $("#pTicker").addEventListener("change", (e) => { P.ticker = e.target.value; save(); renderPost(); });
     bindStockSearch();
-    for (const sel of document.querySelectorAll("#dvApp select:not([hidden])")) searchableSelect(sel);
+    for (const sel of document.querySelectorAll("#cgApp select:not([hidden])")) searchableSelect(sel);
     $("#postSave").addEventListener("click", savePost);
     // copy the finished image to the clipboard (enabled only once it's drawn)
     $("#postCopy").addEventListener("click", async () => {

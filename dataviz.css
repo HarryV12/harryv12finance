@@ -59,3 +59,6 @@
   #dvApp .seg { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   #dvApp .seg button { padding: 9px 12px; min-height: 40px; }
 }
+#dvApp .dv-tabs { display: inline-flex; flex-wrap: nowrap; margin-bottom: 20px; }
+#dvApp .dv-tabs button { flex: none; padding: 9px 20px; font-size: 15px; }
+#dvApp .dv-note { margin: 0 0 16px; }

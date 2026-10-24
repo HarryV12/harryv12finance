@@ -333,7 +333,7 @@
     const mine = byMT.get(t.m + "|" + t.t) || [], before = mine.filter((u) => u.time < t.time), after = mine.filter((u) => u.time > t.time);
     const buyDays = new Set(mine.filter((u) => u.side === "B").map((u) => u.d.slice(0, 7))).size;
     const soonSale = after.find((u) => u.side === "S" && u.time - t.time <= 90 * DAY);
-    if (soonSale) add(-15, `Sold ${t.t} again ${Math.round((soonSale.time - t.time) / DAY)} days later`);
+    if (soonSale) { const dd = Math.round((soonSale.time - t.time) / DAY); add(-15, `Sold ${t.t} again ${dd} day${dd === 1 ? "" : "s"} later`); }
     else if (buyDays >= 3) add(6, `Kept adding: bought ${t.t} in ${buyDays} different months`);
     else if (!before.length) add(4, "A new position for them");
     const L = leftOf(t.m, t.t);
@@ -2193,27 +2193,47 @@
       <p class="small muted">Sources: U.S. House Clerk financial disclosures (Periodic Transaction Reports) and the Office of Government Ethics (Form 278-T). Senate trades: Quiver Quantitative's transcriptions of Senate reports. Prices: Yahoo Finance. Company size and industry: Nasdaq. Committees and official portraits: the congress-legislators and unitedstates/images projects. This is a research tool, not financial advice.</p>`;
   }
 
+  // the Markets & AI image maker (markets_viz.js) draws from the same data and calculations as these pages
+  window.HFSite = {
+    D, stocks, members, trades, today, loadAllPrices, loadMoves, loadAfter, loadInvest, loadProd, loadAIB, loadWorld, loadSignals,
+    hype, rangeText, coName, cleanName, photoSrc, isBiz, seat, fmtDate, pct, usd, moveOf, mcapOf, sectorOf, squarify, listTks, lastIdx,
+    AI_STOCKS, LIST_NAMES, DAY,
+  };
+
   // ---------- Data Visualization: the image maker (dataviz.js, the main site's own copy), linked from the footer only ----------
   // dataviz.js holds the controls' markup and the drawing code; it is loaded the first time the page opens, with the
   // fonts the images are drawn in, and mounted each time.
   let dvLoading = null;
   const loadDataViz = () => dvLoading || (dvLoading = (() => {
-    for (const href of ["dataviz.css?v=1",
+    for (const href of ["dataviz.css?v=2",
       "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Public+Sans:wght@400;500;600;700;800&display=swap"]) {
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
-    return loadScript("dataviz.js?v=1").then(() => window.HFDataViz || null);
+    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=7")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
   })());
+  let dvTab = "markets";
+  try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }
   async function pageDataViz() {
     setNav("dataviz");
     app.innerHTML = `<h1>Data Visualization</h1><p class="loading">Loading…</p>`;
     const V = await loadDataViz(); if (location.hash !== "#/dataviz") return;
     if (!V) { app.innerHTML = `<h1>Data Visualization</h1><p class="muted">Couldn't load the image maker.</p>`; return; }
     app.innerHTML = `<h1>Data Visualization</h1>
-      <p class="lede">Charts and fact sheets built from the Congress filings: a stock's price with each trade marked, a politician's record, the latest disclosures and more. Pick a view, then download or copy it as an image.</p>
-      <p class="small muted dv-note">The images count every trade in the period you pick. The filters on the Congress pages (large caps, committee-linked and the rest) don't apply here, so a Congress page with its filters on can show smaller totals.</p>
-      <section id="dvApp" class="card">${V.markup}</section>`;
-    V.mount();
+      <p class="lede">Ready-to-post images built from the site's data: market movers, industries, AI stocks, Aftermath, investments, production, the AI bubble and Congress trades. Pick a view, then download or copy it as an image.</p>
+      <section id="dvApp" class="card">
+        <div class="seg dv-tabs" role="tablist" aria-label="Which images"><button type="button" role="tab" data-dvt="markets">Markets &amp; AI</button><button type="button" role="tab" data-dvt="congress">Congress</button></div>
+        <div id="mvApp" hidden>${V.mv.markup()}</div>
+        <div id="cgApp" hidden><p class="small muted dv-note">These images count every trade in the period you pick. The filters on the Congress pages (large caps, committee-linked and the rest) don't apply here, so a Congress page with its filters on can show smaller totals.</p>${V.cg.markup}</div>
+      </section>`;
+    const mounted = {};
+    const show = (t) => {
+      dvTab = t; try { localStorage.setItem("hf-dv-tab", t); } catch (e) { /* storage blocked */ }
+      $$("[data-dvt]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dvt === t)));
+      $("#mvApp").hidden = t !== "markets"; $("#cgApp").hidden = t !== "congress";
+      if (!mounted[t]) { mounted[t] = true; (t === "markets" ? V.mv : V.cg).mount(); }
+    };
+    $$("[data-dvt]").forEach((b) => b.addEventListener("click", () => show(b.dataset.dvt)));
+    show(dvTab === "congress" ? "congress" : "markets");
   }
 
   // ---------- routing ----------
