@@ -123,6 +123,8 @@ def main():
             say(f"    still open: {st}")
     if "unconfirmed" in inv:
         say("    contains claims marked 'unconfirmed': check whether they can now be confirmed")
+    if up and days(up.group(1), today) > 30:
+        todo.append(f"Investments: last checked {days(up.group(1), today)} days ago. Re-check deal statuses, add new deals and headline stories, then set updated: in investments.js.")
     prod = (SITE_DIR / "production.js").read_text(encoding="utf-8")
     for name, year in re.findall(r'name:\s*"([^"]+)",\s*unit:[^\n]*?year:\s*"([^"]+)"', prod):
         y = int(re.match(r"\d{4}", year).group(0))
