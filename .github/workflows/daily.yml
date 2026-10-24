@@ -9,7 +9,12 @@
 name: Daily market update
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      refresh_figures:
+        description: "Fetch every company's EPS, revenue, profit and debt now (normally Fridays only)"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths-ignore: ["_pipeline/**/*.md", "README.md"]
@@ -64,6 +69,8 @@ jobs:
 
       - name: Update market data
         if: steps.when.outputs.run == 'true'
+        env:
+          CTC_FUND_FORCE: ${{ inputs.refresh_figures && '1' || '' }}
         run: python -I -X utf8 _pipeline/pipeline/daily.py
 
       - name: Commit the small files that changed

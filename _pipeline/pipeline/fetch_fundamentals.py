@@ -5,7 +5,8 @@ debt-to-equity, for every stock the breakdown offers (S&P 500, Nasdaq-100, Dow, 
 
 From Yahoo Finance (yfinance): the latest quarter's revenue, net profit and EPS, the same quarter a year
 earlier (for growth), and the twelve-month EPS the P/E is based on. Figures change only with quarterly
-results, so each stock is re-fetched once a week; the rest are kept from site/fundamentals.js. The page works
+results, so they're re-fetched once a week, on Friday's run (9:15 pm UK); on other days the figures already
+in site/fundamentals.js are kept (only missing stocks are fetched). Set CTC_FUND_FORCE=1 to fetch everything now. The page works
 out the P/E from the latest close and the twelve-month EPS, so it moves with the price every day.
 
 Writes site/fundamentals.js: window.CTC_FUND = {asof, d: {ticker: [fetched, 12-month EPS, 12-month revenue,
@@ -15,6 +16,7 @@ year-ago EPS]}}. Quarter figures are in the reporting currency (per-share figure
 """
 import datetime as dt
 import json
+import os
 import re
 import sys
 import time
@@ -27,7 +29,7 @@ from config import SITE_DIR
 from prices import yahoo_symbol
 
 OUT = SITE_DIR / "fundamentals.js"
-MAX_AGE = 7      # days before a stock's figures are fetched again
+MAX_AGE = 8      # a safety net: figures older than this are fetched on any day (if Friday's run was missed)
 MAX_PER_RUN = 700
 
 
@@ -79,10 +81,13 @@ def quarter(t):
 
 
 def main():
-    today = dt.date.today()
+    from zoneinfo import ZoneInfo
+    today = dt.datetime.now(ZoneInfo("Europe/London")).date()
     old = (read_js("fundamentals.js") or {}).get("d", {})
     tks = pool()
-    stale = [t for t in tks if t not in old or len(old[t]) < 14 or (today - dt.date.fromisoformat(old[t][0])).days >= MAX_AGE]
+    weekly = today.weekday() == 4 or os.environ.get("CTC_FUND_FORCE") == "1"   # Fridays, or when asked
+    stale = [t for t in tks if t not in old or len(old[t]) < 14 or (today - dt.date.fromisoformat(old[t][0])).days >= MAX_AGE
+             or (weekly and old[t][0] != today.isoformat())]
     stale.sort(key=lambda t: old[t][0] if t in old else "")
     out, done, failed = {t: old[t] for t in tks if t in old}, 0, []
     for t in stale[:MAX_PER_RUN]:
