@@ -85,9 +85,10 @@ def main():
     today = dt.datetime.now(ZoneInfo("Europe/London")).date()
     old = (read_js("fundamentals.js") or {}).get("d", {})
     tks = pool()
-    weekly = today.weekday() == 4 or os.environ.get("CTC_FUND_FORCE") == "1"   # Fridays, or when asked
-    stale = [t for t in tks if t not in old or len(old[t]) < 14 or (today - dt.date.fromisoformat(old[t][0])).days >= MAX_AGE
-             or (weekly and old[t][0] != today.isoformat())]
+    force, friday = os.environ.get("CTC_FUND_FORCE") == "1", today.weekday() == 4
+    # Fridays: everything not yet fetched today (Friday can have several runs); when asked: everything
+    stale = [t for t in tks if force or t not in old or len(old[t]) < 14 or (today - dt.date.fromisoformat(old[t][0])).days >= MAX_AGE
+             or (friday and old[t][0] != today.isoformat())]
     stale.sort(key=lambda t: old[t][0] if t in old else "")
     out, done, failed = {t: old[t] for t in tks if t in old}, 0, []
     for t in stale[:MAX_PER_RUN]:
