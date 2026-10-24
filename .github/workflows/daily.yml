@@ -72,7 +72,7 @@ jobs:
           git config user.name "HarryV12"
           git config user.email "304028176+HarryV12@users.noreply.github.com"
           # data.js is re-priced for publishing only; the PC's weekly build is the one kept in git
-          git add market_moves.js aftermath.js extra_prices.js _pipeline/cache/news
+          git add market_moves.js aftermath.js extra_prices.js fundamentals.js _pipeline/cache/news
           if git diff --cached --quiet; then echo "no changes to keep"; exit 0; fi
           git commit -q -m "Daily market update $(date -u +%Y-%m-%d)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
           git stash -q --include-untracked

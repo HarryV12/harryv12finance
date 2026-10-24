@@ -23,6 +23,7 @@ STEPS = [
     ("fetch_market_moves.py", False),
     ("fetch_extra_prices.py", False),
     ("fetch_aftermath.py", False),
+    ("fetch_fundamentals.py", False),  # EPS, revenue, profit, debt for the stock breakdown (each stock weekly)
     ("check_freshness.py", False),
 ]
 

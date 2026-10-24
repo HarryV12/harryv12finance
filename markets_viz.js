@@ -54,7 +54,7 @@
     ain: ["How many", [["12", "12"], ["20", "20"], ["32", "All"]]], aisp: ["Sparklines", ON],
     af: ["Stock", "sel"],
     stk: ["Company", "sel"], stp: ["Chart period", [["126", "6 months"], ["252", "1 year"], ["504", "2 years"], ["all", "Since 2023"]]],
-    stcmp: ["S&amp;P 500 line on the chart", ON], stret: ["Returns against the S&amp;P 500", ON], strisk: ["Range and risk", ON],
+    stcmp: ["S&amp;P 500 line on the chart", ON], stret: ["Returns against the S&amp;P 500", ON], strisk: ["52-week range and company figures", ON],
     stmon: ["Month by month", ON], stpeer: ["Against its rivals", ON],
     afr: ["Chart", [["all", "Full history"], ["365", "1 year"], ["182", "6 months"], ["peak", "Since the high"]]],
     afcmp: ["Same-days comparison", ON], aftl: ["Timeline", ON], afwhy: ["Why it fell", ON],
@@ -802,8 +802,11 @@
   // ---------- Stock breakdown: one company, as a picture (markets only) ----------
   const loadDesc = () => window.CTC_DESC ? Promise.resolve(window.CTC_DESC) : new Promise((res) => {
     const el = document.createElement("script"); el.src = "descriptions.js?v=1"; el.onload = () => res(window.CTC_DESC || {}); el.onerror = () => res({}); document.head.appendChild(el); });
+  // EPS, revenue, net profit and debt-to-equity (fundamentals.js, refreshed weekly by the GitHub workflow)
+  const loadFund = () => window.CTC_FUND ? Promise.resolve(window.CTC_FUND) : new Promise((res) => {
+    const el = document.createElement("script"); el.src = `fundamentals.js?d=${S().D.prices_through}`; el.onload = () => res(window.CTC_FUND || { d: {} }); el.onerror = () => res({ d: {} }); document.head.appendChild(el); });
   async function drawStock(c, th) {
-    const H = S(), [P, DESC] = await Promise.all([H.loadAllPrices(), loadDesc()]), tk = Q.stk, x = P.px[tk];
+    const H = S(), [P, DESC, FUND] = await Promise.all([H.loadAllPrices(), loadDesc(), loadFund()]), tk = Q.stk, x = P.px[tk];
     if (!x) return "No prices for this company yet.";
     const li = H.lastIdx(x), spy = P.px.SPY, at = (arr, i) => { for (let j = i; j >= 0; j--) if (arr[j] != null) return arr[j]; return null; };
     const back = (n) => { const i = Math.max(0, li - n), a = at(x, i), b = x[li]; return a && b ? b / a - 1 : null; };
@@ -873,32 +876,38 @@
         c.fillStyle = th.ink; c.beginPath(); c.arc(bx + bw * posn, y + 29, 9, 0, 7); c.fill();
         tx(c, `$${l52 >= 100 ? l52.toFixed(0) : l52.toFixed(2)} low`, bx, y + 62, { s: 14, w: 600, col: th.muted }); tx(c, `high $${h52 >= 100 ? h52.toFixed(0) : h52.toFixed(2)}`, bx + bw, y + 62, { s: 14, w: 600, col: th.muted, a: "right" });
         tx(c, x[li] >= h52 * 0.999 ? "at its 52-week high" : `${pc(x[li] / h52 - 1)} below its high`, bx + bw / 2, y + 62, { s: 14, w: 700, col: th.ink, a: "center" });
-        // risk over the chart period
-        const rets = []; for (let i = i0 + 1; i <= li; i++) { const a = at(x, i - 1), b = x[i]; if (a && b) rets.push([i, b / a - 1]); }
-        const sd = Math.sqrt(rets.reduce((a, r) => a + r[1] * r[1], 0) / Math.max(1, rets.length)), best = rets.reduce((a, r) => (r[1] > a[1] ? r : a), [0, -1]), worst = rets.reduce((a, r) => (r[1] < a[1] ? r : a), [0, 1]);
-        let peak = 0, dd = 0; for (let i = i0; i <= li; i++) { const v = x[i]; if (v == null) continue; peak = Math.max(peak, v); dd = Math.min(dd, v / peak - 1); }
-        const upDays = rets.filter((r) => r[1] > 0).length / Math.max(1, rets.length), sd2 = (() => { const r2 = []; for (let i = i0 + 1; i <= li; i++) { const a = at(spy, i - 1), b = spy[i]; if (a && b) r2.push(b / a - 1); } return Math.sqrt(r2.reduce((a, r) => a + r * r, 0) / Math.max(1, r2.length)); })();
-        const tiles = [["Typical day", `±${(sd * 100).toFixed(1)}%`, th.ink, `S&P 500 ±${(sd2 * 100).toFixed(1)}%`], ["Up days", `${Math.round(upDays * 100)}%`, th.ink, `of ${rets.length} days`],
-          ["Best day", pc(best[1]), th.up, H.fmtDate(P.dates[best[0]], { day: "numeric", month: "short", year: "2-digit" })], ["Worst day", pc(worst[1]), th.down, H.fmtDate(P.dates[worst[0]], { day: "numeric", month: "short", year: "2-digit" })],
-          ["Biggest fall from a high", pc(dd), th.down, periodName], ["Swings vs market", `${(sd / Math.max(1e-9, sd2)).toFixed(1)}×`, th.ink, "as jumpy as the S&P"]];
+        // the company's figures: last twelve months, from its latest results (P/E from today's close)
+        const f = ((FUND && FUND.d) || {})[tk] || [], [, eps, rev, ni, de, cur = "USD", mrq] = f;
+        const money = (v) => v == null ? "–" : (v < 0 ? "−" : "") + (cur === "USD" ? H.usd(Math.abs(v)) : `${cur} ${H.usd(Math.abs(v)).replace("$", "")}`);
+        const pe = eps > 0 ? x[li] / eps : null, margin = rev && ni != null ? ni / rev : null;
+        const tiles = [["EPS", eps == null ? "–" : `${eps < 0 ? "−" : ""}$${Math.abs(eps).toFixed(2)}`, eps < 0 ? th.down : th.ink, "12 months"],
+          ["P/E ratio", pe ? `${pe >= 100 ? pe.toFixed(0) : pe.toFixed(1)}×` : "n/a", th.ink, pe ? "price ÷ EPS" : eps != null ? "no profit" : "no figures"],
+          ["Revenue", money(rev), th.ink, "last 12 months"],
+          ["Net profit", money(ni), ni < 0 ? th.down : th.ink, margin != null && Math.abs(margin) < 5 ? `${(margin * 100).toFixed(0)}% of revenue` : ni < 0 ? "a loss" : "12 months"],
+          ["Debt-to-equity", de == null ? "–" : `${de.toFixed(2)}×`, de > 2 ? th.down : th.ink, de == null ? "not reported" : "debt ÷ equity"],
+          ["Latest results", mrq ? H.fmtDate(mrq, { day: "numeric", month: "short" }) : "–", th.ink, mrq ? `quarter to ${mrq.slice(0, 4)}` : "quarter end"]];
         const tcols = bw > 600 ? 3 : 2, tw3 = (bw - (tcols - 1) * 10) / tcols, th3 = 64;
         tiles.forEach(([l, v, col, s3], i) => { const tx0 = bx + (i % tcols) * (tw3 + 10), ty0 = y + 84 + Math.floor(i / tcols) * (th3 + 10);
           box(c, th, tx0, ty0, tw3, th3, 10); tx(c, l, tx0 + 12, ty0 + 20, { s: 12, w: 700, col: th.muted, max: tw3 - 24 });
-          tx(c, v, tx0 + 12, ty0 + 48, { s: 22, w: 800, col, f: MONO }); tx(c, s3, tx0 + tw3 - 12, ty0 + 48, { s: 11, w: 600, col: th.muted, a: "right", max: tw3 - 110 }); });
+          tx(c, v, tx0 + 12, ty0 + 48, { s: 22, w: 800, col, f: MONO, max: tw3 * 0.55 }); tx(c, s3, tx0 + tw3 - 12, ty0 + 48, { s: 11, w: 600, col: th.muted, a: "right", max: tw3 * 0.42 }); });
         rightEnd = y + 84 + Math.ceil(tiles.length / tcols) * (th3 + 10);
       }
       y = Math.max(leftEnd, rightEnd) + 26;
     }
 
-    // month by month: the last 12 months as coloured squares
+    // month by month over the chart's period, as coloured squares (12 to a row)
     if (on("stmon") && BOTTOM - y > 110) {
-      const ends = []; for (let i = li; i > 0 && ends.length < 13; i--) if (i === li || P.dates[i].slice(0, 7) !== P.dates[i + 1].slice(0, 7)) ends.push(i);
-      const months = []; for (let k = ends.length - 1; k > 0; k--) { const a = at(x, ends[k]), b = at(x, ends[k - 1]); months.push([P.dates[ends[k - 1]], a && b ? b / a - 1 : null]); }
-      caps(c, "Month by month", M, y, th.muted, 13);
-      const sq = (W - 2 * M - 11 * 8) / 12;
-      months.slice(-12).forEach(([d, r], i) => { const sx = M + i * (sq + 8); rr(c, sx, y + 14, sq, 58, 8); c.fillStyle = heat(r, 0.12); c.fill();
-        tx(c, pc(r, 0), sx + sq / 2, y + 40, { s: 15, w: 800, col: "#fff", a: "center", f: MONO }); tx(c, H.fmtDate(d, { month: "short" }) + (d === P.dates[li] ? " so far" : ""), sx + sq / 2, y + 62, { s: 11, w: 600, col: "rgba(255,255,255,.9)", a: "center", max: sq - 4 }); });
-      y += 100;
+      const ends = []; for (let i = li; i > 0; i--) if (i === li || P.dates[i].slice(0, 7) !== P.dates[i + 1].slice(0, 7)) { ends.push(i); if (i < i0) break; }
+      if (ends[ends.length - 1] >= i0) ends.push(i0);   // the period starts with the data: measure its first month from there
+      let months = []; for (let k = ends.length - 1; k > 0; k--) { const a = at(x, ends[k]), b = at(x, ends[k - 1]); months.push([P.dates[ends[k - 1]], a && b ? b / a - 1 : null]); }
+      const want = { 126: 6, 252: 12, 504: 24 }[Q.stp]; if (want) months = months.slice(-want);   // a part-month at the start would make one too many
+      const rows = Math.ceil(months.length / 12), sh = rows > 1 ? 46 : 58, sq = (W - 2 * M - 11 * 8) / 12, multiYear = months.length > 12;
+      caps(c, `Month by month · ${periodName}`, M, y, th.muted, 13);
+      months.forEach(([d, r], i) => { const sx = M + (i % 12) * (sq + 8), sy = y + 14 + Math.floor(i / 12) * (sh + 8); rr(c, sx, sy, sq, sh, 8); c.fillStyle = heat(r, 0.12); c.fill();
+        const lab = H.fmtDate(d, multiYear && (i === 0 || d.slice(5, 7) === "01") ? { month: "short", year: "2-digit" } : { month: "short" }) + (d === P.dates[li] ? " so far" : "");
+        tx(c, pc(r, 0), sx + sq / 2, sy + sh / 2 + (rows > 1 ? 1 : 3), { s: rows > 1 ? 14 : 15, w: 800, col: "#fff", a: "center", f: MONO });
+        tx(c, lab, sx + sq / 2, sy + sh - (rows > 1 ? 7 : 9), { s: rows > 1 ? 10 : 11, w: 600, col: "rgba(255,255,255,.9)", a: "center", max: sq - 4 }); });
+      y += 14 + rows * (sh + 8) + 22;
     }
 
     // against its rivals: the biggest companies in the same sub-industry (or sector), over the chart period
@@ -919,7 +928,7 @@
           tx(c, pc(r, 0), W - M, ry + 21, { s: 16, w: 800, col: sgn(r, th), f: MONO, a: "right" }); });
       }
     }
-    footer(c, th, `Prices from Yahoo Finance, to the close on ${H.fmtDate(P.dates[li])}; company value from the stock list. Not financial advice.`);
+    footer(c, th, `Prices and company figures from Yahoo Finance (figures: last 12 months${FUND && FUND.asof ? `, checked ${H.fmtDate(FUND.asof, { day: "numeric", month: "short" })}` : ""}). Not financial advice.`);
   }
 
   const DRAW = { today: (c, th) => drawMovers(c, th, 1), week: (c, th) => drawMovers(c, th, 5), industries: drawIndustries, ai: drawAI, aftermath: drawAftermath,
