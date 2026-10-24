@@ -28,7 +28,7 @@
     { v: "ai", g: 1, t: "AI stocks", s: "Every AI stock at a glance: today, this week or this month", f: ["aip", "aisort", "ain", "aisp"] },
     { v: "aftermath", g: 2, t: "Aftermath card", s: "A steady stock that kept falling: its chart, what led to it and why", f: ["af", "afr", "afcmp", "aftl", "afwhy"] },
     { v: "invest", g: 2, t: "Investments money-flow", s: "Who put money in, and how the linked stocks have moved since", f: ["deal", "ivnote", "ivst", "ivsum"] },
-    { v: "prodmap", g: 2, t: "Production map", s: "Where the world's chips, oil, metals and minerals are made", f: ["item", "pmn", "pmbub", "pmlist", "pmwhy"] },
+    { v: "prodmap", g: 2, t: "Production map", s: "Where the world's chips, oil, metals and minerals are made", f: ["pmi", "pmn", "pmbub", "pmlist", "pmwhy"] },
     { v: "prodchain", g: 2, t: "Production supply chain", s: "Each step from raw material to market, and where it depends on", f: ["item", "pcwho", "pctop"] },
     { v: "aiwatch", g: 3, t: "AI bubble watch", s: "The latest news on the AI labs' listings and the debt behind AI", f: ["awn", "awcw", "awlabs", "awwatch"] },
     { v: "bubble", g: 3, t: "Where is the AI bubble?", s: "The private AI labs ranked among America's biggest companies", f: ["bubub", "bun", "bucmp", "buyr"] },
@@ -51,7 +51,7 @@
     afr: ["Chart", [["all", "Full history"], ["365", "1 year"], ["182", "6 months"], ["peak", "Since the high"]]],
     afcmp: ["Same-days comparison", ON], aftl: ["Timeline", ON], afwhy: ["Why it fell", ON],
     deal: ["Deal", "sel"], ivnote: ["Notes on each box", ON], ivst: ["Stake values", ON], ivsum: ["Summary", ON],
-    item: ["What", "sel"], pmn: ["Producers listed", [["5", "5"], ["8", "8"]]], pmbub: ["Bubbles on the map", ON], pmlist: ["Producer list", ON], pmwhy: ["Why it matters", ON],
+    item: ["What", "sel"], pmi: ["What", "sel"], pmn: ["Producers listed", [["5", "5"], ["8", "8"]]], pmbub: ["Bubbles on the map", ON], pmlist: ["Producer list", ON], pmwhy: ["Why it matters", ON],
     pcwho: ["Companies at each step", ON], pctop: ["Biggest producers", ON],
     awn: ["News items", [["2", "2"], ["3", "3"], ["4", "4"]]], awcw: ["CoreWeave figures", ON], awlabs: ["The private labs", ON], awwatch: ["What to watch", ON],
     bubub: ["Two-bubbles picture", ON], bun: ["Companies ranked", [["8", "8"], ["12", "12"], ["15", "15"]]], bucmp: ["Chipmakers vs data-centre renters", ON],
@@ -64,7 +64,7 @@
   };
   const DEF = { view: "today", list: "sp", msec: "all", mn: "5", mrank: "pct", mheat: "1", midx: "1", ipd: "now", imkt: "1", iwhy: "1", ispy: "1",
     aip: "day", aisort: "move", ain: "32", aisp: "1", af: "", afr: "all", afcmp: "1", aftl: "1", afwhy: "1", deal: "0", ivnote: "1", ivst: "1", ivsum: "1",
-    item: "chips", pmn: "8", pmbub: "1", pmlist: "1", pmwhy: "1", pcwho: "1", pctop: "1", awn: "4", awcw: "1", awlabs: "1", awwatch: "1",
+    item: "chips", pmi: "chips", pmn: "8", pmbub: "1", pmlist: "1", pmwhy: "1", pcwho: "1", pctop: "1", awn: "4", awcw: "1", awlabs: "1", awwatch: "1",
     bubub: "1", bun: "12", bucmp: "1", buyr: "252", hy: "weak", hyd: "45", hych: "all", hyn: "5", hyr: "3", hyone: "1", theme: "light", ttl: {} };
   const on = (k) => Q[k] !== "0";
   let Q = { ...DEF };
@@ -364,7 +364,8 @@
   // ---------- 7. Production map ----------
   async function drawProdMap(c, th) {
     const H = S(), [D2, Wd] = await Promise.all([H.loadProd(), H.loadWorld()]); if (!D2) return "Production data hasn't loaded.";
-    const it = D2.items[Q.item] || D2.items.chips, isPct = /^%/.test(it.unit), fmtV = (v) => isPct ? `${v}%` : v.toLocaleString();
+    if (String(Q.pmi).startsWith("grp:")) return drawProdField(c, th, D2, Wd, D2.groups.find((g) => g.name === Q.pmi.slice(4)) || D2.groups[0]);
+    const it = D2.items[Q.pmi] || D2.items.chips, isPct = /^%/.test(it.unit), fmtV = (v) => isPct ? `${v}%` : v.toLocaleString();
     let y = header(c, th, `Where it's made · ${it.year}`, it.name, on("pmwhy") ? plain(it.why) : "");
     const nList = on("pmlist") ? Math.min(+Q.pmn, it.rows.length) : 0;
     const mx0 = M, my0 = y, mw = W - 2 * M, mh = Math.min(nList ? 640 : 900, BOTTOM - y - (nList ? 34 + 20 + nList * 46 : 10));
@@ -396,6 +397,53 @@
       tx(c, fmtV(v), W - M, ry + 28, { s: 19, w: 700, col: th.ink, f: MONO, a: "right" }); });
     if (!nList) { const top = it.rows[0]; tx(c, `Biggest: ${top[0]} · ${/^%/.test(it.unit) ? top[2] + "%" : top[2].toLocaleString()} · world ${it.world}`, W / 2, BOTTOM - 4, { s: 20, w: 700, col: th.ink2, a: "center", max: W - 2 * M }); }
     footer(c, th, `Source: ${it.source} (${it.year}). World: ${it.world}. Figures rounded.`);
+  }
+
+  function drawProdField(c, th, D2, Wd, g) {
+    const H = S(), items = g.items.map((k) => [k, D2.items[k]]).filter((x) => x[1] && x[1].rows.length);
+    const lead = new Map(), name = new Map();  // country id → goods it produces the most of
+    for (const [, it] of items) { const [nm, id] = it.rows[0], key = String(id).padStart(3, "0"); if (!lead.has(key)) lead.set(key, []); lead.get(key).push(it.name); name.set(key, nm.split(" (")[0]); }
+    const yrs = [...new Set(items.map(([, it]) => (it.year.match(/\d{4}/) || [""])[0]))].sort();
+    let y = header(c, th, `Where it's made · ${g.name}`, `${g.name}: who makes what`, on("pmwhy") ? `The biggest producer of each, and the two after it. Countries are shaded by how many of these ${items.length} they lead.` : "");
+    const nList = on("pmlist") ? items.length : 0;
+    const mx0 = M, my0 = y, mw = W - 2 * M, mh = Math.min(nList ? 560 : 900, BOTTOM - y - (nList ? 34 + 20 + nList * 64 : 10));
+    if (Wd && window.d3) {
+      const d3 = window.d3, proj = d3.geoNaturalEarth1().fitExtent([[mx0, my0], [mx0 + mw, my0 + mh]], { type: "Sphere" }), path = d3.geoPath(proj, c);
+      const feats = Wd.features.filter((f) => f.id !== "010"), mx = Math.max(...[...lead.values()].map((l) => l.length), 1);
+      c.beginPath(); path({ type: "Sphere" }); c.fillStyle = th.chip; c.fill();
+      for (const f of feats) { const l = lead.get(f.id); c.beginPath(); path(f); c.fillStyle = l ? th.line : th.grid; c.globalAlpha = l ? 0.35 + 0.65 * l.length / mx : 1; c.fill(); c.globalAlpha = 1; c.strokeStyle = th.bg; c.lineWidth = 0.7; c.stroke(); }
+      if (on("pmbub")) {
+        const placed = [], hit = (b) => placed.some((q) => b.x < q.x + q.w && q.x < b.x + b.w && b.y < q.y + q.h && q.y < b.y + b.h);
+        const spots = [...lead].map(([id, l]) => { const f = feats.find((q) => q.id === id); if (!f) return null; const [px, py] = path.centroid(f); return { id, l, px, py, r: 10 + 9 * l.length }; }).filter(Boolean).sort((a, b) => b.l.length - a.l.length);
+        for (const b of spots) { c.fillStyle = th.down; c.globalAlpha = 0.9; c.beginPath(); c.arc(b.px, b.py, b.r, 0, 7); c.fill(); c.globalAlpha = 1; c.strokeStyle = "#fff"; c.lineWidth = 2; c.stroke();
+          tx(c, String(b.l.length), b.px, b.py + 7, { s: 19, w: 800, col: "#fff", a: "center" }); placed.push({ x: b.px - b.r, y: b.py - b.r, w: 2 * b.r, h: 2 * b.r }); }
+        setF(c, 800, 17);
+        for (const b of spots) { const lab = name.get(b.id), lw = c.measureText(lab).width + 8;
+          for (const ly of [b.py - b.r - 8, b.py + b.r + 22]) { const bb = { x: b.px - lw / 2, y: ly - 17, w: lw, h: 22 }; if (hit(bb)) continue;
+            placed.push(bb); c.lineWidth = 5; c.strokeStyle = th.bg; c.textAlign = "center"; c.strokeText(lab, b.px, ly); tx(c, lab, b.px, ly, { s: 17, w: 800, col: th.ink, a: "center" }); break; } }
+      }
+    } else tx(c, "The world map couldn't load; the list shows the same figures.", W / 2, my0 + mh / 2, { s: 18, w: 500, col: th.muted, a: "center" });
+    y = my0 + mh + 34;
+    if (nList) {
+      caps(c, "Each one's top producers", M, y, th.muted, 14);
+      const cw0 = 300, bx = M + cw0, bw = W - 2 * M - cw0, rh = Math.min(92, (BOTTOM - y - 24) / nList), chh = Math.min(56, rh - 14);
+      items.forEach(([, it], i) => {
+        const ry = y + 22 + i * rh, isPct = /^%/.test(it.unit), top = it.rows.slice(0, 3), mxv = top[0][2], f = (v) => isPct ? `${v}%` : v.toLocaleString();
+        // a company list (AI memory) names the company; the rest name the country
+        const who = (nm) => it.byCompany && /\((.+)\)/.test(nm) ? nm.match(/\((.+)\)/)[1] : nm.split(" (")[0];
+        tx(c, it.name.replace(/ \(.*\)$/, ""), M, ry + chh / 2 + 2, { s: 19, w: 800, col: th.ink, max: cw0 - 16 });
+        tx(c, `${it.unit} · ${it.year.replace(/ \(.*\)$/, "")}`, M, ry + chh / 2 + 22, { s: 13, w: 500, col: th.muted, max: cw0 - 16 });
+        // the leader, then the next two as chips, each with a small bar showing its size against the leader
+        const widths = [bw * 0.44, bw * 0.26, bw * 0.26]; let x = bx;
+        top.forEach(([nm, , v], k) => { const ww = widths[k] - 8;
+          rr(c, x, ry, ww, chh, 9); c.fillStyle = k === 0 ? th.line : th.card; c.fill(); if (k) { c.strokeStyle = th.grid; c.lineWidth = 1.5; c.stroke(); }
+          tx(c, who(nm), x + 12, ry + chh / 2 - 5, { s: 16, w: 800, col: k === 0 ? "#fff" : th.ink, max: ww - 24 });
+          tx(c, f(v), x + 12, ry + chh / 2 + 13, { s: 14, w: 600, col: k === 0 ? "#fff" : th.ink2, f: MONO, max: ww - 24 });
+          if (k) { const bl = (ww - 24) * v / mxv; rr(c, x + 12, ry + chh - 7, ww - 24, 4, 2); c.fillStyle = th.chip; c.fill(); rr(c, x + 12, ry + chh - 7, Math.max(3, bl), 4, 2); c.fillStyle = th.line; c.fill(); }
+          x += widths[k]; });
+      });
+    }
+    footer(c, th, `Latest published figures (${yrs[0]}${yrs.length > 1 ? "–" + yrs[yrs.length - 1] : ""}): USGS, Energy Institute, worldsteel, WNA, TrendForce, ASML, IEA, SIA/BCG. Figures rounded.`);
   }
 
   // ---------- 8. Production supply chain ----------
@@ -594,7 +642,8 @@
     $("#mv_af").innerHTML = af.map((s) => `<option value="${esc(s.tk)}">${esc(s.name.replace(/ Common Stock$| Corporation.*$| Inc\..*$/, ""))} (${esc(s.tk)}) · ${H.pct(s.drop, 0)}</option>`).join("");
     $("#mv_deal").innerHTML = ((I && I.deals) || []).map((d, i) => `<option value="${i}">${esc(d.center.name)} · ${esc(H.fmtDate(d.date, { month: "short", year: "numeric" }))}</option>`).join("");
     $("#mv_item").innerHTML = D2 ? D2.groups.map((g) => `<optgroup label="${esc(g.name)}">${g.items.map((k) => `<option value="${k}">${esc(D2.items[k].name)}</option>`).join("")}</optgroup>`).join("") : "";
-    $("#mv_msec").value = Q.msec; $("#mv_af").value = Q.af; $("#mv_deal").value = Q.deal; $("#mv_item").value = Q.item;
+    $("#mv_pmi").innerHTML = D2 ? `<optgroup label="A whole field">${D2.groups.map((g) => `<option value="grp:${esc(g.name)}">${esc(g.name)}: who makes what</option>`).join("")}</optgroup>` + $("#mv_item").innerHTML : "";
+    $("#mv_msec").value = Q.msec; $("#mv_af").value = Q.af; $("#mv_deal").value = Q.deal; $("#mv_item").value = Q.item; $("#mv_pmi").value = Q.pmi;
   }
   function sync() {
     $$("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === Q.view)));
@@ -617,7 +666,7 @@
     if (url) URL.revokeObjectURL(url); url = URL.createObjectURL(blob);
     img.src = url; img.hidden = false; empty.hidden = true; $("#mvSave").disabled = false; $("#mvCopy").disabled = false;
   }
-  const fileName = () => `harryv12-${Q.view}${Q.view === "aftermath" ? "-" + Q.af : Q.view.startsWith("prod") ? "-" + Q.item : ""}-${S().D.prices_through}.png`.toLowerCase().replace(/[^a-z0-9.-]+/g, "-");
+  const fileName = () => `harryv12-${Q.view}${Q.view === "aftermath" ? "-" + Q.af : Q.view === "prodmap" ? "-" + Q.pmi : Q.view === "prodchain" ? "-" + Q.item : ""}-${S().D.prices_through}.png`.toLowerCase().replace(/[^a-z0-9.-]+/g, "-");
   function bind() {
     $$("[data-view]").forEach((b) => b.addEventListener("click", () => { Q.view = b.dataset.view; save(); render(); }));
     $$("#mvApp .seg[data-key]").forEach((g) => g.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; Q[g.dataset.key] = b.dataset.v; save(); render(); }));
