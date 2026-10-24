@@ -5,10 +5,13 @@ name: Daily market update
 
 on:
   workflow_dispatch: {}
-  # 22:15 UTC, Monday to Friday: after the 4:30 pm New York final close in both summer and winter
-  # time (10:15 pm UK in winter, 11:15 pm in summer). GitHub may start it a few minutes late.
+  # 9:15 pm UK time, Monday to Friday, 15 minutes after the 4 pm New York close. GitHub schedules are in
+  # UTC only, so there are two: 20:15 UTC is 9:15 pm in UK summer time, 21:15 UTC is 9:15 pm in winter.
+  # The "when" step below lets through only the one that falls at 9 pm or later in London (the other
+  # stops at once). GitHub may start a scheduled run a few minutes late.
   schedule:
-    - cron: "15 22 * * 1-5"
+    - cron: "15 20 * * 1-5"
+    - cron: "15 21 * * 1-5"
 
 permissions:
   contents: write
@@ -22,21 +25,37 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
+      - name: Is it 9 pm or later in London?
+        id: when
+        run: |
+          hour=$(TZ=Europe/London date +%H)
+          if [ "${{ github.event_name }}" != "schedule" ] || [ "$hour" -ge 21 ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "It's ${hour}:xx in London: the other scheduled start (9:15 pm UK) will run instead."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.when.outputs.run == 'true'
 
       - uses: actions/setup-python@v5
+        if: steps.when.outputs.run == 'true'
         with:
           python-version: "3.14"
           cache: pip
           cache-dependency-path: _pipeline/requirements.txt
 
       - name: Install packages
+        if: steps.when.outputs.run == 'true'
         run: pip install -r _pipeline/requirements.txt
 
       - name: Update market data
+        if: steps.when.outputs.run == 'true'
         run: python -I -X utf8 _pipeline/pipeline/daily.py
 
       - name: Commit and push what changed
+        if: steps.when.outputs.run == 'true'
         run: |
           git config user.name "HarryV12"
           git config user.email "304028176+HarryV12@users.noreply.github.com"
@@ -47,5 +66,5 @@ jobs:
           git push -q origin HEAD:main
 
       - name: Show the to-do report
-        if: always()
+        if: always() && steps.when.outputs.run == 'true'
         run: cat _pipeline/logs/freshness.txt 2>/dev/null || true

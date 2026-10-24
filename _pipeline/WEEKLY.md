@@ -1,4 +1,4 @@
-# The weekly research (for a scheduled Claude run every Saturday)
+# The weekly research (for a scheduled Claude run every Friday at 9:15 pm UK)
 
 The daily data and the daily "why" texts update themselves (see `_pipeline/UPDATE_SCHEDULE.md`). This job
 keeps the hand-kept facts current: the AI bubble page, the Investments page and the Production page.

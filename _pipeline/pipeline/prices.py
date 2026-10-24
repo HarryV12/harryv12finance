@@ -19,13 +19,13 @@ def yahoo_symbol(ticker):
 
 
 def last_closed_day(at=None):
-    """The newest trading day with a final close: today in New York only after 4:30 pm there,
+    """The newest trading day with a final close: today in New York only from 4:10 pm there (the closing auction has printed by then),
     so a run during market hours doesn't treat a half-day price as the close. `at` is a Unix
     time to ask about instead of now (when a cached file was downloaded)."""
     from zoneinfo import ZoneInfo
     ny = ZoneInfo("America/New_York")
     now = dt.datetime.fromtimestamp(at, ny) if at is not None else dt.datetime.now(ny)
-    return now.date() if now.time() >= dt.time(16, 30) else now.date() - dt.timedelta(days=1)
+    return now.date() if now.time() >= dt.time(16, 10) else now.date() - dt.timedelta(days=1)
 
 
 def load_prices(tickers, start, chunk=80):

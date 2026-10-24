@@ -7,7 +7,7 @@ Full background is in `UPDATING.md` (on the PC, next to the `site` folder); this
 - 🤖 **GitHub**: runs by itself in GitHub Actions (`.github/workflows/daily.yml`). No PC needed. Free.
 - ✍️ **Claude writer**: runs by itself as a Claude cloud routine (Sonnet 5.5). No PC needed. Uses your Pro plan.
 - 💻 **Your PC, weekly**: you run `publish_site.ps1` (Congress filings and the full rebuild).
-- 🔎 **Claude weekly research**: runs by itself every Saturday 09:00 UK as a Claude cloud routine (Sonnet 5.5, high
+- 🔎 **Claude weekly research**: runs by itself every Friday at 9:15 pm UK as a Claude cloud routine (Sonnet 5.5, high
   effort), following `_pipeline/WEEKLY.md`. No PC needed. Uses your Pro plan.
 - 🗓️ **By hand / ask Claude**: dated jobs on a calendar (yearly releases, index changes, a new Congress).
 
@@ -15,7 +15,12 @@ Full background is in `UPDATING.md` (on the PC, next to the `site` folder); this
 
 ## 1. Every US trading day
 
-### 🤖 On GitHub: weekdays at 22:15 UTC (10:15 pm UK in winter, 11:15 pm in summer)
+### 🤖 On GitHub: weekdays at 9:15 pm UK time (15 minutes after the US close)
+
+The US market closes at 4 pm New York time, which is 9 pm UK time (8 pm for a few weeks in March and
+October/November, when the US and UK change their clocks on different dates; 9:15 pm is after the close either way).
+GitHub schedules only in UTC, so `daily.yml` has two start times (20:15 and 21:15 UTC) and a check that lets
+through only the one at 9 pm or later in London. The price step accepts a day's close from 4:10 pm New York time.
 
 | Data | File | What it feeds | Script |
 |---|---|---|---|
@@ -31,7 +36,7 @@ These pages then update by themselves, because they read those files: Home, Mark
 Aftermath, AI stocks, the AI bubble page's share moves and company values, the Investments page's price
 moves and "since the news" figures, the Congress pages' returns, and every Data Visualization image.
 
-### ✍️ Claude writer: Tuesday–Saturday at 00:30 UK time (the night after each trading day)
+### ✍️ Claude writer: Monday–Friday at 10 pm UK time (45 minutes after the data update)
 
 Routine "HarryV12 Finance daily explanations" (Sonnet 5.5), following `_pipeline/WRITING.md`:
 
@@ -47,7 +52,7 @@ It then re-runs the market and Aftermath steps so the text appears, and commits.
 
 | What | How | When |
 |---|---|---|
-| "This week" explanations (market + 5 industries) | ✍️ Claude writer, automatically (Saturday 00:30 run, from Friday's close) | Weekly |
+| "This week" explanations (market + 5 industries) | ✍️ Claude writer, automatically (Friday 10 pm run, from Friday's close) | Weekly |
 | House trades: new filings, e-filed and scanned (OCR) | 💻 PC: `publish_site.ps1` | Weekly (filings arrive within 45 days of a trade) |
 | Senate trades (via Quiver's copies; the Senate's own site blocks UK connections) | 💻 PC | Weekly |
 | President's and officials' trades (OGE 278-T), scanned reports (OCR) | 💻 PC | Weekly |
@@ -59,15 +64,15 @@ It then re-runs the market and Aftermath steps so the text appears, and commits.
 | Bond maturity dates: `bond_maturity.js` | 💻 PC | Weekly (only new bonds are looked up) |
 | Accuracy figures: `estimate_test.js` | 💻 PC | Weekly |
 | Company descriptions for stocks new to the site: `descriptions.js` | 💻 PC | Weekly (added 24 Oct 2026; cached per ticker) |
-| AI bubble facts: Anthropic/OpenAI IPO news, CoreWeave debt, voices, updates (`ai_bubble.js`) | 🔎 Claude weekly research | Saturdays 09:00 UK (the to-do report also flags it at 14 days) |
-| Investments: new "Holdings behind the headline" stories (0–2 a week), new deals, open deal statuses (`investments.js`) | 🔎 Claude weekly research | Saturdays 09:00 UK |
-| Production: check whether any source has published newer figures (`production.js`) | 🔎 Claude weekly research | Saturdays 09:00 UK (most weeks nothing changes) |
+| AI bubble facts: Anthropic/OpenAI IPO news, CoreWeave debt, voices, updates (`ai_bubble.js`) | 🔎 Claude weekly research | Fridays 9:15 pm UK (the to-do report also flags it at 14 days) |
+| Investments: new "Holdings behind the headline" stories (0–2 a week), new deals, open deal statuses (`investments.js`) | 🔎 Claude weekly research | Fridays 9:15 pm UK |
+| Production: check whether any source has published newer figures (`production.js`) | 🔎 Claude weekly research | Fridays 9:15 pm UK (most weeks nothing changes) |
 
 ## 3. Every month
 
 | What | How |
 |---|---|
-| Re-check each Investments deal's status (letters of intent, pending stakes); set `updated:` | 🔎 Covered weekly by the Saturday research (the to-do report flags it after 30 days) |
+| Re-check each Investments deal's status (letters of intent, pending stakes); set `updated:` | 🔎 Covered weekly by the Friday research (the to-do report flags it after 30 days) |
 
 ## 4. Yearly, or on a date
 
@@ -106,13 +111,13 @@ The to-do report lists each dated item 30 days before it's due.
 
 | Gap | Status |
 |---|---|
-| In UK summer time the writer (23:30) ran only 15 minutes after GitHub's 22:15 UTC data job, which GitHub can start late | **Fixed:** the writer now runs at 00:30 UK, Tuesday–Saturday (at least 75 minutes after the data) |
+| In UK summer time the writer (23:30) ran only 15 minutes after GitHub's 22:15 UTC data job, which GitHub can start late | **Fixed** (then changed on 24 Oct at your request): data at 9:15 pm UK, writer at 10 pm UK, both Monday–Friday |
 | The weekly PC push could clash with GitHub's daily commit | **Fixed:** `publish_site.ps1` now pulls GitHub's commits before building and again before pushing |
 | Stocks new to the site never got a company description | **Fixed:** `fetch_descriptions.py` now runs in the weekly PC refresh |
 | Nothing flagged an Investments page left unchecked | **Fixed:** the to-do report flags it after 30 days |
 | A copy of the writing is kept in two places | **Fixed:** the PC pipeline now reads the explanations from `site/_pipeline/config`, the same files GitHub and the writer use |
-| No scheduled job for the weekly research (AI bubble facts, Investments stories and deals, Production releases) | **Fixed:** routine "HarryV12 Finance weekly research", Saturdays 09:00 UK; its cloud environment now allows the main news, data and official sites (41 domains). Test run 24 Oct: worked, found nothing newer than that day's updates |
-| The writer's push to `main` hasn't happened yet (its test run had nothing to write) | **Open:** first real run Tue 27 Oct 00:30 UK; check that the explanations reach the site |
+| No scheduled job for the weekly research (AI bubble facts, Investments stories and deals, Production releases) | **Fixed:** routine "HarryV12 Finance weekly research", Fridays 9:15 pm UK; its cloud environment now allows the main news, data and official sites (41 domains). Test run 24 Oct: worked, found nothing newer than that day's updates |
+| The writer's push to `main` hasn't happened yet (its test run had nothing to write) | **Open:** first real run Mon 26 Oct 10 pm UK; check that the explanations reach the site |
 
 ## 7. Known limits
 
