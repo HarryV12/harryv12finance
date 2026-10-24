@@ -1780,7 +1780,7 @@
         ${I && I.deals[0] ? `<a class="card teaser" href="#/investments"><h2>Latest big investment</h2><b class="t-title">${esc(I.deals[0].title)}</b><p class="small muted">${esc(I.deals[0].summary.slice(0, 220))}…</p><span class="more-link">See who put money in →</span></a>` : ""}
         ${A && A.stocks.length ? `<a class="card teaser" href="#/aftermath"><h2>Aftermath <span class="muted">steady stocks that kept falling</span></h2>${A.stocks.slice(0, 4).map((s) => `<div class="mini-row"><b>${esc(s.name.split(" ")[0])}</b><span class="ell small muted">${esc(s.cause || "")}</span><b class="mono down">${pct(s.drop, 0)}</b></div>`).join("")}<span class="more-link">Why they fell →</span></a>` : ""}
       </div>
-      <a class="card section congress-link" href="#/congress"><h2>Congress trades</h2><p class="small muted">What members of Congress and senior officials are buying and selling, from their disclosure reports.</p><span class="more-link">Open Congress →</span></a>`;
+      <a class="card section congress-link" href="#/congress"><h2>Insider trading</h2><p class="small muted">What members of Congress and senior officials are buying and selling, from their disclosure reports.</p><span class="more-link">Open Insider Trading →</span></a>`;
   }
 
   // ---------- Market movers: the day's (or week's, month's) biggest moves, as pictures ----------
@@ -2209,7 +2209,7 @@
       "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Public+Sans:wght@400;500;600;700;800&display=swap"]) {
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
-    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=7")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
+    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=14")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
   })());
   let dvTab = "markets";
   try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }
@@ -2219,11 +2219,11 @@
     const V = await loadDataViz(); if (location.hash !== "#/dataviz") return;
     if (!V) { app.innerHTML = `<h1>Data Visualization</h1><p class="muted">Couldn't load the image maker.</p>`; return; }
     app.innerHTML = `<h1>Data Visualization</h1>
-      <p class="lede">Ready-to-post images built from the site's data: market movers, industries, AI stocks, Aftermath, investments, production, the AI bubble and Congress trades. Pick a view, then download or copy it as an image.</p>
+      <p class="lede">Ready-to-post images built from the site's data: market movers, industries, AI stocks, Aftermath, investments, production, the AI bubble and insider trading. Pick a view, then download or copy it as an image.</p>
       <section id="dvApp" class="card">
-        <div class="seg dv-tabs" role="tablist" aria-label="Which images"><button type="button" role="tab" data-dvt="markets">Markets &amp; AI</button><button type="button" role="tab" data-dvt="congress">Congress</button></div>
+        <div class="seg dv-tabs" role="tablist" aria-label="Which images"><button type="button" role="tab" data-dvt="markets">Markets &amp; AI</button><button type="button" role="tab" data-dvt="congress">Insider Trading</button></div>
         <div id="mvApp" hidden>${V.mv.markup()}</div>
-        <div id="cgApp" hidden><p class="small muted dv-note">These images count every trade in the period you pick. The filters on the Congress pages (large caps, committee-linked and the rest) don't apply here, so a Congress page with its filters on can show smaller totals.</p>${V.cg.markup}</div>
+        <div id="cgApp" hidden><p class="small muted dv-note">These images count every trade in the period you pick. The filters on the Insider Trading pages (large caps, committee-linked and the rest) don't apply here, so a page with its filters on can show smaller totals.</p>${V.cg.markup}</div>
       </section>`;
     const mounted = {};
     const show = (t) => {
