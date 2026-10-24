@@ -13,6 +13,19 @@ Full background is in `UPDATING.md` (on the PC, next to the `site` folder); this
 
 ---
 
+## How the site is published (since 25 Oct 2026)
+
+GitHub Pages is published by the workflow (`.github/workflows/daily.yml`), not straight from the branch.
+It runs every weekday at 9:15 pm UK **and after every push** (the writer's explanations, the weekly
+research, the PC's weekly Congress build, code changes). Each run downloads fresh closes, rebuilds the price
+files, re-prices open trades, and publishes the whole site in a few minutes.
+
+To keep the repository small, the big generated price files (`prices.js` 16 MB, `series.js` 3 MB) are **not
+kept in git** (see `.gitignore`): every run rebuilds them. Only the small files that change daily are
+committed (`market_moves.js`, `aftermath.js`, `extra_prices.js`, new news searches). `data.js` is committed only
+by the PC's weekly build; the daily re-pricing of it is published but not committed. `_pipeline/` and `versions/`
+are never published.
+
 ## 1. Every US trading day
 
 ### 🤖 On GitHub: weekdays at 9:15 pm UK time (15 minutes after the US close)
