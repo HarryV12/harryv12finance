@@ -24,7 +24,7 @@
   const VIEWS = [
     { v: "today", g: 1, t: "Today's market movers", s: "Heatmap of the market, with the biggest gainers and decliners at the close", f: ["list", "msec", "mn", "mrank", "mheat", "midx"] },
     { v: "week", g: 1, t: "This week's market movers", s: "The same for the last five trading days", f: ["list", "msec", "mn", "mrank", "mheat", "midx"] },
-    { v: "industries", g: 1, t: "Industries: today or this week", s: "AI, defense, banks, oil and healthcare: how each moved, and why", f: ["ipd", "imkt", "iwhy", "ispy"] },
+    { v: "industries", g: 1, t: "Industries: today or this week", s: "AI, defense, banks, oil and healthcare: how each moved, and why", f: ["ipd", "ind", "imkt", "iwhy", "ispy", "ibask", "ihead"] },
     { v: "ai", g: 1, t: "AI stocks", s: "Every AI stock at a glance: today, this week or this month", f: ["aip", "aisort", "ain", "aisp"] },
     { v: "aftermath", g: 2, t: "Aftermath card", s: "A steady stock that kept falling: its chart, what led to it and why", f: ["af", "afr", "afcmp", "aftl", "afwhy"] },
     { v: "invest", g: 2, t: "Investments money-flow", s: "Who put money in, and how the linked stocks have moved since", f: ["deal", "ivnote", "ivst", "ivsum"] },
@@ -32,6 +32,7 @@
     { v: "prodchain", g: 2, t: "Production supply chain", s: "Each step from raw material to market, and where it depends on", f: ["item", "pcwho", "pctop"] },
     { v: "aiwatch", g: 3, t: "AI bubble watch", s: "The latest news on the AI labs' listings and the debt behind AI", f: ["awn", "awcw", "awlabs", "awwatch"] },
     { v: "bubble", g: 3, t: "Where is the AI bubble?", s: "The private AI labs ranked among America's biggest companies", f: ["bubub", "bun", "bucmp", "buyr"] },
+    { v: "holders", g: 3, t: "Who holds it", s: "A news story, the stocks it could move, and what Trump and Congress hold of them", f: ["hlst", "hlsince", "hltop"] },
     { v: "hype", g: 3, t: "Hype check", s: "Congress buys shared as tips, scored on how much they really mean", f: ["hy", "hyd", "hych", "hyn", "hyr", "hyone"] },
   ];
   const ON = [["1", "Show"], ["0", "Hide"]];
@@ -43,7 +44,9 @@
     mrank: ["Rank them by", [["pct", "% move"], ["usd", "$ value gained or lost"]]],
     mheat: ["Heatmap", ON], midx: ["Index cards (S&amp;P 500, Nasdaq, Dow)", ON],
     ipd: ["Period", [["today", "Today"], ["now", "This week"]]],
-    imkt: ["Whole market row", ON], iwhy: ["Why each moved", ON], ispy: ["S&amp;P 500 marker", ON],
+    ind: ["Industry", [["all", "All five"], ["ai", "AI and chips"], ["defense", "Defense"], ["banks", "Banks"], ["oil", "Oil and gas"], ["health", "Healthcare"]]],
+    ibask: ["Every stock in the industry (one industry)", ON], ihead: ["Headlines (one industry)", ON],
+    imkt: ["Whole market row (all five)", ON], iwhy: ["Why each moved", ON], ispy: ["S&amp;P 500 marker", ON],
     aip: ["Period", [["day", "Today"], ["week", "This week"], ["month", "This month"]]],
     aisort: ["Order", [["move", "Biggest gain first"], ["fall", "Biggest fall first"], ["cap", "Company value"], ["az", "A–Z"]]],
     ain: ["How many", [["12", "12"], ["20", "20"], ["32", "All"]]], aisp: ["Sparklines", ON],
@@ -56,16 +59,17 @@
     awn: ["News items", [["2", "2"], ["3", "3"], ["4", "4"]]], awcw: ["CoreWeave figures", ON], awlabs: ["The private labs", ON], awwatch: ["What to watch", ON],
     bubub: ["Two-bubbles picture", ON], bun: ["Companies ranked", [["8", "8"], ["12", "12"], ["15", "15"]]], bucmp: ["Chipmakers vs data-centre renters", ON],
     buyr: ["Compare their moves over", [["63", "3 months"], ["126", "6 months"], ["252", "1 year"]]],
+    hlst: ["Story", "sel"], hlsince: ["Move since the news", ON], hltop: ["Biggest holders", ON],
     hy: ["Show", [["weak", "Weakest (most overhyped)"], ["strong", "Strongest"]]],
     hyd: ["Disclosed in the last", [["14", "14 days"], ["30", "30 days"], ["45", "45 days"]]],
     hych: ["Who", [["all", "Everyone"], ["H", "House"], ["S", "Senate"], ["E", "Officials"]]],
     hyn: ["Buys shown", [["3", "3"], ["4", "4"], ["5", "5"]]], hyr: ["Reasons per buy", [["1", "1"], ["2", "2"], ["3", "3"]]],
     hyone: ["Buys per person", [["1", "One"], ["0", "All"]]],
   };
-  const DEF = { view: "today", list: "sp", msec: "all", mn: "5", mrank: "pct", mheat: "1", midx: "1", ipd: "now", imkt: "1", iwhy: "1", ispy: "1",
+  const DEF = { view: "today", list: "sp", msec: "all", mn: "5", mrank: "pct", mheat: "1", midx: "1", ipd: "now", ind: "all", ibask: "1", ihead: "1", imkt: "1", iwhy: "1", ispy: "1",
     aip: "day", aisort: "move", ain: "32", aisp: "1", af: "", afr: "all", afcmp: "1", aftl: "1", afwhy: "1", deal: "0", ivnote: "1", ivst: "1", ivsum: "1",
     item: "chips", pmi: "chips", pmn: "8", pmbub: "1", pmlist: "1", pmwhy: "1", pcwho: "1", pctop: "1", awn: "4", awcw: "1", awlabs: "1", awwatch: "1",
-    bubub: "1", bun: "12", bucmp: "1", buyr: "252", hy: "weak", hyd: "45", hych: "all", hyn: "5", hyr: "3", hyone: "1", theme: "light", ttl: {} };
+    bubub: "1", bun: "12", bucmp: "1", buyr: "252", hlst: "", hlsince: "1", hltop: "1", hy: "weak", hyd: "45", hych: "all", hyn: "5", hyr: "3", hyone: "1", theme: "light", ttl: {} };
   const on = (k) => Q[k] !== "0";
   let Q = { ...DEF };
   try { Q = { ...DEF, ...(JSON.parse(localStorage.getItem("hf-mviz") || "{}") || {}) }; } catch (e) { /* storage blocked */ }
@@ -211,8 +215,66 @@
   }
 
   // ---------- 3. industries: today or this week ----------
+  async function drawIndustry(c, th, H, Mv, key) {
+    const t = Mv.themes[key], span = Q.ipd, e = t && t[span]; if (!e) return "This industry's moves haven't loaded.";
+    const P = await H.loadAllPrices(), L = P.dates.length - 1, k = span === "today" ? 1 : 5;
+    const when = span === "today" ? H.fmtDate(e.end, { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : `${H.fmtDate(e.start, { day: "numeric", month: "short" })} – ${H.fmtDate(e.end)}`;
+    let y = header(c, th, `${t.name} · ${when}`, `${t.name} ${span === "today" ? "today" : "this week"}`, "");
+    // the move, against the S&P 500, and the past month
+    tx(c, pc(e.move, 1), M, y + 70, { s: 88, w: 800, col: sgn(e.move, th) });
+    tx(c, `The ${t.tickers.length} biggest stocks in ${t.name}, averaged`, M, y + 104, { s: 17, w: 600, col: th.ink2 });
+    const cx = 620, rows3 = [[t.name, e.move], ["S&P 500", e.spy], ["Past month", e.month]].filter((r) => r[1] != null), cmx = Math.max(...rows3.map((r) => Math.abs(r[1])), 0.01);
+    rows3.forEach(([nm, r], i) => { const ry = y + 10 + i * 34; tx(c, nm, cx, ry + 18, { s: 17, w: 600, col: th.ink2, max: 150 }); const len = 160 * Math.abs(r) / cmx;
+      rr(c, cx + 160, ry + 6, Math.max(4, len), 14, 7); c.fillStyle = sgn(r, th); c.fill(); tx(c, pc(r, 1), W - M, ry + 19, { s: 18, w: 700, col: sgn(r, th), f: MONO, a: "right" }); });
+    y += 140;
+    // the industry's last six months (weekly, the basket's average)
+    const ser = (t.series || []).slice(-27);
+    if (ser.length > 2) {
+      const gh = 170, vals = ser.map((p2) => p2[1]), lo = Math.min(...vals), hi = Math.max(...vals), X = (i) => M + i / (ser.length - 1) * (W - 2 * M - 70), Y = (v) => y + 10 + (hi - v) / Math.max(1e-9, hi - lo) * gh;
+      caps(c, "The last six months", M, y, th.muted, 13);
+      c.beginPath(); vals.forEach((v, i) => (i ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)))); c.lineTo(X(vals.length - 1), y + 10 + gh); c.lineTo(X(0), y + 10 + gh); c.closePath(); c.fillStyle = th.soft; c.fill();
+      c.beginPath(); vals.forEach((v, i) => (i ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)))); c.strokeStyle = th.line; c.lineWidth = 3.5; c.lineJoin = "round"; c.stroke();
+      const ch6 = vals[vals.length - 1] / vals[0] - 1; tx(c, `${pc(ch6, 0)} in six months`, W - M, y, { s: 15, w: 700, col: sgn(ch6, th), a: "right" });
+      for (let i = 1; i < ser.length; i++) if (ser[i][0].slice(0, 7) !== ser[i - 1][0].slice(0, 7)) tx(c, H.fmtDate(ser[i][0], { month: "short" }), X(i), y + gh + 32, { s: 13, w: 500, col: th.muted, a: "center" });
+      y += gh + 56;
+    }
+    // every stock in the basket over the same days
+    if (on("ibask")) {
+      const rows = t.tickers.map((tk) => [tk, H.moveOf(P, tk, k)]).filter((x) => x[1] != null).sort((a, b) => b[1] - a[1]), mx = Math.max(...rows.map((x) => Math.abs(x[1])), 0.005);
+      const cols = 2, per = Math.ceil(rows.length / cols), rh = 30, colW = (W - 2 * M - 30) / cols;
+      caps(c, `Every stock in the basket · ${span === "today" ? "today" : "this week"}`, M, y, th.muted, 13);
+      rows.forEach(([tk, r], i) => { const x = M + Math.floor(i / per) * (colW + 30), ry = y + 14 + (i % per) * rh, half = (colW - 150) / 2, mid = x + 70 + half;
+        tx(c, tk, x, ry + 20, { s: 16, w: 800, col: th.ink, f: MONO }); c.fillStyle = th.grid; c.fillRect(mid - 1, ry + 4, 2, 22);
+        const bl = half * Math.abs(r) / mx; rr(c, r >= 0 ? mid : mid - bl, ry + 9, Math.max(3, bl), 12, 6); c.fillStyle = sgn(r, th); c.fill();
+        tx(c, pc(r, 1), x + colW, ry + 20, { s: 15, w: 700, col: sgn(r, th), f: MONO, a: "right" }); });
+      y += 14 + per * rh + 30;
+    }
+    // why it moved, and what happened step by step
+    if (on("iwhy") && (e.summary || (e.detail || []).length)) {
+      const room = BOTTOM - y - (on("ihead") ? 150 : 0);
+      if (room > 120) {
+        setF(c, 500, 18); const whyL = e.summary ? Math.min(4, lines(c, plain(e.summary), W - 2 * M - 56).length) : 0;
+        const steps = (e.detail || []).slice(0, 3); let need = 70 + whyL * 25 + steps.reduce((a, d) => a + 12 + 23 * Math.min(2, lines(c, plain(d), W - 2 * M - 90).length), 0);
+        const bh = Math.min(room, need);
+        rr(c, M, y, W - 2 * M, bh, 14); c.fillStyle = th.card; c.fill(); c.fillStyle = th.line; c.fillRect(M, y + 12, 5, bh - 24);
+        caps(c, "Why it moved", M + 28, y + 34, th.line, 14); let yy = y + 62;
+        if (whyL) yy = wrap(c, plain(e.summary), M + 28, yy, W - 2 * M - 56, 25, whyL, { s: 18, w: 600, col: th.ink }) + 34;
+        steps.forEach((d, j) => { if (yy > y + bh - 20) return; c.fillStyle = th.line; c.beginPath(); c.arc(M + 40, yy - 6, 11, 0, 7); c.fill(); tx(c, String(j + 1), M + 40, yy - 1, { s: 13, w: 800, col: "#fff", a: "center" });
+          yy = wrap(c, plain(d), M + 62, yy, W - 2 * M - 90, 23, 2, { s: 16, w: 500, col: th.ink2 }) + 35; });
+        y += bh + 26;
+      }
+    }
+    // the latest headlines
+    if (on("ihead") && (e.what || []).length && BOTTOM - y > 70) {
+      caps(c, "In the news", M, y, th.muted, 13); y += 14;
+      for (const h of e.what.slice(0, Math.floor((BOTTOM - y) / 44))) { tx(c, plain(h.title), M, y + 22, { s: 17, w: 700, col: th.ink, max: W - 2 * M - 230 });
+        tx(c, `${h.source} · ${H.fmtDate(h.date, { day: "numeric", month: "short" })}`, W - M, y + 22, { s: 14, w: 600, col: th.muted, a: "right" }); y += 44; }
+    }
+    footer(c, th, `${t.name}: the ${t.tickers.length} biggest stocks in the industry, averaged. Prices from Yahoo Finance; reasons from the day's news. Not financial advice.`);
+  }
   async function drawIndustries(c, th) {
     const H = S(), Mv = await H.loadMoves(); if (!Mv || !Mv.themes) return "Industry moves haven't loaded.";
+    if (Q.ind !== "all" && Mv.themes[Q.ind]) return drawIndustry(c, th, H, Mv, Q.ind);
     const span = Q.ipd, mk = Mv.market[span];
     const rows = [...(on("imkt") ? [["The whole market (S&P 500)", mk]] : []), ...Object.values(Mv.themes).map((t) => [t.name, t[span], 1])].filter((r) => r[1]);
     const when = span === "today" ? H.fmtDate(mk.end, { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : `${H.fmtDate(mk.start, { day: "numeric", month: "short" })} – ${H.fmtDate(mk.end)}`;
@@ -446,6 +508,21 @@
     footer(c, th, `Latest published figures (${yrs[0]}${yrs.length > 1 ? "–" + yrs[yrs.length - 1] : ""}): USGS, Energy Institute, worldsteel, WNA, TrendForce, ASML, IEA, SIA/BCG. Figures rounded.`);
   }
 
+  // the share a step names, as a number: "~48% of refined copper" → 48, "About two-thirds of refining" → 67
+  const WORDS = [[/three[- ]quarters/i, 75], [/two[- ]thirds/i, 67], [/(over |about |roughly )?half/i, 50], [/a third/i, 33], [/a quarter/i, 25], [/a fifth/i, 20]];
+  // only a share of something counts ("50% tariffs" is not one); also returns the words after it
+  function sharePart(txt) {
+    const t = plain(String(txt || "")), m = t.match(/^(~|about |over |roughly |nearly )?(\d+(?:\.\d+)?)\s*%(?=\s*(of\b|\(|,|and\b|$))/i);
+    if (m) return { v: +m[2], approx: !!m[1], rest: t.slice(m[0].length).trim() };
+    for (const [re, v] of WORDS) { const w = t.match(re); if (w && w.index === 0 || w && /^(about|over|roughly|nearly) $/i.test(t.slice(0, w.index))) return { v, approx: true, rest: t.slice(w.index + w[0].length).trim() }; }
+    return null;
+  }
+  const shareOf = (txt) => { const x = sharePart(txt); return x ? x.v : null; };
+  function ring(c, th, cx, cy, R, v, lw = 12) {
+    c.lineWidth = lw; c.strokeStyle = th.chip; c.beginPath(); c.arc(cx, cy, R, 0, 7); c.stroke();
+    c.strokeStyle = th.line; c.lineCap = "round"; c.beginPath(); c.arc(cx, cy, R, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * Math.min(1, v / 100)); c.stroke(); c.lineCap = "butt";
+  }
+
   // ---------- 8. Production supply chain ----------
   async function drawProdChain(c, th) {
     const H = S(), D2 = await H.loadProd(); if (!D2) return "Production data hasn't loaded.";
@@ -462,8 +539,12 @@
       caps(c, plain(s.step), M + 90, cy + 36, th.muted, 14);
       tx(c, plain(s.where), M + 90, cy + (on("pcwho") ? 78 : ch / 2 + 26), { s: 32, w: 800, col: th.ink, max: 520 });
       if (on("pcwho")) tx(c, plain(s.who), M + 90, cy + 110, { s: 18, w: 500, col: th.ink2, max: 520 });
-      setF(c, 800, 22); const sh = lines(c, plain(s.share), 330).slice(0, 3);
-      sh.forEach((l, k) => tx(c, l, W - M - 26, cy + ch / 2 - (sh.length - 1) * 14 + 8 + k * 28, { s: 22, w: 800, col: th.line, a: "right" }));
+      // the share: a ring with the percentage when the step names one, and the words beside it
+      const v = shareOf(s.share), R = Math.min(42, ch / 2 - 18), rx = W - M - 26 - R, rcy = cy + ch / 2;
+      if (v != null) { ring(c, th, rx, rcy, R, v); tx(c, `${sharePart(s.share).approx ? "~" : ""}${v}%`, rx, rcy + 7, { s: R > 34 ? 20 : 16, w: 800, col: th.ink, a: "center", f: MONO }); }
+      const shW = v != null ? 300 : 330, shR = v != null ? rx - R - 18 : W - M - 26;
+      setF(c, 800, v != null ? 18 : 22); const sh = lines(c, plain(s.share), shW).slice(0, 3);
+      sh.forEach((l, k) => tx(c, l, shR, rcy - (sh.length - 1) * 12 + 7 + k * 24, { s: v != null ? 18 : 22, w: v != null ? 700 : 800, col: v != null ? th.ink2 : th.line, a: "right" }));
       if (i < n - 1) { c.fillStyle = th.muted; c.beginPath(); const ax = M + 44, ay = cy + ch + gap / 2 - 9; c.moveTo(ax - 10, ay); c.lineTo(ax + 10, ay); c.lineTo(ax, ay + 18); c.closePath(); c.fill(); }
     });
     if (showTop) {
@@ -473,7 +554,7 @@
         const bl = (W - 2 * M - 320 - 140) * v / mx; rr(c, M + 320, ry + 13, Math.max(4, bl), 16, 8); c.fillStyle = th.line; c.globalAlpha = 1 - i * 0.1; c.fill(); c.globalAlpha = 1;
         tx(c, isPct ? `${v}%` : v.toLocaleString(), W - M, ry + 27, { s: 18, w: 700, col: th.ink, f: MONO, a: "right" }); });
     }
-    footer(c, th, `Shares from the Production page's sources (USGS, Energy Institute, worldsteel, TrendForce, ASML, IEA); year shown with each. Not financial advice.`);
+    footer(c, th, `Shares from USGS, Energy Institute, worldsteel, TrendForce, ASML and IEA; year shown with each. Not financial advice.`);
   }
 
   // a whole field: each good's chain as one row of steps, so the places everything depends on line up
@@ -498,8 +579,18 @@
         let sy = top + 40 + wn * 18 + 2;
         // the companies, when the row has room for them
         if (on("pcwho") && h - (sy - top) > 92) { setF(c, 500, 12); const wh = Math.min(2, lines(c, plain(st.who), cw - 16).length); wrap(c, plain(st.who), x + 8, sy + 2, cw - 16, 15, wh, { s: 12, w: 500, col: th.ink2 }); sy += wh * 15 + 6; }
-        const room = Math.max(1, Math.floor((top + h - 6 - sy) / 16));
-        wrap(c, plain(st.share), x + 8, sy + 10, cw - 16, 16, Math.min(3, room), { s: 13, w: 700, col: th.line });
+        // the share, with a percentage bar when the step names one
+        const sp = sharePart(st.share);
+        if (sp) {
+          // the percentage large, what it is a share of beneath, and a bar along the bottom
+          const by = top + h - 15; rr(c, x + 8, by, cw - 16, 7, 3.5); c.fillStyle = th.chip; c.fill(); rr(c, x + 8, by, Math.max(5, (cw - 16) * Math.min(1, sp.v / 100)), 7, 3.5); c.fillStyle = th.line; c.fill();
+          const ny = Math.min(sy + 18, by - 9); tx(c, `${sp.approx ? "~" : ""}${sp.v}%`, x + 8, ny, { s: ny < sy + 18 ? 17 : 20, w: 800, col: th.line, f: MONO });
+          const room = Math.floor((by - 4 - (sy + 22)) / 14);
+          if (sp.rest && room > 0) wrap(c, sp.rest, x + 8, sy + 35, cw - 16, 14, Math.min(2, room), { s: 12, w: 600, col: th.ink2 });
+        } else {
+          const room = Math.max(1, Math.floor((top + h - 6 - sy) / 16));
+          wrap(c, plain(st.share), x + 8, sy + 10, cw - 16, 16, Math.min(3, room), { s: 13, w: 700, col: th.line });
+        }
         if (j < k - 1) { c.fillStyle = th.muted; c.beginPath(); const ax = x + cw + 3, ay = ry + rh / 2; c.moveTo(ax, ay - 7); c.lineTo(ax + aw - 6, ay); c.lineTo(ax, ay + 7); c.closePath(); c.fill(); }
       });
     });
@@ -641,8 +732,46 @@
     footer(c, th, `From members' disclosure reports, scored by the site's Hype check (Congress trades page). Not financial advice.`);
   }
 
+  // ---------- 12. Who holds it: holdings behind a headline ----------
+  async function drawHolders(c, th) {
+    const H = S(), [I, P] = await Promise.all([H.loadInvest(), H.loadAllPrices()]), st = ((I && I.stories) || []).find((x) => x.id === Q.hlst) || ((I && I.stories) || [])[0];
+    if (!st) return "No stories yet.";
+    const R = H.storyHoldings(st, P), n = R.rows.length;
+    let y = header(c, th, `In the news · ${H.fmtDate(st.date)}`, st.title, "", { ts: 46 });
+    y = wrap(c, plain(st.news), M, y + 6, W - 2 * M, 28, 3, { s: 20, w: 500, col: th.ink2 }) + 34;
+    // the four headline figures
+    const k4 = [["Trump still holds", R.trump ? "≈" + H.usd(R.trump) : "–", th.ink], ["Return on his buys", pc(R.tRet), sgn(R.tRet, th)], ["Congress still holds", R.cong ? "≈" + H.usd(R.cong) : "–", th.ink], ["Members holding", String(R.members), th.ink]];
+    const tw = (W - 2 * M - 3 * 14) / 4;
+    k4.forEach(([l, v, col], i) => { const x = M + i * (tw + 14); box(c, th, x, y, tw, 112, 14); caps(c, l, x + 16, y + 32, th.muted, 12); tx(c, v, x + 16, y + 84, { s: 34, w: 800, col, f: MONO, max: tw - 28 }); });
+    y += 140;
+    // one card per company
+    const photo = await loadImg(R.trumpM ? H.photoSrc(R.trumpM) : ""), gap = 14, ch = Math.min(200, Math.floor((BOTTOM - y - gap * (n - 1)) / n));
+    R.rows.forEach((r, i) => {
+      const cy = y + i * (ch + gap); box(c, th, M, cy, W - 2 * M, ch, 14);
+      rr(c, M + 18, cy + 18, 92, 36, 8); c.fillStyle = th.chip; c.fill(); tx(c, r.tk, M + 64, cy + 43, { s: 19, w: 800, col: th.ink, f: MONO, a: "center", max: 86 });
+      tx(c, H.coName(r.tk), M + 124, cy + 44, { s: 22, w: 800, col: th.ink, max: 400 });
+      if (on("hlsince")) tx(c, `${pc(r.since)} since the news`, W - M - 20, cy + 44, { s: 18, w: 700, col: sgn(r.since, th), a: "right" });
+      // Trump's position
+      const ry = cy + 74, px = M + 46;
+      c.save(); c.beginPath(); c.arc(px, ry + 24, 24, 0, 7); c.clip(); if (photo) { const sc = Math.max(48 / photo.width, 48 / photo.height); c.drawImage(photo, px - photo.width * sc / 2, ry, photo.width * sc, photo.height * sc); } else { c.fillStyle = th.chip; c.fill(); } c.restore();
+      c.strokeStyle = "#d64545"; c.lineWidth = 2.5; c.beginPath(); c.arc(px, ry + 24, 24, 0, 7); c.stroke();
+      caps(c, "Trump holds", M + 82, ry + 14, th.muted, 12);
+      tx(c, r.trump ? "≈" + H.usd(r.trump) : "–", M + 82, ry + 44, { s: 26, w: 800, col: th.ink, f: MONO });
+      tx(c, `${pc(r.tRet)} on his buys`, M + 82, ry + 68, { s: 15, w: 700, col: sgn(r.tRet, th) });
+      // Congress
+      const cx = M + 360; caps(c, "Congress holds", cx, ry + 14, th.muted, 12);
+      tx(c, r.cong ? "≈" + H.usd(r.cong) : "none", cx, ry + 44, { s: 26, w: 800, col: th.ink, f: MONO });
+      tx(c, `${r.n} member${r.n === 1 ? "" : "s"}`, cx, ry + 68, { s: 15, w: 600, col: th.ink2 });
+      // the biggest holders
+      if (on("hltop") && r.top.length) { const hx = M + 620; caps(c, "Biggest holders", hx, ry + 14, th.muted, 12);
+        r.top.forEach((x, j) => { const yy = ry + 30 + j * 34; c.fillStyle = x.m.party === "D" ? "#2f6fd6" : x.m.party === "R" ? "#d64545" : "#7a7f87"; c.beginPath(); c.arc(hx + 6, yy + 12, 6, 0, 7); c.fill();
+          tx(c, H.surname(x.m.name), hx + 20, yy + 18, { s: 17, w: 700, col: th.ink, max: 170 }); tx(c, "≈" + H.usd(x.v), W - M - 20, yy + 18, { s: 17, w: 700, col: th.ink2, f: MONO, a: "right" }); }); }
+    });
+    footer(c, th, `Holdings estimated from filings since ${H.fmtDate(H.D.start, { month: "short", year: "numeric" })}; shares held before, or from spin-offs, aren't counted. Not financial advice.`);
+  }
+
   const DRAW = { today: (c, th) => drawMovers(c, th, 1), week: (c, th) => drawMovers(c, th, 5), industries: drawIndustries, ai: drawAI, aftermath: drawAftermath,
-    invest: drawInvest, prodmap: drawProdMap, prodchain: drawProdChain, aiwatch: drawAIWatch, bubble: drawBubble, hype: drawHype };
+    invest: drawInvest, prodmap: drawProdMap, prodchain: drawProdChain, aiwatch: drawAIWatch, bubble: drawBubble, holders: drawHolders, hype: drawHype };
 
   // ---------- controls ----------
   const seg = (id, key, opts) => `<div class="seg" id="${id}" data-key="${key}" role="group">${opts.map(([v, l]) => `<button type="button" data-v="${v}">${l}</button>`).join("")}</div>`;
@@ -672,12 +801,14 @@
     if (Q.msec !== "all" && !secs.includes(Q.msec)) Q.msec = "all";
     $("#mv_msec").innerHTML = `<option value="all">All sectors</option>` + secs.map((x) => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
     $("#mv_af").innerHTML = af.map((s) => `<option value="${esc(s.tk)}">${esc(s.name.replace(/ Common Stock$| Corporation.*$| Inc\..*$/, ""))} (${esc(s.tk)}) · ${H.pct(s.drop, 0)}</option>`).join("");
+    const stories = (I && I.stories) || []; if (!stories.some((x) => x.id === Q.hlst) && stories[0]) Q.hlst = stories[0].id;
+    $("#mv_hlst").innerHTML = stories.map((x) => `<option value="${esc(x.id)}">${esc(x.title)} · ${esc(H.fmtDate(x.date, { day: "numeric", month: "short" }))}</option>`).join("");
     $("#mv_deal").innerHTML = ((I && I.deals) || []).map((d, i) => `<option value="${i}">${esc(d.center.name)} · ${esc(H.fmtDate(d.date, { month: "short", year: "numeric" }))}</option>`).join("");
     $("#mv_item").innerHTML = D2 ? D2.groups.map((g) => `<optgroup label="${esc(g.name)}">${g.items.map((k) => `<option value="${k}">${esc(D2.items[k].name)}</option>`).join("")}</optgroup>`).join("") : "";
     const singles = $("#mv_item").innerHTML, fields = (label) => D2 ? `<optgroup label="A whole field">${D2.groups.map((g) => `<option value="grp:${esc(g.name)}">${esc(g.name)}: ${label}</option>`).join("")}</optgroup>` : "";
     $("#mv_pmi").innerHTML = D2 ? fields("who makes what") + singles : "";
     $("#mv_item").innerHTML = D2 ? fields("every supply chain") + singles : "";
-    $("#mv_msec").value = Q.msec; $("#mv_af").value = Q.af; $("#mv_deal").value = Q.deal; $("#mv_item").value = Q.item; $("#mv_pmi").value = Q.pmi;
+    $("#mv_msec").value = Q.msec; $("#mv_af").value = Q.af; $("#mv_deal").value = Q.deal; $("#mv_item").value = Q.item; $("#mv_pmi").value = Q.pmi; $("#mv_hlst").value = Q.hlst;
   }
   function sync() {
     $$("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === Q.view)));

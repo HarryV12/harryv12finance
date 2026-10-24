@@ -1683,7 +1683,7 @@
   const loadAllPrices = () => loadPrices().then((P) => XPX ? P : loadScript("extra_prices.js").then(() => { if (P && window.CTC_XPX) for (const [t, v] of Object.entries(window.CTC_XPX.px)) if (!P.px[t]) P.px[t] = v; XPX = true; return P; }));
   let AFTER = null, INVEST = null, PROD = null;
   const loadAfter = () => AFTER ? Promise.resolve(AFTER) : loadScript(`aftermath.js?v=3&h=${Math.floor(Date.now() / 3.6e6)}`).then(() => (AFTER = window.CTC_AFTERMATH || null));
-  const loadInvest = () => INVEST ? Promise.resolve(INVEST) : loadScript(`investments.js?v=2&h=${Math.floor(Date.now() / 3.6e6)}`).then(() => (INVEST = window.CTC_INVEST || null));
+  const loadInvest = () => INVEST ? Promise.resolve(INVEST) : loadScript(`investments.js?v=3&h=${Math.floor(Date.now() / 3.6e6)}`).then(() => (INVEST = window.CTC_INVEST || null));
   const loadProd = () => PROD ? Promise.resolve(PROD) : loadScript("production.js?v=4").then(() => (PROD = window.CTC_PROD || null));
   const SPANS = { day: [1, "Today"], week: [5, "This week"], month: [21, "This month"] };
   let moverList = "sp", moverSpan = "day";
@@ -1869,6 +1869,51 @@
     pinBar();
   }
 
+  // ---------- holdings behind a headline: who in government holds the stocks a news story could move ----------
+  // Holdings are the site's "still holds" estimates (trades since the data starts, officials' annual reports); the
+  // President's return is on his own buys of each stock; committee links come from the committee-industry lists.
+  function storyHoldings(st, P) {
+    const trumpM = members.find((m) => m.id === "EX_TRUMP_DONALD_J"), congress = members.filter((m) => m.chamber === "H" || m.chamber === "S");
+    const last = (tk) => { const x = P.px[tk]; const i = lastIdx(x); return i >= 0 ? x[i] : null; };
+    const at = (tk, d) => { const x = P.px[tk]; if (!x) return null; let i = P.dates.findIndex((z) => z >= d); if (i < 0) return null; for (; i < P.dates.length; i++) if (x[i] != null) return x[i]; return null; };
+    const tBuysOf = (tk) => trumpM ? trades.filter((t) => t.m === trumpM.i && t.t === tk && t.side === "B" && securities(t)) : [];
+    const holdersAll = new Set();
+    const rows = st.tickers.filter((tk) => stocks[tk]).map((tk) => {
+      const tL = trumpM ? leftOf(trumpM.i, tk) : null, tb = tBuysOf(tk), tr = tb.length ? stats(tb, "T") : null;
+      const hold = congress.map((m) => ({ m, v: (leftOf(m.i, tk) || {}).value || 0 })).filter((x) => x.v >= 1000).sort((a, b) => b.v - a.v);
+      hold.forEach((x) => holdersAll.add(x.m.i));
+      const links = [];
+      for (const x of hold) { const cs = new Set(); for (const t of trades) if (t.m === x.m.i && t.t === tk) for (const c of t.c || []) cs.add(cname(c)); if (cs.size) links.push({ m: x.m, c: [...cs] }); }
+      const now = last(tk), then = at(tk, st.date);
+      return { tk, trump: tL && tL.value >= 1000 ? tL.value : 0, tRet: tr && tr.n ? tr.ret : null, cong: hold.reduce((a, x) => a + x.v, 0), n: hold.length, top: hold.slice(0, 2), links, since: now && then ? now / then - 1 : null };
+    });
+    const tAll = st.tickers.flatMap(tBuysOf), tS = tAll.length ? stats(tAll, "T") : null;
+    return { rows, trumpM, trump: rows.reduce((a, r) => a + r.trump, 0), tRet: tS && tS.n ? tS.ret : null, cong: rows.reduce((a, r) => a + r.cong, 0), members: holdersAll.size };
+  }
+  const surname = (n) => n.replace(/,?\s+(Jr\.?|Sr\.?|II|III|IV)$/, "").split(" ").slice(-1)[0];
+  const storyHtml = (st, P) => {
+    const R = storyHoldings(st, P), dot = (m) => `<i class="pdot ${esc(m.party || "I")}"></i>`;
+    return `<div class="card hl-story section" id="hl-${esc(st.id)}">
+      <div class="inv-top"><span class="muted small">${fmtDate(st.date)} · in the news</span><h2>${esc(st.title)}</h2></div>
+      <p class="hl-news">${esc(st.news)}</p>${st.angle ? `<p class="small muted">${esc(st.angle)}</p>` : ""}
+      <div class="hl-kpis">
+        <div><span class="lbl">Trump still holds</span><b class="mono">${R.trump ? "≈" + usd(R.trump) : "–"}</b><span class="muted small">across these ${R.rows.length} stocks</span></div>
+        <div><span class="lbl">Return on his buys</span><b class="mono ${cls(R.tRet)}">${pct(R.tRet)}</b><span class="muted small">bought price to today (or sale)</span></div>
+        <div><span class="lbl">Congress still holds</span><b class="mono">${R.cong ? "≈" + usd(R.cong) : "–"}</b><span class="muted small">House and Senate</span></div>
+        <div><span class="lbl">Members holding</span><b class="mono">${R.members}</b><span class="muted small">at least $1K each</span></div>
+      </div>
+      <div class="tscroll"><table class="hl-table"><thead><tr><th>Company</th><th class="r">Since the news</th><th class="r">Trump holds</th><th class="r">His return</th><th class="r">Congress holds</th><th>Biggest holders</th><th>Committee link</th></tr></thead><tbody>
+      ${R.rows.map((r) => `<tr><td>${tkLink(r.tk)} <span class="muted small">${esc(coName(r.tk))}</span></td>
+        <td class="r mono ${cls(r.since)}">${pct(r.since)}</td>
+        <td class="r mono">${r.trump ? "≈" + usd(r.trump) : "–"}</td><td class="r mono ${cls(r.tRet)}">${pct(r.tRet)}</td>
+        <td class="r mono">${r.cong ? `≈${usd(r.cong)} <span class="muted small">${r.n} member${r.n === 1 ? "" : "s"}</span>` : "none"}</td>
+        <td>${r.top.length ? r.top.map((x) => `<a class="hl-chip" href="#/member/${encodeURIComponent(x.m.id)}">${dot(x.m)}${esc(surname(x.m.name))} <span class="mono">≈${usd(x.v)}</span></a>`).join(" ") : "–"}</td>
+        <td class="small">${r.links.length ? r.links.slice(0, 2).map((l) => `${dot(l.m)}<b>${esc(surname(l.m.name))}</b> · ${esc(l.c[0])}`).join("<br>") : "–"}</td></tr>`).join("")}
+      </tbody></table></div>
+      <p class="small muted">Holdings are estimates from filings since ${fmtDate(D.start, { month: "short", year: "numeric" })} (and officials' annual reports). Shares owned before then, or received in a spin-off without a trade, aren't counted. A committee link means the member's committee oversees that company's industry.</p>
+      <details class="srcs"><summary>Sources: ${st.sources.length}</summary><ul>${st.sources.map((x) => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)}</a></li>`).join("")}</ul></details></div>`;
+  };
+
   // ---------- Investments: who put money in, and the listed companies linked to it ----------
   async function pageInvest() {
     setNav("investments");
@@ -1908,7 +1953,8 @@
       <p class="lede">Big deals where governments, companies and well-known investors put money in, who else is involved, and how the linked listed stocks have moved since.</p>
       ${stakes.length ? `<div class="card"><h2>The government's stakes <span class="muted">what it paid vs what it's worth now</span></h2>${stakes.map((s) => `<div class="stk"><span class="stk-n"><b>${esc(s.d.center.name)}</b> <span class="muted small">${esc(s.f.name)}</span></span>
         <span class="stk-bars"><span class="stk-b cost" style="width:${(s.cost / smx * 100).toFixed(1)}%">${usd(s.cost)} paid</span><span class="stk-b now ${s.now >= s.cost ? "pos" : "neg"}" style="width:${(s.now / smx * 100).toFixed(1)}%">${usd(s.now)} now</span></span><b class="mono ${cls(s.now / s.cost - 1)}">${pct(s.now / s.cost - 1, 0)}</b></div>`).join("")}</div>` : ""}
-      <div class="toolbar pin-top section"><div class="seg" role="group" aria-label="Jump to a deal">${deals.map((d, k) => `<button type="button" data-goto="inv-${k}">${esc(d.center.name)}</button>`).join("")}</div></div>
+      <div class="toolbar pin-top section"><div class="seg" role="group" aria-label="Jump to a deal">${(I.stories || []).length ? `<button type="button" data-goto="hl-${esc(I.stories[0].id)}">In the news</button>` : ""}${deals.map((d, k) => `<button type="button" data-goto="inv-${k}">${esc(d.center.name)}</button>`).join("")}</div></div>
+      ${(I.stories || []).length ? `<h2 class="section hl-head">Holdings behind the headline <span class="muted">who in government holds the stocks a story could move</span></h2>${I.stories.map((st) => storyHtml(st, P)).join("")}<h2 class="section hl-head">Investments</h2>` : ""}
       ${deals.map(diagram).join("")}
       <div class="card section"><h2>Where does this information come from?</h2><div class="srcgrid">
         <div><b>Government notices</b><span>Commerce/NIST and Energy Department announcements of CHIPS Act and loan deals, including letters of intent like Helion's.</span></div>
@@ -2197,7 +2243,7 @@
   window.HFSite = {
     D, stocks, members, trades, today, loadAllPrices, loadMoves, loadAfter, loadInvest, loadProd, loadAIB, loadWorld, loadSignals,
     hype, rangeText, coName, cleanName, photoSrc, isBiz, seat, fmtDate, pct, usd, moveOf, mcapOf, sectorOf, squarify, listTks, lastIdx,
-    AI_STOCKS, LIST_NAMES, DAY,
+    AI_STOCKS, LIST_NAMES, DAY, leftOf, stats, cname, securities, isExec, lastPrice, storyHoldings, surname,
   };
 
   // ---------- Data Visualization: the image maker (dataviz.js, the main site's own copy), linked from the footer only ----------
@@ -2209,7 +2255,7 @@
       "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Public+Sans:wght@400;500;600;700;800&display=swap"]) {
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
-    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=19")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
+    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=24")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
   })());
   let dvTab = "markets";
   try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }

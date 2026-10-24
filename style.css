@@ -710,3 +710,19 @@ details.mth[open] > summary::after { content: "−"; }
 .dv-view button { position: absolute; top: 14px; right: 18px; font-size: 30px; line-height: 1; color: #fff; background: none; border: 0; cursor: pointer; }
 .dv-view[hidden] { display: none; }
 .dv-note { margin: -12px 0 18px; max-width: 760px; }
+
+/* ===== Holdings behind the headline (Investments) ===== */
+.hl-head { font-size: 22px; margin-bottom: 12px; }
+.hl-news { font-size: 17px; line-height: 1.55; margin: 6px 0 6px; max-width: 900px; }
+.hl-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.hl-kpis > div { background: var(--bg); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; }
+.hl-kpis .lbl { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.hl-kpis b { font-size: 28px; color: var(--ink); }
+.hl-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.hl-table th { text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding: 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.hl-table td { padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.hl-table .r { text-align: right; white-space: nowrap; }
+.hl-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; color: var(--ink); text-decoration: none; margin: 0 4px 4px 0; white-space: nowrap; }
+.pdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #7a7f87; margin-right: 5px; vertical-align: 1px; }
+.pdot.D { background: #2f6fd6; } .pdot.R { background: #d64545; }
+@media (max-width: 860px) { .hl-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

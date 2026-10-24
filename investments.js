@@ -3,6 +3,22 @@
    today's values and moves are worked out on the page from the daily closes. "status" says whether a deal is final. */
 window.CTC_INVEST = {
   updated: "2026-10-24",
+  // Holdings behind the headline: a news story, the listed companies it could move, and who in government holds them.
+  // Holdings and returns are worked out on the page from the filings; only the story itself is written here.
+  stories: [
+    {
+      id: "nuclear-dc", date: "2026-10-17",
+      title: "US and Russia discuss joint nuclear-powered data centres",
+      news: "Kirill Dmitriev, Putin's investment envoy, said at Russian Energy Week that the US and Russia are discussing joint data-centre projects, some possibly run on small nuclear power plants. Nothing is agreed, and he named US sanctions as the main obstacle.",
+      angle: "Power and small-reactor companies could benefit if projects like this go ahead.",
+      tickers: ["GEV", "CEG", "VST", "OKLO"],
+      sources: [
+        { name: "TASS: Russia, US discuss joint data center projects (envoy)", url: "https://tass.com/economy/2203163" },
+        { name: "Business Today, 18 Oct 2026: Russia in talks with US to power data centers with nuclear energy", url: "https://www.businesstoday.in/world/story/from-diesel-to-data-russia-in-talks-with-us-to-power-data-centers-with-nuclear-energy-562278-2026-10-18" },
+        { name: "Techstrong IT: US and Russia explore joint data centers despite sanctions obstacles", url: "https://techstrong.it/featured/us-and-russia-explore-joint-data-centers-despite-sanctions-obstacles/" }
+      ]
+    }
+  ],
   deals: [
     {
       id: "helion", date: "2026-10-22", status: "Letter of intent (not final)",
