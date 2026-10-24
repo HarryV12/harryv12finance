@@ -47,8 +47,10 @@ def sig(x, n=5):
 
 def main():
     data = read_js("data.js", "CTC_DATA")
-    old_px = read_js("prices.js", "CTC_PRICES")
-    old_series = read_js("series.js", "CTC_SERIES")
+    # prices.js and series.js aren't kept in git (GitHub rebuilds them on every run): start fresh when missing
+    have = (SITE_DIR / "prices.js").exists() and (SITE_DIR / "series.js").exists()
+    old_px = read_js("prices.js", "CTC_PRICES") if have else {"dates": [], "px": {}}
+    old_series = read_js("series.js", "CTC_SERIES") if have else {}
     tickers = sorted(data["stocks"])
     start = (dt.date.fromisoformat(START_DATE) - dt.timedelta(days=12)).isoformat()
     px = load_prices(tickers + ["SPY"], start=start)
@@ -57,7 +59,7 @@ def main():
         sys.exit("no SPY prices: Yahoo Finance download failed, nothing written")
     spy = px["SPY"].dropna()
     last_day = spy.index[-1]
-    if last_day.date().isoformat() <= data["prices_through"]:
+    if last_day.date().isoformat() <= data["prices_through"] and have:
         print(f"no new close since {data['prices_through']}: nothing to do")
         return
     failed = [tk for tk in tickers if tk not in px or px[tk].dropna().empty]
@@ -80,11 +82,11 @@ def main():
     old_at = {d: i for i, d in enumerate(old_px["dates"])}
 
     daily, series = {}, {}
-    for tk in sorted(old_px["px"]):
+    for tk in sorted(set(old_px["px"]) | set(tickers) | {"SPY"}):
         if tk in failed or tk not in px:
             # keep what we had, on the new dates
-            old = old_px["px"][tk]
-            daily[tk] = [old[old_at[d]] if d in old_at else None for d in dates]
+            old = old_px["px"].get(tk, [])
+            daily[tk] = [old[old_at[d]] if d in old_at and old_at[d] < len(old) else None for d in dates]
         else:
             daily[tk] = [sig(v) for v in px[tk].reindex(days).tolist()]
     for tk in tickers:

@@ -66,8 +66,8 @@ def main():
             todo.append(f"{f} is {'missing' if age is None else f'{age} days old'}: run the refresh.")
     X = load("extra_prices.js")
     say(f"  extra_prices.js    {len(X['px']) if X else 0} extra tickers")
-    size = (SITE_DIR / "prices.js").stat().st_size / 1e6
-    say(f"  prices.js          {size:.1f} MB")
+    pj = SITE_DIR / "prices.js"
+    say(f"  prices.js          {pj.stat().st_size / 1e6:.1f} MB" if pj.exists() else "  prices.js          not here (GitHub builds it on each run)")
 
     say("")
     say("WRITTEN EXPLANATIONS STILL NEEDED (Market drops page)")

@@ -1,29 +1,41 @@
-# Weekday market update: prices, Market movers, market drops and industry moves with headlines,
-# extra prices, Aftermath. Runs _pipeline/pipeline/daily.py and commits what changed; GitHub Pages
-# then republishes the site. Congress, Senate and officials' filings are refreshed on the PC, weekly.
+# Builds and publishes the site. Runs every weekday at 9:15 pm UK time (after the US close), and whenever
+# something is pushed to main (the Claude writer's explanations, the weekly research, the PC's weekly
+# Congress build, code changes), so what's live is always the latest data.
+#
+# The big price files (prices.js, series.js) aren't kept in git: each run downloads fresh closes, rebuilds
+# them, re-prices open trades in data.js, and publishes the whole site straight to GitHub Pages. Only the
+# small files that change (market moves, Aftermath, extra prices, new news searches) are committed, so the
+# repository stays small. Congress, Senate and officials' filings come from the PC's weekly build (data.js).
 name: Daily market update
 
 on:
   workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths-ignore: ["_pipeline/**/*.md", "README.md"]
   # 9:15 pm UK time, Monday to Friday, 15 minutes after the 4 pm New York close. GitHub schedules are in
   # UTC only, so there are two: 20:15 UTC is 9:15 pm in UK summer time, 21:15 UTC is 9:15 pm in winter.
-  # The "when" step below lets through only the one that falls at 9 pm or later in London (the other
-  # stops at once). GitHub may start a scheduled run a few minutes late.
+  # The "when" step lets through only the one that falls at 9 pm or later in London.
   schedule:
     - cron: "15 20 * * 1-5"
     - cron: "15 21 * * 1-5"
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: site-update
   cancel-in-progress: false
 
 jobs:
-  update:
+  build-and-publish:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - name: Is it 9 pm or later in London?
         id: when
@@ -54,16 +66,41 @@ jobs:
         if: steps.when.outputs.run == 'true'
         run: python -I -X utf8 _pipeline/pipeline/daily.py
 
-      - name: Commit and push what changed
+      - name: Commit the small files that changed
         if: steps.when.outputs.run == 'true'
         run: |
           git config user.name "HarryV12"
           git config user.email "304028176+HarryV12@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          # data.js is re-priced for publishing only; the PC's weekly build is the one kept in git
+          git add market_moves.js aftermath.js extra_prices.js _pipeline/cache/news
+          if git diff --cached --quiet; then echo "no changes to keep"; exit 0; fi
           git commit -q -m "Daily market update $(date -u +%Y-%m-%d)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          git stash -q --include-untracked
           git pull -q --rebase origin main
           git push -q origin HEAD:main
+          git stash pop -q
+
+      - name: Gather the files the site serves
+        if: steps.when.outputs.run == 'true'
+        run: |
+          mkdir -p _site
+          rsync -a --exclude '.git' --exclude '.github' --exclude '_pipeline' --exclude '_site' --exclude 'versions' \
+            --exclude 'README.md' --exclude '.gitignore' --exclude 'data.json' ./ _site/
+          touch _site/.nojekyll
+          du -sh _site
+
+      - uses: actions/configure-pages@v5
+        if: steps.when.outputs.run == 'true'
+
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.when.outputs.run == 'true'
+        with:
+          path: _site
+
+      - name: Publish to GitHub Pages
+        id: deploy
+        if: steps.when.outputs.run == 'true'
+        uses: actions/deploy-pages@v4
 
       - name: Show the to-do report
         if: always() && steps.when.outputs.run == 'true'

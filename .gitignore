@@ -1,11 +1,33 @@
-# only the files the page loads are published
-data.json
-photos/
-*.tmp
-.DS_Store
-Thumbs.db
+# What's kept out of git, so every commit stays small.
 
-# pipeline working files (the news cache in _pipeline/cache/news is kept)
+# Big generated price files: GitHub rebuilds them on every run (.github/workflows/daily.yml) and
+# publishes them with the site; keeping their daily copies in git would grow the repository by
+# megabytes a day. They still exist on the PC for local testing.
+prices.js
+series.js
+
+# Full JSON copy of data.js, only used on the PC
+data.json
+
+# Backups of edited files (the PC keeps them in congress_trades/versions)
+versions/
+
+# Pipeline working files (the news cache in _pipeline/cache/news is kept, so old searches aren't repeated)
 _pipeline/logs/
 _pipeline/cache/prices/
 __pycache__/
+*.pyc
+
+# What GitHub's workflow gathers to publish
+_site/
+
+# Local and editor clutter
+photos/
+*.tmp
+*.log
+*.bak
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

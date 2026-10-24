@@ -18,9 +18,9 @@ show, then publish. Work in this repository only; change nothing outside the fil
      with the biggest movers and their moves").
    - `_pipeline/config/aftermath_notes.json` for a new Aftermath stock (see its `_about` entry).
    Match the style of the entries already there.
-4. Run `python -I -X utf8 _pipeline/pipeline/fetch_market_moves.py` and
-   `python -I -X utf8 _pipeline/pipeline/fetch_aftermath.py` to attach the new text, then
-   `check_freshness.py` again: the items you wrote should be gone.
+4. Run `check_freshness.py` again: the items you wrote should be gone. Don't run the market scripts
+   yourself (the price files aren't in this copy): pushing starts GitHub's workflow, which re-runs them,
+   attaches your text and publishes the site within a few minutes.
 5. Commit as HarryV12 (`304028176+HarryV12@users.noreply.github.com`) with the message
    "Explanations for <date>" ending in `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`,
    then push.
