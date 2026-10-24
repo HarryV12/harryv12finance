@@ -7,7 +7,9 @@ Full background is in `UPDATING.md` (on the PC, next to the `site` folder); this
 - 🤖 **GitHub**: runs by itself in GitHub Actions (`.github/workflows/daily.yml`). No PC needed. Free.
 - ✍️ **Claude writer**: runs by itself as a Claude cloud routine (Sonnet 5.5). No PC needed. Uses your Pro plan.
 - 💻 **Your PC, weekly**: you run `publish_site.ps1` (Congress filings and the full rebuild).
-- 🗓️ **By hand / ask Claude**: research jobs on a calendar. Nothing runs them automatically.
+- 🔎 **Claude weekly research**: runs by itself every Saturday 09:00 UK as a Claude cloud routine (Sonnet 5.5, high
+  effort), following `_pipeline/WEEKLY.md`. No PC needed. Uses your Pro plan.
+- 🗓️ **By hand / ask Claude**: dated jobs on a calendar (yearly releases, index changes, a new Congress).
 
 ---
 
@@ -57,14 +59,15 @@ It then re-runs the market and Aftermath steps so the text appears, and commits.
 | Bond maturity dates: `bond_maturity.js` | 💻 PC | Weekly (only new bonds are looked up) |
 | Accuracy figures: `estimate_test.js` | 💻 PC | Weekly |
 | Company descriptions for stocks new to the site: `descriptions.js` | 💻 PC | Weekly (added 24 Oct 2026; cached per ticker) |
-| AI bubble facts: Anthropic/OpenAI IPO news, CoreWeave debt, voices, updates (`ai_bubble.js`) | 🗓️ Ask Claude | Every 1–2 weeks (the to-do report flags it at 14 days) |
-| Investments: new "Holdings behind the headline" stories, new deals (`investments.js`) | 🗓️ Ask Claude | Weekly, when the news has one |
+| AI bubble facts: Anthropic/OpenAI IPO news, CoreWeave debt, voices, updates (`ai_bubble.js`) | 🔎 Claude weekly research | Saturdays 09:00 UK (the to-do report also flags it at 14 days) |
+| Investments: new "Holdings behind the headline" stories (0–2 a week), new deals, open deal statuses (`investments.js`) | 🔎 Claude weekly research | Saturdays 09:00 UK |
+| Production: check whether any source has published newer figures (`production.js`) | 🔎 Claude weekly research | Saturdays 09:00 UK (most weeks nothing changes) |
 
 ## 3. Every month
 
 | What | How |
 |---|---|
-| Re-check each Investments deal's status (letters of intent, pending stakes); set `updated:` | 🗓️ Ask Claude (the to-do report flags it after 30 days, added 24 Oct 2026) |
+| Re-check each Investments deal's status (letters of intent, pending stakes); set `updated:` | 🔎 Covered weekly by the Saturday research (the to-do report flags it after 30 days) |
 
 ## 4. Yearly, or on a date
 
@@ -108,7 +111,7 @@ The to-do report lists each dated item 30 days before it's due.
 | Stocks new to the site never got a company description | **Fixed:** `fetch_descriptions.py` now runs in the weekly PC refresh |
 | Nothing flagged an Investments page left unchecked | **Fixed:** the to-do report flags it after 30 days |
 | A copy of the writing is kept in two places | **Fixed:** the PC pipeline now reads the explanations from `site/_pipeline/config`, the same files GitHub and the writer use |
-| No scheduled job for the weekly research (AI bubble facts, Investments stories and deals, Production releases) | **Open:** needs a weekly Claude routine; not set up without your go-ahead |
+| No scheduled job for the weekly research (AI bubble facts, Investments stories and deals, Production releases) | **Fixed:** routine "HarryV12 Finance weekly research", Saturdays 09:00 UK; its cloud environment now allows the main news, data and official sites (41 domains). Test run 24 Oct: worked, found nothing newer than that day's updates |
 | The writer's push to `main` hasn't happened yet (its test run had nothing to write) | **Open:** first real run Tue 27 Oct 00:30 UK; check that the explanations reach the site |
 
 ## 7. Known limits
