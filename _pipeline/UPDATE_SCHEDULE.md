@@ -43,6 +43,7 @@ through only the one at 9 pm or later in London. The price step accepts a day's 
 | Nasdaq-100, Dow and AI names members haven't traded (plus GFS, LAC, TMQ, IREN, CIFR, SNAP) | `extra_prices.js` | Home, Market movers, AI stocks, Investments, AI bubble | `fetch_extra_prices.py` |
 | Market drops, the 5 industry baskets (AI and chips, defense, banks, oil, healthcare), "Today" and "This week" numbers, the day's headlines (Google News) | `market_moves.js` | Market drops, Home "Why markets moved", Industries, Data Viz | `fetch_market_moves.py` |
 | Steady stocks that kept falling, their prices and headlines | `aftermath.js` | Aftermath page, Home teaser | `fetch_aftermath.py` |
+| Company figures: EPS, revenue, net profit, debt-to-equity (each stock re-fetched once a week; P/E worked out daily from the price) | `fundamentals.js` | Data Viz "Stock breakdown" | `fetch_fundamentals.py` |
 | To-do report (what's out of date, what still needs writing) | Actions run log | You and the Claude writer | `check_freshness.py` |
 
 These pages then update by themselves, because they read those files: Home, Market movers, Market drops,
