@@ -449,6 +449,7 @@
   // ---------- 8. Production supply chain ----------
   async function drawProdChain(c, th) {
     const H = S(), D2 = await H.loadProd(); if (!D2) return "Production data hasn't loaded.";
+    if (String(Q.item).startsWith("grp:")) return drawChainField(c, th, D2, D2.groups.find((g) => g.name === Q.item.slice(4)) || D2.groups[0]);
     const it = D2.items[Q.item] || D2.items.chips, chain = it.chain || [];
     if (!chain.length) return `No supply chain written for ${it.name} yet.`;
     let y = header(c, th, `Supply chain · ${it.name}`, `${it.name}: the supply chain`, "Each step from raw material to market, and the place it depends on.");
@@ -473,6 +474,37 @@
         tx(c, isPct ? `${v}%` : v.toLocaleString(), W - M, ry + 27, { s: 18, w: 700, col: th.ink, f: MONO, a: "right" }); });
     }
     footer(c, th, `Shares from the Production page's sources (USGS, Energy Institute, worldsteel, TrendForce, ASML, IEA); year shown with each. Not financial advice.`);
+  }
+
+  // a whole field: each good's chain as one row of steps, so the places everything depends on line up
+  function drawChainField(c, th, D2, g) {
+    const items = g.items.map((k) => D2.items[k]).filter((it) => it && it.chain && it.chain.length);
+    if (!items.length) return `No supply chains written for ${g.name} yet.`;
+    let y = header(c, th, `Supply chains · ${g.name}`, `${g.name}: every supply chain`, "Each good's steps from raw material to market, and the place each step depends on.");
+    const n = items.length, gap = 12, rh = Math.min(200, Math.floor((BOTTOM - y - gap * (n - 1)) / n)), nameW = 196, x0 = M + nameW + 14, aw = 14;
+    // how often each country or place comes up across the field's steps
+    const where = new Map(); for (const it of items) for (const st of it.chain) for (const w of plain(st.where).split(/,\s*/)) where.set(w, (where.get(w) || 0) + 1);
+    items.forEach((it, i) => {
+      const ry = y + i * (rh + gap), steps = it.chain, k = steps.length, cw = (W - M - x0 - (k - 1) * aw) / k;
+      box(c, th, M, ry, W - 2 * M, rh, 14);
+      setF(c, 800, 19); const nl = lines(c, it.name.replace(/ \(.*\)$/, ""), nameW - 24).slice(0, 2);
+      nl.forEach((l, j) => tx(c, l, M + 18, ry + rh / 2 - (nl.length - 1) * 12 + 6 + j * 24, { s: 19, w: 800, col: th.ink }));
+      steps.forEach((st, j) => {
+        const x = x0 + j * (cw + aw), top = ry + 12, h = rh - 24;
+        rr(c, x, top, cw, h, 10); c.fillStyle = th.soft; c.fill();
+        tx(c, plain(st.step).toUpperCase(), x + 8, top + 20, { s: 11, w: 800, col: th.muted, max: cw - 14 });
+        setF(c, 800, 15); const wn = Math.min(2, lines(c, plain(st.where), cw - 16).length);
+        wrap(c, plain(st.where), x + 8, top + 40, cw - 16, 18, wn, { s: 15, w: 800, col: th.ink });
+        let sy = top + 40 + wn * 18 + 2;
+        // the companies, when the row has room for them
+        if (on("pcwho") && h - (sy - top) > 92) { setF(c, 500, 12); const wh = Math.min(2, lines(c, plain(st.who), cw - 16).length); wrap(c, plain(st.who), x + 8, sy + 2, cw - 16, 15, wh, { s: 12, w: 500, col: th.ink2 }); sy += wh * 15 + 6; }
+        const room = Math.max(1, Math.floor((top + h - 6 - sy) / 16));
+        wrap(c, plain(st.share), x + 8, sy + 10, cw - 16, 16, Math.min(3, room), { s: 13, w: 700, col: th.line });
+        if (j < k - 1) { c.fillStyle = th.muted; c.beginPath(); const ax = x + cw + 3, ay = ry + rh / 2; c.moveTo(ax, ay - 7); c.lineTo(ax + aw - 6, ay); c.lineTo(ax, ay + 7); c.closePath(); c.fill(); }
+      });
+    });
+    const most = [...where].filter(([w]) => !/^Worldwide$/i.test(w)).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([w, cnt], i) => `${w} ${cnt}${i ? "" : " steps"}`).join(", ");
+    footer(c, th, `Most named across these chains: ${most}. Figures from the Production page. Not financial advice.`);
   }
 
   // ---------- 9. AI bubble watch ----------
@@ -642,7 +674,9 @@
     $("#mv_af").innerHTML = af.map((s) => `<option value="${esc(s.tk)}">${esc(s.name.replace(/ Common Stock$| Corporation.*$| Inc\..*$/, ""))} (${esc(s.tk)}) · ${H.pct(s.drop, 0)}</option>`).join("");
     $("#mv_deal").innerHTML = ((I && I.deals) || []).map((d, i) => `<option value="${i}">${esc(d.center.name)} · ${esc(H.fmtDate(d.date, { month: "short", year: "numeric" }))}</option>`).join("");
     $("#mv_item").innerHTML = D2 ? D2.groups.map((g) => `<optgroup label="${esc(g.name)}">${g.items.map((k) => `<option value="${k}">${esc(D2.items[k].name)}</option>`).join("")}</optgroup>`).join("") : "";
-    $("#mv_pmi").innerHTML = D2 ? `<optgroup label="A whole field">${D2.groups.map((g) => `<option value="grp:${esc(g.name)}">${esc(g.name)}: who makes what</option>`).join("")}</optgroup>` + $("#mv_item").innerHTML : "";
+    const singles = $("#mv_item").innerHTML, fields = (label) => D2 ? `<optgroup label="A whole field">${D2.groups.map((g) => `<option value="grp:${esc(g.name)}">${esc(g.name)}: ${label}</option>`).join("")}</optgroup>` : "";
+    $("#mv_pmi").innerHTML = D2 ? fields("who makes what") + singles : "";
+    $("#mv_item").innerHTML = D2 ? fields("every supply chain") + singles : "";
     $("#mv_msec").value = Q.msec; $("#mv_af").value = Q.af; $("#mv_deal").value = Q.deal; $("#mv_item").value = Q.item; $("#mv_pmi").value = Q.pmi;
   }
   function sync() {
