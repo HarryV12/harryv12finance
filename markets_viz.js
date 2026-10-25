@@ -882,7 +882,7 @@
         const hasQ = qRev != null || qNi != null, rev = hasQ ? qRev : rev12, ni = hasQ ? qNi : ni12, epsQ = hasQ ? qEps : eps12, span = hasQ ? "quarter" : "12 months";
         const money = (v, c2 = cur) => v == null ? "–" : (v < 0 ? "−" : "") + (c2 === "USD" ? H.usd(Math.abs(v)) : `${c2} ${H.usd(Math.abs(v)).replace("$", "")}`);
         const perShare = (v) => v == null ? "–" : (v < 0 ? "−" : "") + (cur === "USD" || !hasQ ? `$${Math.abs(v).toFixed(2)}` : `${cur} ${Math.abs(v).toFixed(2)}`);
-        const growth = (a, b) => a != null && b ? (a - b) / Math.abs(b) : null, vsYear = (g) => g == null ? "" : `${g >= 0 ? "+" : "−"}${Math.abs(g * 100).toFixed(0)}% on a year ago`;
+        const growth = (a, b) => a != null && b ? (a - b) / Math.abs(b) : null, vsYear = (g) => g == null ? "" : `${g >= 0 ? "+" : "−"}${Math.abs(g * 100).toFixed(0)}% vs same quarter last year`;
         const pe = eps12 > 0 ? x[li] / eps12 : null, margin = rev && ni != null ? ni / rev : null, end = qEnd || mrq;
         const tiles = [[`EPS · latest ${span}`, perShare(epsQ), epsQ < 0 ? th.down : th.ink, hasQ ? vsYear(growth(qEps, yEps)) || "per share" : "per share"],
           ["P/E ratio", pe ? `${pe >= 100 ? pe.toFixed(0) : pe.toFixed(1)}×` : "n/a", th.ink, pe ? "price ÷ 12-month EPS" : eps12 != null ? "no profit" : "no figures"],
