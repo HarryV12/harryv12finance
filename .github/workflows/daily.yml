@@ -53,8 +53,11 @@ jobs:
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # the branch as it is now (a queued run would otherwise start from the commit that queued it)
       - uses: actions/checkout@v4
         if: steps.when.outputs.run == 'true'
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         if: steps.when.outputs.run == 'true'
@@ -83,7 +86,8 @@ jobs:
           if git diff --cached --quiet; then echo "no changes to keep"; exit 0; fi
           git commit -q -m "Daily market update $(date -u +%Y-%m-%d)" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
           git stash -q --include-untracked
-          git pull -q --rebase origin main
+          # these files are rebuilt on every run, so if another run saved them meanwhile, this newer copy wins
+          git pull -q --rebase -X theirs origin main
           git push -q origin HEAD:main
           git stash pop -q
 
