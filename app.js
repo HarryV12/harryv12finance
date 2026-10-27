@@ -1077,7 +1077,7 @@
 
   // ---------- a stock's page ----------
   let PRICES = null, pricesPromise = null;
-  const loadPrices = () => PRICES ? Promise.resolve(PRICES) : (pricesPromise ||= loadScript("prices.js").then(() => (PRICES = window.CTC_PRICES || null)));
+  const loadPrices = () => PRICES ? Promise.resolve(PRICES) : (pricesPromise ||= loadScript(`prices.js?d=${D.prices_through}`).then(() => (PRICES = window.CTC_PRICES || null)));
   async function pageStock(tk) {
     setNav("stocks");
     const st = stocks[tk];
@@ -1680,7 +1680,7 @@
   const AI_STOCKS = "NVDA AVGO AMD TSM MU ARM SMCI PLTR MRVL LRCX AMAT KLAC ORCL MSFT GOOGL META AMZN CRWV ANET VRT DELL HPE SNOW NOW CRM IBM INTC QCOM ASML VST CEG".split(" ");
   const INDEXES = [["SPY", "S&P 500"], ["QQQ", "Nasdaq 100"], ["DIA", "Dow"], ["IWM", "Small companies"], ["TLT", "Long-term bonds"], ["GLD", "Gold"], ["XLE", "Energy stocks"]];
   let XPX = false;
-  const loadAllPrices = () => loadPrices().then((P) => XPX ? P : loadScript("extra_prices.js").then(() => { if (P && window.CTC_XPX) for (const [t, v] of Object.entries(window.CTC_XPX.px)) if (!P.px[t]) P.px[t] = v; XPX = true; return P; }));
+  const loadAllPrices = () => loadPrices().then((P) => XPX ? P : loadScript(`extra_prices.js?d=${D.prices_through}`).then(() => { if (P && window.CTC_XPX) for (const [t, v] of Object.entries(window.CTC_XPX.px)) if (!P.px[t]) P.px[t] = v; XPX = true; return P; }));
   let AFTER = null, INVEST = null, PROD = null;
   const loadAfter = () => AFTER ? Promise.resolve(AFTER) : loadScript(`aftermath.js?v=3&h=${Math.floor(Date.now() / 3.6e6)}`).then(() => (AFTER = window.CTC_AFTERMATH || null));
   const loadInvest = () => INVEST ? Promise.resolve(INVEST) : loadScript(`investments.js?v=5&h=${Math.floor(Date.now() / 3.6e6)}`).then(() => (INVEST = window.CTC_INVEST || null));
@@ -2296,7 +2296,7 @@
       "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Public+Sans:wght@400;500;600;700;800&display=swap"]) {
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
-    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=38")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
+    return Promise.all([loadScript("dataviz.js?v=2"), loadScript("markets_viz.js?v=43")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
   })());
   let dvTab = "markets";
   try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }
