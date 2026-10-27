@@ -124,5 +124,19 @@
  "today|defense|2026-10-23": "Defense edged up (+0.4%): Lockheed Martin kept rising after raising its guidance, and drone maker AeroVironment gained.",
  "today|banks|2026-10-23": "Banks fell 1.1%, led by the investment banks, a day after European banks tumbled as oil climbed.",
  "today|oil|2026-10-23": "Oil stocks rose 2.9% as oil prices kept climbing after US crude stockpiles fell more than expected earlier in the week; oilfield service companies led.",
- "today|health|2026-10-23": "Healthcare slipped 0.9% after a strong month, led by Lilly and UnitedHealth; analysts noted the sector's rally is itself a warning sign for the wider market."
+ "today|health|2026-10-23": "Healthcare slipped 0.9% after a strong month, led by Lilly and UnitedHealth; analysts noted the sector's rally is itself a warning sign for the wider market.",
+ "defense|2026-10-20": "Defense stocks rose about 8% in a week as Northrop's and Lockheed's third-quarter results landed well (Lockheed raised its guidance), even after a dip on 20 Oct on bets that Democrats sweep the elections.",
+ "defense|2026-04-17": "Defense stocks fell about 9% as Lockheed missed earnings and investors worried about the Pentagon's budget and whether the Iran war really helps defense companies, while the S&P 500 rose.",
+ "today|all|2026-10-27": "Stocks rose (S&P 500 +0.6%) as oil fell on comments from Iran and AI stocks rebounded after Anthropic's IPO filing; Boeing and oil refiners fell hardest.",
+ "now|all|2026-10-27": "The market was flat over the week (S&P 500 +0.1%) with big swings underneath: cybersecurity rose while Brazilian banks fell, and AI stocks rebounded late in the week.",
+ "today|ai|2026-10-27": "AI and chip stocks rose 3.0% (S&P 500 +0.6%) after Anthropic filed for its IPO, as investors looked for a rebound ahead of Big Tech's earnings.",
+ "now|ai|2026-10-27": "AI stocks are up 1.0% on the week (S&P 500 +0.1%) after a rebound on 26–27 Oct, but remain down 9.7% over the month; chip-equipment makers lagged.",
+ "today|defense|2026-10-27": "Defense slipped 0.6% while the market rose, with Northrop and Lockheed giving back some of last week's gains; drone maker AeroVironment rose.",
+ "now|defense|2026-10-27": "Defense is up 6.3% on the week and 8.4% on the month after Lockheed raised its guidance and Northrop's results were well received.",
+ "today|banks|2026-10-27": "Banks rose 0.6% in line with the market, led by the investment banks.",
+ "now|banks|2026-10-27": "Banks rose 1.3% on the week, ahead of the market (+0.1%), after a long losing streak; investment banks and regional banks led.",
+ "today|oil|2026-10-27": "Oil stocks fell 2.4% as oil dropped on comments from Iran; refiners fell hardest while the S&P 500 rose.",
+ "now|oil|2026-10-27": "Oil stocks are flat on the week (+0.4%) and up 11.0% over the month, with oilfield services up and refiners down; US emergency oil reserves are at their lowest since 1982.",
+ "today|health|2026-10-27": "Healthcare edged up 0.1% while the market rose 0.6%, with Thermo Fisher, J&J and Merck gaining and Abbott falling.",
+ "now|health|2026-10-27": "Healthcare slipped 0.4% on the week after its strong rally, led down by Merck and UnitedHealth, but is up 3.7% on the month."
 }

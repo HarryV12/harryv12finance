@@ -347,5 +347,64 @@
  ],
  "today|health|2026-10-23": [
   "After a strong month (+4.2%), the biggest names slipped: Lilly −2.5%, UnitedHealth −1.6%, J&J −1.4%, Merck −1.3%."
+ ],
+ "defense|2026-10-20": [
+  "Northrop's earnings were called 'good enough' and Lockheed Martin raised its guidance (reported 20–22 Oct) → Lockheed +15.9%, Northrop +10.7% over the move.",
+  "Defense stocks had been tumbling on 20 Oct as Wall Street bet on a Democratic sweep; the sector then recovered → Booz Allen +12.6%, Leidos +11.0%, while the S&P 500 slipped 0.1%.",
+  "Analysts' upgrades followed (one saw about 40% upside for Lockheed, another 33% for a defense giant)."
+ ],
+ "defense|2026-04-17": [
+  "Investors began to ask whether defense stocks really gain from the Iran war ('investors buy rumour but sell war', Financial Times, 25 Apr) → European defense cooled on 20 Apr and US names slid.",
+  "Lockheed Martin fell on an earnings miss (23 Apr) → Lockheed −15.5% over the move, Northrop −14.5%, RTX −11.5%, Huntington Ingalls −9.5%.",
+  "Budget fears weighed on the sector ahead of Defense Secretary Hegseth's testimony (28 Apr), while the S&P 500 rose 1.9% over the same days."
+ ],
+ "today|all|2026-10-27": [
+  "Oil fell on Iran comments (26 Oct) → oil stocks −2.4% today; refiners fell most: Valero −9.2%, Marathon Petroleum −7.4%.",
+  "AI stocks rebounded after Anthropic's IPO filing and ahead of Big Tech's earnings → AI and chip basket +3.0%: Super Micro +7.3%, AMD +5.5%, Marvell +4.2%, Broadcom +4.0%; Dell +7.5%.",
+  "Boeing fell 10.7% (the news we have doesn't say why)."
+ ],
+ "now|all|2026-10-27": [
+  "Over the week the S&P 500 was +0.1% and +0.5% over the month, as healthcare gained and warnings about the market kept coming (Buffett, 'only the 2nd time in 155 years').",
+  "Cybersecurity led: Palo Alto Networks +18.1%, CrowdStrike +17.9%. Brazilian banks fell: Itaú −20.9%, Nubank −17.8% (the news we have doesn't say why).",
+  "Hopes of US–Iran diplomacy (20 Oct) pulled oil down, and AI stocks rebounded on 26–27 Oct."
+ ],
+ "today|ai|2026-10-27": [
+  "Anthropic's IPO filing (26 Oct) buoyed AI stocks → Super Micro +7.3%, AMD +5.5%, Marvell +4.2%, Broadcom +4.0%.",
+  "Reuters noted investor caution: trend-following hedge funds had their worst week since 2024 as AI stocks fell, and a Chinese AI selloff was in the news."
+ ],
+ "now|ai|2026-10-27": [
+  "The basket is −9.7% over the past month after the longest chip losing streak since 2008, and was up 1.0% over the week.",
+  "Chip-equipment makers fell: Lam Research −8.6%, KLA −5.0%; Super Micro +8.1% and AMD +4.8% led the rebound.",
+  "AI stocks bounced on 26–27 Oct as Anthropic filed for its IPO."
+ ],
+ "today|defense|2026-10-27": [
+  "After a strong week, Northrop −2.5%, Lockheed −1.9% and RTX −1.5% fell while the S&P 500 rose 0.6%.",
+  "AeroVironment +1.0% went the other way."
+ ],
+ "now|defense|2026-10-27": [
+  "Lockheed raised its guidance (22 Oct) → Lockheed +13.5%, Booz Allen +11.2%, Leidos +9.4% this week; Northrop's results were called 'good enough'.",
+  "A WSJ piece on 20–21 Oct discussed 'playing the retreat' in defense stocks after bets on a Democratic sweep; AeroVironment +7.7% this week."
+ ],
+ "today|banks|2026-10-27": [
+  "Goldman Sachs +2.1%, Morgan Stanley +1.9% and Citi +1.4% led; PNC +0.8%, while the S&P 500 rose 0.6%."
+ ],
+ "now|banks|2026-10-27": [
+  "Morgan Stanley +3.6%, Goldman Sachs +3.1% and PNC +3.0% this week; the regional bank basket (KRE) +2.8%.",
+  "The basket is still −1.8% over the month after bank stocks lagged the market."
+ ],
+ "today|oil|2026-10-27": [
+  "Oil fell on Iran comments (26 Oct) → refiners fell most: Valero −9.2%, Marathon Petroleum −7.4%, Phillips 66 −7.0%.",
+  "Exxon −2.5% and ConocoPhillips −2.2%, while the S&P 500 rose 0.6%."
+ ],
+ "now|oil|2026-10-27": [
+  "US emergency oil reserves fell to their lowest since 1982 (Reuters, 26 Oct); hopes of US–Iran diplomacy (20 Oct) pushed oil down at times.",
+  "Over the week oilfield services rose: Schlumberger +8.2%, Halliburton +6.0%; refiners fell: Marathon Petroleum −8.2%, Phillips 66 −7.7%."
+ ],
+ "today|health|2026-10-27": [
+  "Thermo Fisher +1.2%, J&J +0.9% and Merck +0.9% rose; Abbott −1.7%."
+ ],
+ "now|health|2026-10-27": [
+  "WSJ (21 Oct) noted the sector's rally was itself a warning sign for the market → Merck −4.4%, UnitedHealth −2.1%, Pfizer −1.0% this week.",
+  "J&J +3.6% went the other way."
  ]
 }

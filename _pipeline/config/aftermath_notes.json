@@ -279,5 +279,84 @@
    }
   ],
   "why": "After a record quarter, expectations are at their highest, so even very good results can bring selling as investors take profits. Wealth management brings in close to half of Morgan Stanley's revenue, so AI tools that could take over parts of a financial adviser's job hit the core of its business, and rising bond yields weighed on all bank shares."
+ },
+ "XYL": {
+  "cause": "No single cause: shares slipped from a high despite a strong quarter",
+  "clear": false,
+  "summary": "Xylem hit its high on 16 July, then drifted down about 7% in a week before jumping on 28 July, when it beat second-quarter estimates and raised its outlook, citing AI-infrastructure demand for water. The shares gave the gains back within days and kept falling, about 26% from the peak, with no single piece of bad news in the headlines; chip and software stocks sold off at the same time.",
+  "events": [
+   {
+    "date": "2026-07-16",
+    "kind": "peak",
+    "text": "Shares at their high after a 14% run"
+   },
+   {
+    "date": "2026-07-28",
+    "kind": "good",
+    "text": "Second-quarter earnings beat estimates, outlook raised; shares rise 4%"
+   },
+   {
+    "date": "2026-07-30",
+    "kind": "bad",
+    "text": "Shares fall 4.3% two days after earnings, as a chip slump spreads (Barron's, 28 Jul)"
+   },
+   {
+    "date": "2026-08-12",
+    "kind": "bad",
+    "text": "AI worries hit software stocks; Xylem keeps sliding"
+   }
+  ],
+  "why": "After a 14% run, Xylem's price already assumed strong results, so even a beat and a raised outlook gave only a short lift. Part of its story is water demand from AI data centres, so it can fall when investors sell AI-linked companies, as they did after July."
+ },
+ "VTR": {
+  "cause": "No single cause: healthcare property stocks sold off despite strong results",
+  "clear": false,
+  "summary": "Ventas reported record property income growth and raised its guidance on 29 July, yet the shares fell 5.9% the next day and slid again on 11 August (−5.4%). The headlines name no bad news; the fall tracked its sector, as healthcare property stocks lagged the market.",
+  "events": [
+   {
+    "date": "2026-07-24",
+    "kind": "peak",
+    "text": "Shares at their high"
+   },
+   {
+    "date": "2026-07-29",
+    "kind": "good",
+    "text": "Second-quarter FFO and revenue beat estimates; guidance raised"
+   },
+   {
+    "date": "2026-07-30",
+    "kind": "bad",
+    "text": "Shares fall 5.9% the day after results"
+   },
+   {
+    "date": "2026-08-11",
+    "kind": "bad",
+    "text": "Shares fall 5.4%, underperforming the market"
+   }
+  ],
+  "why": "Ventas owns healthcare buildings, and its value depends on rent growth and on interest rates, since investors compare its income to bond yields. After a long run (one headline cites a 124% rise), good results were already priced in, and the stock fell with its sector instead."
+ },
+ "MLM": {
+  "cause": "The $13.5 billion Lhoist acquisition",
+  "clear": true,
+  "summary": "On 29 June Martin Marietta announced a $13.5 billion deal to buy Lhoist North America, a limestone supplier, and its shares fell 5.7% that day, with headlines tying the drop to the deal. They fell again on 8 July (−4.1%) as Carlisle and other building-materials stocks also traded down.",
+  "events": [
+   {
+    "date": "2026-06-25",
+    "kind": "peak",
+    "text": "Shares at their high"
+   },
+   {
+    "date": "2026-06-29",
+    "kind": "bad",
+    "text": "Announces $13.5 billion purchase of Lhoist North America; shares fall 5.7%"
+   },
+   {
+    "date": "2026-07-08",
+    "kind": "bad",
+    "text": "Shares fall 4.1% as Carlisle and other building-materials stocks also drop (reported 7–9 Jul)"
+   }
+  ],
+  "why": "A large acquisition means paying a lot of money for a business, so a buyer's shares often fall on the day it is announced while investors judge whether the purchase will earn enough to justify its price."
  }
 }
