@@ -6,7 +6,10 @@ show, then publish. Work in this repository only; change nothing outside the fil
 
 ## Each weekday (after the market update has run)
 
-1. `git pull` so you have today's data.
+1. `git pull`, then wait for the day's data: run `python -I -X utf8 _pipeline/pipeline/wait_for_data.py`.
+   GitHub often starts its update late, so don't trust the clock. If it prints "waiting", run it again;
+   keep going until it prints "ready" (each run waits up to 9 minutes). After about 4 hours of "waiting",
+   stop and say the data didn't arrive; change nothing.
 2. Run `python -I -X utf8 _pipeline/pipeline/check_freshness.py`. It lists every explanation still
    to write. If it says nothing is missing, stop: there is nothing to do (a market holiday, say).
 3. For each missing item, read the numbers and headlines in `market_moves.js` (and `aftermath.js`

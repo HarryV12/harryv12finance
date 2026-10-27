@@ -20,7 +20,8 @@ on:
     paths-ignore: ["_pipeline/**/*.md", "README.md"]
   # 9:15 pm UK time, Monday to Friday, 15 minutes after the 4 pm New York close. GitHub schedules are in
   # UTC only, so there are two: 20:15 UTC is 9:15 pm in UK summer time, 21:15 UTC is 9:15 pm in winter.
-  # The "when" step lets through only the one that falls at 9 pm or later in London.
+  # Both run: the one before the close (in winter) just finds no new close. GitHub often starts scheduled runs
+  # late (hours, at busy times), so nothing here depends on the exact time; the Claude writer waits for the data.
   schedule:
     - cron: "15 20 * * 1-5"
     - cron: "15 21 * * 1-5"
@@ -42,42 +43,26 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - name: Is it 9 pm or later in London?
-        id: when
-        run: |
-          hour=$(TZ=Europe/London date +%H)
-          if [ "${{ github.event_name }}" != "schedule" ] || [ "$hour" -ge 21 ]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "It's ${hour}:xx in London: the other scheduled start (9:15 pm UK) will run instead."
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          fi
-
       # the branch as it is now (a queued run would otherwise start from the commit that queued it)
       - uses: actions/checkout@v4
-        if: steps.when.outputs.run == 'true'
         with:
           ref: main
 
       - uses: actions/setup-python@v5
-        if: steps.when.outputs.run == 'true'
         with:
           python-version: "3.14"
           cache: pip
           cache-dependency-path: _pipeline/requirements.txt
 
       - name: Install packages
-        if: steps.when.outputs.run == 'true'
         run: pip install -r _pipeline/requirements.txt
 
       - name: Update market data
-        if: steps.when.outputs.run == 'true'
         env:
           CTC_FUND_FORCE: ${{ inputs.refresh_figures && '1' || '' }}
         run: python -I -X utf8 _pipeline/pipeline/daily.py
 
       - name: Commit the small files that changed
-        if: steps.when.outputs.run == 'true'
         run: |
           git config user.name "HarryV12"
           git config user.email "304028176+HarryV12@users.noreply.github.com"
@@ -92,7 +77,6 @@ jobs:
           git stash pop -q
 
       - name: Gather the files the site serves
-        if: steps.when.outputs.run == 'true'
         run: |
           mkdir -p _site
           rsync -a --exclude '.git' --exclude '.github' --exclude '_pipeline' --exclude '_site' --exclude 'versions' \
@@ -101,18 +85,15 @@ jobs:
           du -sh _site
 
       - uses: actions/configure-pages@v5
-        if: steps.when.outputs.run == 'true'
 
       - uses: actions/upload-pages-artifact@v3
-        if: steps.when.outputs.run == 'true'
         with:
           path: _site
 
       - name: Publish to GitHub Pages
         id: deploy
-        if: steps.when.outputs.run == 'true'
         uses: actions/deploy-pages@v4
 
       - name: Show the to-do report
-        if: always() && steps.when.outputs.run == 'true'
+        if: always()
         run: cat _pipeline/logs/freshness.txt 2>/dev/null || true
