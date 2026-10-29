@@ -358,5 +358,33 @@
    }
   ],
   "why": "A large acquisition means paying a lot of money for a business, so a buyer's shares often fall on the day it is announced while investors judge whether the purchase will earn enough to justify its price."
+ },
+ "HSY": {
+  "cause": "No single cause: shares slid from a May high with no reported bad news",
+  "clear": false,
+  "summary": "Hershey peaked at $196.28 on 27 May and has slipped about 18% since, while the S&P 500 rose about 3% and consumer-staples stocks about 2%. The headlines we have name no company-specific bad news; shares have fallen in steps (early June, late August to September) without a reported cause.",
+  "events": [
+   {
+    "date": "2026-05-27",
+    "kind": "peak",
+    "text": "Shares at their high, $196.28"
+   },
+   {
+    "date": "2026-06-08",
+    "kind": "bad",
+    "text": "Shares fall about 4.7% in a day (the news we have doesn't say why)"
+   },
+   {
+    "date": "2026-09-30",
+    "kind": "bad",
+    "text": "Shares touch about $158, their low of the slide, after a steady fall through September"
+   },
+   {
+    "date": "2026-10-22",
+    "kind": "good",
+    "text": "Shares rise about 4.7% in a day, then give it back the next day"
+   }
+  ],
+  "why": "With no company-specific news in the headlines, the fall looks like a gradual loss of investor interest rather than a reaction to one event."
  }
 }
