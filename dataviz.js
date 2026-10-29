@@ -655,7 +655,7 @@
     ctx.fillText(eyebrow.toUpperCase().split("").join(String.fromCharCode(8202)), 64, 92);
   }
   // the site's address, written at the bottom of every image
-  const SITE_LABEL = "harryv12.github.io/harryv12finance";
+  const SITE_LABEL = "harryv12finance.pages.dev";
   function drawSiteLink(ctx, x, y, font, color) {
     ctx.save(); ctx.font = font; ctx.fillStyle = color; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
     ctx.fillText(SITE_LABEL, x, y);

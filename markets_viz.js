@@ -11,7 +11,7 @@
   const S = () => window.HFSite;
   const W = 1080, HT = 1440, M = 56;
   const UI = '"Public Sans", system-ui, sans-serif', MONO = '"IBM Plex Mono", ui-monospace, monospace';
-  const SITE = "harryv12.github.io/harryv12finance";
+  const SITE = "harryv12finance.pages.dev";
   // the same colours as the Congress images
   const THEMES = {
     light: { bg: "#f5f6f8", card: "#ffffff", ink: "#0e1621", ink2: "#3f4a5a", muted: "#6b7584", grid: "#e2e6ec", line: "#1f5fd6",
