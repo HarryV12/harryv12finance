@@ -3,7 +3,8 @@
 # Congress build, code changes), so what's live is always the latest data.
 #
 # The big price files (prices.js, series.js) aren't kept in git: each run downloads fresh closes, rebuilds
-# them, re-prices open trades in data.js, and publishes the whole site straight to GitHub Pages. Only the
+# them, re-prices open trades in data.js, and publishes the whole site straight to GitHub Pages and to
+# Cloudflare Pages (harryv12finance.pages.dev, once the CLOUDFLARE_API_TOKEN secret is added). Only the
 # small files that change (market moves, Aftermath, extra prices, new news searches) are committed, so the
 # repository stays small. Congress, Senate and officials' filings come from the PC's weekly build (data.js).
 name: Daily market update
@@ -93,6 +94,24 @@ jobs:
       - name: Publish to GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4
+
+      # Cloudflare is skipped (not failed) until the CLOUDFLARE_API_TOKEN secret exists, so the daily run keeps
+      # working while the move is set up. The account ID is the CLOUDFLARE_ACCOUNT_ID repository variable.
+      - name: Check for the Cloudflare token
+        id: cloudflare
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ]; then echo "ready=yes" >> "$GITHUB_OUTPUT"
+          else echo "no CLOUDFLARE_API_TOKEN secret yet, so Cloudflare Pages is skipped"; fi
+
+      - name: Publish to Cloudflare Pages
+        if: steps.cloudflare.outputs.ready == 'yes'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy _site --project-name=harryv12finance --branch=main --commit-dirty=true
 
       - name: Show the to-do report
         if: always()
