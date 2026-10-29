@@ -20,6 +20,7 @@ __pycache__/
 
 # What GitHub's workflow gathers to publish
 _site/
+_moved/
 
 # The cf CLI's account cache on the PC
 .cloudflare/

@@ -3,8 +3,8 @@
 # Congress build, code changes), so what's live is always the latest data.
 #
 # The big price files (prices.js, series.js) aren't kept in git: each run downloads fresh closes, rebuilds
-# them, re-prices open trades in data.js, and publishes the whole site straight to GitHub Pages and to
-# Cloudflare Pages (harryv12finance.pages.dev, once the CLOUDFLARE_API_TOKEN secret is added). Only the
+# them, re-prices open trades in data.js, and publishes the whole site straight to Cloudflare Pages
+# (https://harryv12finance.pages.dev). The old GitHub Pages address only sends visitors there. Only the
 # small files that change (market moves, Aftermath, extra prices, new news searches) are committed, so the
 # repository stays small. Congress, Senate and officials' filings come from the PC's weekly build (data.js).
 name: Daily market update
@@ -84,19 +84,25 @@ jobs:
             --exclude 'README.md' --exclude '.gitignore' --exclude 'data.json' ./ _site/
           touch _site/.nojekyll
           du -sh _site
+          # the old harryv12.github.io/harryv12finance address: every page there sends visitors to the same page
+          # on Cloudflare (404.html catches paths like /v2/ and /classic.html)
+          mkdir -p _moved
+          cp .github/moved.html _moved/index.html
+          cp .github/moved.html _moved/404.html
+          touch _moved/.nojekyll
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: _moved
 
-      - name: Publish to GitHub Pages
+      - name: Point the old GitHub Pages address to Cloudflare
         id: deploy
         uses: actions/deploy-pages@v4
 
-      # Cloudflare is skipped (not failed) until the CLOUDFLARE_API_TOKEN secret exists, so the daily run keeps
-      # working while the move is set up. The account ID is the CLOUDFLARE_ACCOUNT_ID repository variable.
+      # Cloudflare is skipped (not failed) if the CLOUDFLARE_API_TOKEN secret is missing, so the rest of the run
+      # still works. The account ID is the CLOUDFLARE_ACCOUNT_ID repository variable.
       - name: Check for the Cloudflare token
         id: cloudflare
         env:
