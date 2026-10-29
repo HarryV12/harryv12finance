@@ -4488,7 +4488,11 @@
     const ctx = canvas.getContext("2d");
     const th = THEMES[P.theme] || THEMES.light;
     let problem;
-    try { problem = !PRICES ? "Daily prices (prices.js) failed to load." : await DRAW[P.style](ctx, W, H, th); }
+    try {
+      // the phone design (dataviz_phone.js) where it covers this view and these choices; the older drawing otherwise
+      const phone = PRICES && window.HFDataVizPhone ? await window.HFDataVizPhone.draw(P.style, ctx, P.theme) : "FALLBACK";
+      problem = !PRICES ? "Daily prices (prices.js) failed to load." : phone === "FALLBACK" ? await DRAW[P.style](ctx, W, H, th) : phone;
+    }
     catch (e) { console.error(e); problem = "This view cannot be drawn for this selection."; }
     if (seq !== drawSeq) return;
     if (problem) {
@@ -4772,6 +4776,90 @@
 
   // ---------- mounting on the Data Visualization page ----------
   let bound = false;
+  // the calculations the phone design (dataviz_phone.js) draws from, so its numbers are always these
+  window.__DV = {
+    get P() { return P; }, get PE() { return PE; }, get S() { return S; }, get PRICES() { return PRICES; }, get SIGNALS() { return SIGNALS; }, get DESC() { return DESC; },
+    trades: typeof trades !== 'undefined' ? trades : undefined,
+    members: typeof members !== 'undefined' ? members : undefined,
+    stocks: typeof stocks !== 'undefined' ? stocks : undefined,
+    D: typeof D !== 'undefined' ? D : undefined,
+    estOf: typeof estOf !== 'undefined' ? estOf : undefined,
+    estText: typeof estText !== 'undefined' ? estText : undefined,
+    likelyText: typeof likelyText !== 'undefined' ? likelyText : undefined,
+    usd: typeof usd !== 'undefined' ? usd : undefined,
+    usdEst: typeof usdEst !== 'undefined' ? usdEst : undefined,
+    usdExact: typeof usdExact !== 'undefined' ? usdExact : undefined,
+    spanText: typeof spanText !== 'undefined' ? spanText : undefined,
+    sumSpan: typeof sumSpan !== 'undefined' ? sumSpan : undefined,
+    listSpan: typeof listSpan !== 'undefined' ? listSpan : undefined,
+    pct: typeof pct !== 'undefined' ? pct : undefined,
+    pts: typeof pts !== 'undefined' ? pts : undefined,
+    price: typeof price !== 'undefined' ? price : undefined,
+    fmtDate: typeof fmtDate !== 'undefined' ? fmtDate : undefined,
+    party: typeof party !== 'undefined' ? party : undefined,
+    tagline: typeof tagline !== 'undefined' ? tagline : undefined,
+    titleOf: typeof titleOf !== 'undefined' ? titleOf : undefined,
+    plainName: typeof plainName !== 'undefined' ? plainName : undefined,
+    shortName: typeof shortName !== 'undefined' ? shortName : undefined,
+    lastName: typeof lastName !== 'undefined' ? lastName : undefined,
+    cname: typeof cname !== 'undefined' ? cname : undefined,
+    committeeShort: typeof committeeShort !== 'undefined' ? committeeShort : undefined,
+    committeeLabel: typeof committeeLabel !== 'undefined' ? committeeLabel : undefined,
+    photoImage: typeof photoImage !== 'undefined' ? photoImage : undefined,
+    photoHD: typeof photoHD !== 'undefined' ? photoHD : undefined,
+    stats: typeof stats !== 'undefined' ? stats : undefined,
+    sellStats: typeof sellStats !== 'undefined' ? sellStats : undefined,
+    followScores: typeof followScores !== 'undefined' ? followScores : undefined,
+    peopleOf: typeof peopleOf !== 'undefined' ? peopleOf : undefined,
+    holdingInfo: typeof holdingInfo !== 'undefined' ? holdingInfo : undefined,
+    holdingKey: typeof holdingKey !== 'undefined' ? holdingKey : undefined,
+    brandOf: typeof brandOf !== 'undefined' ? brandOf : undefined,
+    loadLogo: typeof loadLogo !== 'undefined' ? loadLogo : undefined,
+    mixHex: typeof mixHex !== 'undefined' ? mixHex : undefined,
+    HOLD_PALETTE: typeof HOLD_PALETTE !== 'undefined' ? HOLD_PALETTE : undefined,
+    debtInfo: typeof debtInfo !== 'undefined' ? debtInfo : undefined,
+    isDebt: typeof isDebt !== 'undefined' ? isDebt : undefined,
+    DEBT_KINDS: typeof DEBT_KINDS !== 'undefined' ? DEBT_KINDS : undefined,
+    sharesLeft: typeof sharesLeft !== 'undefined' ? sharesLeft : undefined,
+    annualStart: typeof annualStart !== 'undefined' ? annualStart : undefined,
+    isBiz: typeof isBiz !== 'undefined' ? isBiz : undefined,
+    isExec: typeof isExec !== 'undefined' ? isExec : undefined,
+    noSeat: typeof noSeat !== 'undefined' ? noSeat : undefined,
+    isSec: typeof isSec !== 'undefined' ? isSec : undefined,
+    windowStart: typeof windowStart !== 'undefined' ? windowStart : undefined,
+    windowDays: typeof windowDays !== 'undefined' ? windowDays : undefined,
+    windowLabel: typeof windowLabel !== 'undefined' ? windowLabel : undefined,
+    periodLong: typeof periodLong !== 'undefined' ? periodLong : undefined,
+    amountShort: typeof amountShort !== 'undefined' ? amountShort : undefined,
+    idxOfDate: typeof idxOfDate !== 'undefined' ? idxOfDate : undefined,
+    lastIdx: typeof lastIdx !== 'undefined' ? lastIdx : undefined,
+    priceRange: typeof priceRange !== 'undefined' ? priceRange : undefined,
+    weighted: typeof weighted !== 'undefined' ? weighted : undefined,
+    eff: typeof eff !== 'undefined' ? eff : undefined,
+    cleanName: typeof cleanName !== 'undefined' ? cleanName : undefined,
+    lastClose: typeof lastClose !== 'undefined' ? lastClose : undefined,
+    spyMove: typeof spyMove !== 'undefined' ? spyMove : undefined,
+    sumAmt: typeof sumAmt !== 'undefined' ? sumAmt : undefined,
+    office: typeof office !== 'undefined' ? office : undefined,
+    chamberOf: typeof chamberOf !== 'undefined' ? chamberOf : undefined,
+    STATE_NAMES: typeof STATE_NAMES !== 'undefined' ? STATE_NAMES : undefined,
+    median: typeof median !== 'undefined' ? median : undefined,
+    ownUnknown: typeof ownUnknown !== 'undefined' ? ownUnknown : undefined,
+    OWNER: typeof OWNER !== 'undefined' ? OWNER : undefined,
+    isBig: typeof isBig !== 'undefined' ? isBig : undefined,
+    SPIKE_HALF: typeof SPIKE_HALF !== 'undefined' ? SPIKE_HALF : undefined,
+    START_SHORT: typeof START_SHORT !== 'undefined' ? START_SHORT : undefined,
+    YEAR: typeof YEAR !== 'undefined' ? YEAR : undefined,
+    today: typeof today !== 'undefined' ? today : undefined,
+    plural: typeof plural !== 'undefined' ? plural : undefined,
+    FOLLOW_MIN: typeof FOLLOW_MIN !== 'undefined' ? FOLLOW_MIN : undefined,
+    marketModel: typeof marketModel !== 'undefined' ? marketModel : undefined,
+    postScope: typeof postScope !== 'undefined' ? postScope : undefined,
+    postPool: typeof postPool !== 'undefined' ? postPool : undefined,
+    tradeRange: typeof tradeRange !== 'undefined' ? tradeRange : undefined,
+    removalReason: typeof removalReason !== 'undefined' ? removalReason : undefined,
+    prefix: typeof prefix !== 'undefined' ? prefix : undefined
+  };
   window.HFDataViz = {
     markup: "    <div class=\"post-grid\">\n      <div class=\"post-controls\">\n        <div class=\"field\">\n          <span class=\"label\">Chart</span>\n          <div class=\"styles\" id=\"pStyleMarket\" role=\"group\" aria-label=\"Chart\">\n            <button type=\"button\" data-v=\"chart\"><b>Stock price chart</b><span>One stock's price, with its largest buys and sells, their amounts and the average buy price</span></button>\n            <button type=\"button\" data-v=\"signals\"><b>Public signals</b><span>Congress buying scored with contracts, lobbying, hearings and insider buys</span></button>\n</div>\n        </div>\n        <div class=\"field\">\n          <span class=\"label\">More info</span>\n          <div class=\"styles\" id=\"pStyleOther\" role=\"group\" aria-label=\"More info\">\n            <button type=\"button\" data-v=\"terminal\"><b>Stock breakdown</b><span>One stock's price, with each member's buys, sells and average buy price</span></button>\n            <button type=\"button\" data-v=\"list\"><b>Latest disclosures</b><span>The most recent filers and their largest trades</span></button>\n            <button type=\"button\" data-v=\"parties\"><b>Democrats vs Republicans</b><span>One stock: what each party bought and sold, and how their buys did</span></button>\n            <button type=\"button\" data-v=\"bonds\"><b>Bonds and debt</b><span>Treasuries, municipal and corporate bonds a member (or everyone) bought</span></button>\n            <button type=\"button\" data-v=\"holdings\"><b>Biggest buys</b><span>One member's 15 largest buys in the period, and how much of each they also sold</span></button>\n            <button type=\"button\" data-v=\"scorecard\"><b>Member factsheet</b><span>One member's return vs the S&amp;P 500, largest buys and sector mix</span></button>\n            <button type=\"button\" data-v=\"leaders\"><b>Copy-trading leaderboard</b><span>Members ranked by copy-trading score for the period</span></button>\n            <button type=\"button\" data-v=\"conflict\"><b>Committee overlap</b><span>Share of trading in sectors their committees oversee</span></button>\n            <button type=\"button\" data-v=\"spikes\"><b>Buying spikes</b><span>Stocks several members bought within a month, with amounts</span></button>\n          </div>\n        </div>\n        <div class=\"field\" data-for=\"market list\">\n          <span class=\"label\">Trades by</span>\n          <div class=\"seg\" id=\"pWho\" role=\"group\" aria-label=\"Trades by\">\n            <button type=\"button\" data-v=\"all\">Everyone</button>\n            <button type=\"button\" data-v=\"one\">One politician</button>\n            <button type=\"button\" data-v=\"committee\">One committee</button>\n          </div>\n        </div>\n        <div class=\"field\" data-for=\"market:one list:one scorecard conflict card holdings@member bonds@member\">\n          <label for=\"pMemberSel\">Politician</label>\n          <select id=\"pMemberSel\"></select>\n        </div>\n        <div class=\"field\" data-for=\"market:committee list:committee\">\n          <label for=\"pCommitteeSel\">Committee</label>\n          <select id=\"pCommitteeSel\"></select>\n        </div>\n        <div class=\"field\" data-for=\"breaking frontpage\">\n          <label for=\"pTradeSel\">Trade</label>\n          <select id=\"pTradeSel\"></select>\n        </div>\n        <div class=\"field\" data-for=\"receipt\">\n          <label for=\"pFilingSel\">Filing</label>\n          <select id=\"pFilingSel\"></select>\n        </div>\n        <div class=\"field\" data-for=\"market terminal parties holdings@stock\">\n          <label for=\"pTickerSearch\">Stock</label>\n          <div class=\"combo pcombo\">\n            <input type=\"text\" id=\"pTickerSearch\" placeholder=\"Ticker or company\" role=\"combobox\" aria-expanded=\"false\" aria-controls=\"pTickerList\" aria-autocomplete=\"list\" autocomplete=\"off\" spellcheck=\"false\">\n            <ul id=\"pTickerList\" role=\"listbox\" aria-label=\"Stocks\" hidden></ul>\n          </div>\n          <select id=\"pTicker\" hidden></select>\n        </div>\n        <div class=\"field\" data-for=\"market terminal scorecard conflict leaders spikes holdings parties bonds\">\n          <span class=\"label\">Period</span>\n          <div class=\"seg\" id=\"pWindow\" role=\"group\" aria-label=\"Chart period\">\n            <button type=\"button\" data-v=\"90\">3 months</button>\n            <button type=\"button\" data-v=\"182\">6 months</button>\n            <button type=\"button\" data-v=\"ytd\">This year</button>\n            <button type=\"button\" data-v=\"365\">1 year</button>\n            <button type=\"button\" data-v=\"all\">Since the start</button>\n          </div>\n        </div>\n        <label class=\"check\" data-for=\"market\" for=\"pSells\"><input type=\"checkbox\" id=\"pSells\"> Mark sells too</label>\n        <div class=\"field\" data-for=\"holdings\">\n          <span class=\"label\">Show</span>\n          <div class=\"seg\" id=\"pHBy\" role=\"group\" aria-label=\"Biggest buys by\">\n            <button type=\"button\" data-v=\"member\">By politician</button>\n            <button type=\"button\" data-v=\"stock\">By stock</button>\n          </div>\n        </div>\n        <div class=\"field\" data-for=\"bonds\">\n          <span class=\"label\">Show</span>\n          <div class=\"seg\" id=\"pBBy\" role=\"group\" aria-label=\"Bonds by\">\n            <button type=\"button\" data-v=\"member\">By politician</button>\n            <button type=\"button\" data-v=\"issuer\">By bond issuer</button>\n          </div>\n        </div>\n        <div class=\"field\" data-for=\"bonds@issuer\">\n          <label for=\"pBondSel\">Bond issuer</label>\n          <select id=\"pBondSel\"></select>\n        </div>\n        <div class=\"field\" data-for=\"bonds@member\">\n          <span class=\"label\">Type of debt</span>\n          <div class=\"seg\" id=\"pDebt\" role=\"group\" aria-label=\"Type of debt\">\n            <button type=\"button\" data-v=\"all\">All</button>\n            <button type=\"button\" data-v=\"treasury\">U.S. Treasury</button>\n            <button type=\"button\" data-v=\"muni\">Municipal</button>\n            <button type=\"button\" data-v=\"corp\">Corporate</button>\n            <button type=\"button\" data-v=\"bank\">Bank notes &amp; CDs</button>\n            <button type=\"button\" data-v=\"fund\">Bond funds</button>\n          </div>\n        </div>\n        <div class=\"field\" data-for=\"list\">\n          <span class=\"label\">Show</span>\n          <div class=\"seg\" id=\"pSide\" role=\"group\" aria-label=\"Buys or sells\">\n            <button type=\"button\" data-v=\"B\">Buys</button>\n            <button type=\"button\" data-v=\"S\">Sells</button>\n            <button type=\"button\" data-v=\"both\">Both</button>\n          </div>\n        </div>\n        <div class=\"field\" data-for=\"list\">\n          <span class=\"label\">Disclosed in the last</span>\n          <div class=\"seg\" id=\"pDays\" role=\"group\" aria-label=\"Disclosure period\">\n            <button type=\"button\" data-v=\"7\">7 days</button>\n            <button type=\"button\" data-v=\"30\">30 days</button>\n            <button type=\"button\" data-v=\"60\">60 days</button>\n            <button type=\"button\" data-v=\"90\">90 days</button>\n          </div>\n        </div>\n        <div class=\"field\" data-for=\"none\">\n          <span class=\"label\">Order by</span>\n          <div class=\"seg\" id=\"pSort\" role=\"group\" aria-label=\"Order by\">\n            <button type=\"button\" data-v=\"amt\">Biggest</button>\n            <button type=\"button\" data-v=\"recent\">Newest</button>\n            <button type=\"button\" data-v=\"gain\">Best since</button>\n          </div>\n        </div>\n        <label class=\"check\" data-for=\"none\" hidden for=\"pKept\" title=\"Uses the Filter's \u201cWhich trades count\u201d settings (large caps, committee sectors, late disclosures, options)\"><input type=\"checkbox\" id=\"pKept\"> Apply the Filter</label>\n        <label class=\"check\" data-for=\"scorecard\" for=\"pNoBig\" title=\"Leaves out S&amp;P 500 companies, companies above the Filter's market-cap limit, tickers on its exclusion list, and funds and ETFs\"><input type=\"checkbox\" id=\"pNoBig\"> Exclude large caps and funds</label>\n        <div class=\"field\">\n          <span class=\"label\">Look</span>\n          <div class=\"seg\" id=\"pTheme\" role=\"group\" aria-label=\"Look\">\n            <button type=\"button\" data-v=\"light\">Light</button>\n            <button type=\"button\" data-v=\"dark\">Dark</button>\n          </div>\n        </div>\n      </div>\n      <div class=\"post-preview\">\n        <img id=\"postImg\" alt=\"Data visualization\" tabindex=\"0\" role=\"button\" title=\"Click to see it full size\">\n        <p class=\"empty\" id=\"postEmpty\" hidden></p>\n        <div class=\"post-actions\">\n          <button type=\"button\" class=\"btn primary\" id=\"postSave\">Download image</button>\n          <button type=\"button\" class=\"btn\" id=\"postCopy\">Copy image</button>\n          <span id=\"postHint\">Click the image to view it full size, or right-click to save it.</span>\n        </div>\n      </div>\n    </div>\n    <div class=\"img-view\" id=\"imgView\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Image, full size\" hidden>\n      <button type=\"button\" class=\"img-view-close\" aria-label=\"Close\">\u00d7</button>\n      <img alt=\"Data visualization, full size\">\n    </div>",
     mount() {

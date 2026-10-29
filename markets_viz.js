@@ -1198,7 +1198,11 @@
     const th = THEMES[Q.theme] || THEMES.light, cv = document.createElement("canvas"); cv.width = W; cv.height = HT; const c = cv.getContext("2d");
     try { await Promise.all([`800 20px ${UI}`, `700 20px ${UI}`, `600 20px ${UI}`, `500 20px ${UI}`, `700 20px ${MONO}`, `600 20px ${MONO}`].map((f) => document.fonts.load(f))); } catch (e) { /* draw with what's there */ }
     let problem = null;
-    try { problem = await DRAW[Q.view](c, th); } catch (e) { console.error(e); problem = "This image couldn't be drawn."; }
+    try {
+      // the phone design (markets_phone.js) where it covers this view and these choices; the older drawing otherwise
+      const phone = window.HFMarketsPhone ? await window.HFMarketsPhone.draw(Q.view, c, Q, { storySource, priceMove }) : "FALLBACK";
+      problem = phone === "FALLBACK" ? await DRAW[Q.view](c, th) : phone;
+    } catch (e) { console.error(e); problem = "This image couldn't be drawn."; }
     if (my !== token) return;
     img.classList.remove("drawing");
     if (problem) { img.hidden = true; empty.hidden = false; empty.textContent = problem; blob = null; return; }

@@ -2293,10 +2293,11 @@
   let dvLoading = null;
   const loadDataViz = () => dvLoading || (dvLoading = (() => {
     for (const href of ["dataviz.css?v=2",
-      "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Public+Sans:wght@400;500;600;700;800&display=swap"]) {
+      "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Public+Sans:wght@400;500;600;700;800;900&display=swap"]) {
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
-    return Promise.all([loadScript("dataviz.js?v=3"), loadScript("markets_viz.js?v=48")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
+    // markets_phone.js and dataviz_phone.js: the images in the phone design (each falls back to the older drawing)
+    return Promise.all([loadScript("dataviz.js?v=4"), loadScript("markets_viz.js?v=49"), loadScript("markets_phone.js?v=1"), loadScript("dataviz_phone.js?v=1")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
   })());
   let dvTab = "markets";
   try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }
