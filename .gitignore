@@ -22,6 +22,9 @@ __pycache__/
 _site/
 _moved/
 
+# The gallery x_posts.py builds; its images live on Cloudflare, not in git
+_x_preview/
+
 # The cf CLI's account cache on the PC
 .cloudflare/
 

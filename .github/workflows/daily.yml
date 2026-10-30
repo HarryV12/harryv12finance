@@ -18,7 +18,7 @@ on:
         default: false
   push:
     branches: [main]
-    paths-ignore: ["_pipeline/**/*.md", "README.md"]
+    paths-ignore: ["_pipeline/**/*.md", "README.md", "_pipeline/x_posts/**", ".github/workflows/x_posts.yml"]
   # 9:15 pm UK time, Monday to Friday, 15 minutes after the 4 pm New York close. GitHub schedules are in
   # UTC only, so there are two: 20:15 UTC is 9:15 pm in UK summer time, 21:15 UTC is 9:15 pm in winter.
   # Both run: the one before the close (in winter) just finds no new close. GitHub often starts scheduled runs
