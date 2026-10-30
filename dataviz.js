@@ -480,14 +480,14 @@
       if (mo !== lastMonth) { months.push({ i, d }); lastMonth = mo; }
     }
     const perMonth = (AX - m.l) / Math.max(1, months.length);
-    const every = [1, 2, 3, 6, 12].find((k) => k * perMonth >= (narrow ? 44 : 40)) || 12;
+    const every = [1, 2, 3, 6, 12].find((k) => k * perMonth >= (narrow ? 54 : 50)) || 12;
     let shownYear = null;
     for (const { i, d } of months) {
       const mo = d.getUTCMonth(), yr = d.getUTCFullYear(), xi = x(i);
       if (mo % every !== 0 || xi > AX - 16 || xi < m.l + 12) continue;
       el("line", { x1: xi, x2: xi, y1: m.t, y2: H - m.b, stroke: "var(--grid)", "stroke-width": 1 });
       el("line", { x1: xi, x2: xi, y1: H - m.b, y2: H - m.b + 5, stroke: "var(--line-strong)", "stroke-width": 1 });
-      el("text", { x: xi, y: H - m.b + 18, "text-anchor": "middle", class: "ax-date" }).textContent = d.toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" });
+      el("text", { x: xi, y: H - m.b + 18, "text-anchor": "middle", class: "ax-date" }).textContent = d.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
       if (yr !== shownYear) {
         shownYear = yr;
         el("text", { x: xi, y: H - m.b + 36, "text-anchor": "middle", class: "ax-year" }).textContent = String(yr);
@@ -876,7 +876,7 @@
       const x = sc.X(i);
       if (i === M.s0 || x - box.x < 36 || box.x + box.w - x < 36) continue;
       if (days > 800 ? mo % 6 : days > 400 ? mo % 3 : days > 200 && mo % 2) continue;
-      const label = d.toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" }) + (mo === 0 ? " " + d.getUTCFullYear() : "");
+      const label = d.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) + (mo === 0 ? " " + d.getUTCFullYear() : "");
       ctx.fillText(L.upper ? label.toUpperCase() : label, x, box.y + box.h + (L.monthGap || 34));
     }
     ctx.restore();
@@ -1339,7 +1339,7 @@
       ctx.beginPath(); ctx.moveTo(x, bottom); ctx.lineTo(x, bottom + (t.major ? 9 : 5)); ctx.stroke();
       if (x - left < 16 || right - x < 16) continue;
       ctx.font = t.major ? `600 18px ${UI}` : `500 16px ${UI}`; ctx.fillStyle = t.major ? th.ink2 : th.muted;
-      ctx.fillText(t.major ? new Date(Date.UTC(t.yr, t.mo - 1, 1)).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" }) : "15", x, bottom + 32);
+      ctx.fillText(fmtDate(dates[t.i], { day: "numeric", month: "short" }), x, bottom + 32);
     }
     const years = new Map();
     for (let i = M.s0; i <= M.end; i++) { const y = dates[i].slice(0, 4); const s = years.get(y) || { a: i, b: i }; s.b = i; years.set(y, s); }
@@ -3706,9 +3706,9 @@
         for (let k = i0 + 1; k <= i1; k++) {
           const m = PRICES.dates[k].slice(0, 7);
           if (m === PRICES.dates[k - 1].slice(0, 7)) continue;
-          const mx = sp.X(k); if (mx - lastX < 50 || mx > x + pw - 16) continue;
+          const mx = sp.X(k); if (mx - lastX < 66 || mx > x + pw - 16) continue;
           ctx.strokeStyle = th.ink2; ctx.globalAlpha = 0.5; ctx.beginPath(); ctx.moveTo(mx, y + ph); ctx.lineTo(mx, y + ph + 5); ctx.stroke(); ctx.globalAlpha = 1;
-          ctx.fillText(fmtDate(PRICES.dates[k], { month: "short" }) + (m.endsWith("-01") || lastMonth === "" ? " " + m.slice(2, 4) : ""), mx, y + ph + 21);
+          ctx.fillText(fmtDate(PRICES.dates[k], { day: "numeric", month: "short" }) + (m.endsWith("-01") || lastMonth === "" ? " " + m.slice(2, 4) : ""), mx, y + ph + 21);
           lastMonth = m; lastX = mx;
         }
         ctx.textAlign = "left";

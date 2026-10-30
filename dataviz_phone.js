@@ -91,9 +91,9 @@
     if (area) { c.beginPath(); let st = false; for (let i = i0; i <= i1; i++) if (s[i] != null) { st ? c.lineTo(X(i), Y(s[i])) : c.moveTo(X(i), Y(s[i])); st = true; } c.lineTo(X(i1), top + ph); c.lineTo(X(i0), top + ph); c.closePath(); c.fillStyle = "rgba(31,95,214,0.10)"; c.fill(); }
     c.beginPath(); let st = false; for (let i = i0; i <= i1; i++) if (s[i] != null) { st ? c.lineTo(X(i), Y(s[i])) : c.moveTo(X(i), Y(s[i])); st = true; } c.strokeStyle = col; c.lineWidth = small ? 2.5 : 3.5; c.lineJoin = "round"; c.stroke();
     let lastX = -1e9, yearDone = false;
-    for (let i = i0 + 1; i <= i1; i++) { if (dates[i].slice(0, 7) === dates[i - 1].slice(0, 7)) continue; const mx = X(i); if (mx - lastX < (small ? 70 : 56) || mx > x + pw - 20) continue;
+    for (let i = i0 + 1; i <= i1; i++) { if (dates[i].slice(0, 7) === dates[i - 1].slice(0, 7)) continue; const mx = X(i); if (mx - lastX < (small ? 74 : 66) || mx > x + pw - 20) continue;
       c.fillStyle = C.ink2; c.fillRect(mx - 1, top + ph, 2, 6);
-      tx(c, V.fmtDate(dates[i], { month: "short" }) + (!yearDone || dates[i].slice(5, 7) === "01" ? " " + dates[i].slice(2, 4) : ""), mx, top + ph + (small ? 22 : 26), { s: small ? 15 : 17, w: 600, col: C.muted, a: "center" }); yearDone = true; lastX = mx; }
+      tx(c, V.fmtDate(dates[i], { day: "numeric", month: "short" }) + (!yearDone || dates[i].slice(5, 7) === "01" ? " " + dates[i].slice(2, 4) : ""), mx, top + ph + (small ? 22 : 26), { s: small ? 15 : 17, w: 600, col: C.muted, a: "center" }); yearDone = true; lastX = mx; }
     return { X, Y, lo, hi, pw, ph, top };
   }
   const tri = (c, x, y, up, col, outline = false, r = 8) => { c.beginPath(); c.moveTo(x, up ? y + 5 : y - 5); c.lineTo(x - r, up ? y + 5 + 1.7 * r : y - 5 - 1.7 * r); c.lineTo(x + r, up ? y + 5 + 1.7 * r : y - 5 - 1.7 * r); c.closePath();

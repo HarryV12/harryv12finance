@@ -264,7 +264,7 @@
       c.beginPath(); vals.forEach((v, i) => (i ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)))); c.lineTo(X(vals.length - 1), y + 10 + gh); c.lineTo(X(0), y + 10 + gh); c.closePath(); c.fillStyle = th.soft; c.fill();
       c.beginPath(); vals.forEach((v, i) => (i ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)))); c.strokeStyle = th.line; c.lineWidth = 3.5; c.lineJoin = "round"; c.stroke();
       const ch6 = vals[vals.length - 1] / vals[0] - 1; tx(c, `${pc(ch6, 0)} in six months`, W - M, y, { s: 15, w: 700, col: sgn(ch6, th), a: "right" });
-      for (let i = 1; i < ser.length; i++) if (ser[i][0].slice(0, 7) !== ser[i - 1][0].slice(0, 7)) tx(c, H.fmtDate(ser[i][0], { month: "short" }), X(i), y + gh + 32, { s: 13, w: 500, col: th.muted, a: "center" });
+      for (let i = 1; i < ser.length; i++) if (ser[i][0].slice(0, 7) !== ser[i - 1][0].slice(0, 7)) tx(c, H.fmtDate(ser[i][0], { day: "numeric", month: "short" }), X(i), y + gh + 32, { s: 13, w: 500, col: th.muted, a: "center" });
       y += gh + 56;
     }
     // every stock in the basket over the same days
@@ -380,7 +380,7 @@
       const at = (d) => { const i = ser.findIndex((p) => p[0] >= d); return i < 0 ? n - 1 : i; }, pk = at(s.peak), inRange = (d) => d >= ser[0][0];
       c.fillStyle = th.soft; c.fillRect(X(pk), gy, X(n - 1) - X(pk), gh);
       for (const v of [lo, (lo + hi) / 2, hi]) { c.fillStyle = th.grid; c.fillRect(gx, Y(v), gw, 1.5); tx(c, v < 100 ? v.toFixed(2) : Math.round(v).toLocaleString(), gx + gw + 10, Y(v) + 6, { s: 15, w: 500, col: th.muted, f: MONO }); }
-      for (let i = 1; i < n; i++) if (ser[i][0].slice(0, 7) !== ser[i - 1][0].slice(0, 7) && (n < 300 || +ser[i][0].slice(5, 7) % 2)) tx(c, H.fmtDate(ser[i][0], { month: "short" }), X(i), gy + gh + 24, { s: 14, w: 500, col: th.muted, a: "center" });
+      for (let i = 1; i < n; i++) if (ser[i][0].slice(0, 7) !== ser[i - 1][0].slice(0, 7) && (n < 300 || +ser[i][0].slice(5, 7) % 2)) tx(c, H.fmtDate(ser[i][0], { day: "numeric", month: "short" }), X(i), gy + gh + 24, { s: 14, w: 500, col: th.muted, a: "center" });
       c.beginPath(); vals.forEach((v, i) => (i ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)))); c.strokeStyle = th.line; c.lineWidth = 3.5; c.lineJoin = "round"; c.stroke();
       (s.events || []).slice(0, 4).forEach((e, j) => { if (!inRange(e.date)) return; const i = at(e.date), ex = X(i), ey = Y(vals[i]), col = e.kind === "good" ? th.up : e.kind === "peak" ? th.line : th.down;
         const up = ey - 42 >= gy + 16, my = up ? ey - 42 : ey + 42;
@@ -857,7 +857,7 @@
       rr(c, lx - 4, ly - 15, tw2 + 8, 20, 5); c.fillStyle = th.bg; c.fill();
       tx(c, t, lx, ly, { s: 14, w: 700, col: up ? th.up : th.down });
     }
-    let lastM = ""; for (let i = 0; i < vals.length; i++) { const d = P.dates[i0 + i], m = d.slice(0, 7); if (m !== lastM && i > 4 && (n > 300 ? /-(01|04|07|10)$/.test(m) : true)) tx(c, H.fmtDate(d, n > 300 ? { month: "short", year: "2-digit" } : { month: "short" }), X(i), y + 26 + ch + 22, { s: 13, w: 500, col: th.muted, a: "center" }); lastM = m; }
+    let lastM = ""; for (let i = 0; i < vals.length; i++) { const d = P.dates[i0 + i], m = d.slice(0, 7); if (m !== lastM && i > 4 && (n > 300 ? /-(01|04|07|10)$/.test(m) : true)) tx(c, H.fmtDate(d, n > 300 ? { day: "numeric", month: "short", year: "2-digit" } : { day: "numeric", month: "short" }), X(i), y + 26 + ch + 22, { s: 13, w: 500, col: th.muted, a: "center" }); lastM = m; }
     y += 26 + ch + 50;
 
     // returns against the S&P 500 (left) and the 52-week range and risk (right)

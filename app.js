@@ -467,7 +467,7 @@
     el.innerHTML = `<div class="chart">${svgBox(W, H, `
       ${ticks.map((v) => `<line x1="${L}" x2="${W - R}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)"/><text x="${W - R + 8}" y="${(Y(v) + 4).toFixed(1)}" font-size="12" fill="var(--muted)" font-family="var(--font-mono)">${esc(fmt(v, 0))}</text>`).join("")}
       ${zero && lo < 0 && hi > 0 ? `<line x1="${L}" x2="${W - R}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="var(--ink-2)" stroke-opacity=".5"/>` : ""}
-      ${months.filter((_, k) => k % every === 0).map((i) => `<text x="${X(i).toFixed(1)}" y="${H - 8}" font-size="12" fill="var(--muted)" text-anchor="middle">${fmtDate(D.weeks[i], { month: "short", year: "2-digit" })}</text>`).join("")}
+      ${months.filter((_, k) => k % every === 0).map((i) => `<text x="${X(i).toFixed(1)}" y="${H - 8}" font-size="12" fill="var(--muted)" text-anchor="middle">${fmtDate(D.weeks[i], { day: "numeric", month: "short", year: "2-digit" })}</text>`).join("")}
       ${shown.filter((s) => s.area).map((s) => `<path d="${path(s)}L${X(NW - 1).toFixed(1)},${base.toFixed(1)}L${X(first).toFixed(1)},${base.toFixed(1)}Z" fill="${s.color}" fill-opacity=".1"/>`).join("")}
       ${shown.map((s) => `<path d="${path(s)}" fill="none" stroke="${s.color}" stroke-width="${s.width || 2}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ""} stroke-linejoin="round"/>`).join("")}
       <line class="cx" x1="0" x2="0" y1="${T}" y2="${H - Bm}" stroke="var(--ink-2)" stroke-dasharray="3 3" visibility="hidden"/>`, "Chart")}<div class="tip" hidden></div></div>`;
@@ -1428,16 +1428,19 @@
             ${big ? `<text x="${(x + w / 2).toFixed(1)}" y="${isUp ? B0 - 6 : T0 + 12}" font-size="11" text-anchor="middle" fill="${isUp ? "var(--good)" : "var(--bad)"}" font-family="var(--font-mono)" font-weight="700">${pct(e.spy, span < 70 ? 1 : 0)}</text>` : ""}</g>`;
         }).join("");
       };
-      // dates: every day for a week or a month (a label every few), months for longer spans, years under January
+      // dates: every day for a week or a month (a label every few), the first trading day of each month for longer spans (plus mid-month up to six months), years under January
       let axis = "";
       if (span <= 30) {
         const every = span <= 6 ? 1 : 3;
         for (let i = i0, k = 0; i <= i1; i++, k++) { const x = Xc(i).toFixed(1); axis += `<line x1="${x}" x2="${x}" y1="${B0}" y2="${B0 + 4}" stroke="var(--line-strong)"/>${k % every === 0 || i === i1 ? `<text x="${x}" y="${B0 + 18}" font-size="11" fill="var(--muted)" text-anchor="middle">${fmtDate(dates[i], span <= 6 ? { weekday: "short", day: "numeric" } : { day: "numeric", month: "short" })}</text>` : ""}`; }
       } else {
+        let midDone = "";
         for (let i = i0 + 1; i <= i1; i++) {
-          if (dates[i].slice(0, 7) === dates[i - 1].slice(0, 7)) continue;
-          const jan = dates[i].slice(5, 7) === "01", x = Xc(i).toFixed(1), label = span <= 260 || +dates[i].slice(5, 7) % 2 === 1;
-          axis += `<line x1="${x}" x2="${x}" y1="${B0}" y2="${B0 + (jan ? 8 : 4)}" stroke="var(--line-strong)"/>${label ? `<text x="${x}" y="${B0 + 18}" font-size="11" fill="var(--muted)" text-anchor="middle">${fmtDate(dates[i], { month: "short" })}</text>` : ""}${jan ? `<text x="${x}" y="${B0 + 34}" font-size="12" font-weight="700" fill="var(--ink-2)" text-anchor="middle">${dates[i].slice(0, 4)}</text>` : ""}`;
+          const mo = dates[i].slice(0, 7), first = mo !== dates[i - 1].slice(0, 7), mid = !first && span <= 130 && +dates[i].slice(8, 10) >= 15 && +dates[i].slice(8, 10) <= 20 && midDone !== mo;
+          if (!first && !mid) continue;
+          if (mid) midDone = mo;
+          const jan = first && dates[i].slice(5, 7) === "01", x = Xc(i).toFixed(1), label = span <= 260 || +dates[i].slice(5, 7) % 2 === 1;
+          axis += `<line x1="${x}" x2="${x}" y1="${B0}" y2="${B0 + (jan ? 8 : 4)}" stroke="var(--line-strong)"/>${label ? `<text x="${x}" y="${B0 + 18}" font-size="11" fill="var(--muted)" text-anchor="middle">${fmtDate(dates[i], { day: "numeric", month: "short" })}</text>` : ""}${jan ? `<text x="${x}" y="${B0 + 34}" font-size="12" font-weight="700" fill="var(--ink-2)" text-anchor="middle">${dates[i].slice(0, 4)}</text>` : ""}`;
         }
       }
       const move = spy[i1] / spy[i0] - 1;
@@ -1599,11 +1602,13 @@
       const Xt = (i) => 10 + i / Math.max(1, n) * (Wt - 70), Yt = (v) => 14 + (hi2 + pad - v) / (hi2 - lo2 + 2 * pad) * (Ht - 50);
       const path = (v) => { let d = "", on = false; v.forEach((y, i) => { if (y == null) { on = false; return; } d += `${on ? "L" : "M"}${Xt(i).toFixed(1)},${Yt(y).toFixed(1)}`; on = true; }); return d; };
       const at = (d) => { const i = di.get(d); return i == null ? null : i - i0; };
-      let axis = "";
+      let axis = "", midDone = "";
       for (let i = i0 + 1; i <= Ld; i++) {
-        if (dates[i].slice(0, 7) === dates[i - 1].slice(0, 7)) continue;
-        const jan = dates[i].slice(5, 7) === "01", xx = Xt(i - i0).toFixed(1), label = n <= 260 || +dates[i].slice(5, 7) % 2 === 1;
-        axis += `<line x1="${xx}" x2="${xx}" y1="${Ht - 36}" y2="${Ht - 32}" stroke="var(--line-strong)"/>${label ? `<text x="${xx}" y="${Ht - 20}" font-size="11" fill="var(--muted)" text-anchor="middle">${fmtDate(dates[i], { month: "short" })}</text>` : ""}${jan ? `<text x="${xx}" y="${Ht - 4}" font-size="12" font-weight="700" fill="var(--ink-2)" text-anchor="middle">${dates[i].slice(0, 4)}</text>` : ""}`;
+        const mo = dates[i].slice(0, 7), first = mo !== dates[i - 1].slice(0, 7), mid = !first && n <= 130 && +dates[i].slice(8, 10) >= 15 && +dates[i].slice(8, 10) <= 20 && midDone !== mo;
+        if (!first && !mid) continue;
+        if (mid) midDone = mo;
+        const jan = first && dates[i].slice(5, 7) === "01", xx = Xt(i - i0).toFixed(1), label = n <= 260 || +dates[i].slice(5, 7) % 2 === 1;
+        axis += `<line x1="${xx}" x2="${xx}" y1="${Ht - 36}" y2="${Ht - 32}" stroke="var(--line-strong)"/>${label ? `<text x="${xx}" y="${Ht - 20}" font-size="11" fill="var(--muted)" text-anchor="middle">${fmtDate(dates[i], { day: "numeric", month: "short" })}</text>` : ""}${jan ? `<text x="${xx}" y="${Ht - 4}" font-size="12" font-weight="700" fill="var(--ink-2)" text-anchor="middle">${dates[i].slice(0, 4)}</text>` : ""}`;
       }
       const ev = t.events.filter((e) => e.end >= dates[i0]);
       $("#thBody").innerHTML = `<div class="toolbar"><div class="seg" role="group" aria-label="Industry period">${TH_SPANS.map(([v, l]) => `<button type="button" data-tr="${v}" aria-pressed="${v === thRange}">${l}</button>`).join("")}</div>
@@ -1871,10 +1876,10 @@
       const X = (i) => 10 + i / (n - 1) * (W - 70), Y = (v) => 14 + (hi - v) / (hi - lo) * (H - 44), at = (d) => { const i = ser.findIndex((x) => x[0] >= d); return i < 0 ? n - 1 : i; };
       const pk = at(s.peak), line = ser.map((x, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${Y(x[1]).toFixed(1)}`).join("");
       const months = []; for (let i = 1; i < n; i++) if (ser[i][0].slice(0, 7) !== ser[i - 1][0].slice(0, 7)) months.push(i);
-      const ev = (s.events || []).map((e, j) => ({ ...e, j: j + 1, i: at(e.date) }));
+      const every = Math.ceil(months.length / 14), ev = (s.events || []).map((e, j) => ({ ...e, j: j + 1, i: at(e.date) }));
       return svgBox(W, H, `<rect x="${X(pk).toFixed(1)}" y="10" width="${(X(n - 1) - X(pk)).toFixed(1)}" height="${H - 36}" fill="var(--bad)" fill-opacity=".08"/>
         ${[lo, (lo + hi) / 2, hi].map((v) => `<line x1="10" x2="${W - 60}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)"/><text x="${W - 54}" y="${(Y(v) + 4).toFixed(1)}" font-size="12" fill="var(--muted)" font-family="var(--font-mono)">${v.toFixed(v < 100 ? 2 : 0)}</text>`).join("")}
-        ${months.map((i) => `<text x="${X(i).toFixed(1)}" y="${H - 8}" font-size="11" fill="var(--muted)" text-anchor="middle">${fmtDate(ser[i][0], { month: "short" })}</text>`).join("")}
+        ${months.filter((_, k) => k % every === 0).map((i) => `<text x="${X(i).toFixed(1)}" y="${H - 8}" font-size="11" fill="var(--muted)" text-anchor="middle">${fmtDate(ser[i][0], { day: "numeric", month: "short" })}</text>`).join("")}
         <path d="${line}" fill="none" stroke="var(--chart)" stroke-width="2.2"/>
         ${ev.map((e) => { const [g, c] = KIND[e.kind] || KIND.bad, x = X(e.i), y = Y(ser[e.i][1]); return `<g><line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${(y - 26).toFixed(1)}" y2="${y.toFixed(1)}" stroke="${c}" stroke-dasharray="2 2"/><circle cx="${x.toFixed(1)}" cy="${(y - 34).toFixed(1)}" r="11" fill="${c}"/><text x="${x.toFixed(1)}" y="${(y - 30).toFixed(1)}" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">${e.j}</text><title>${esc(fmtDate(e.date))}: ${esc(e.text)}</title></g>`; }).join("")}`, `${s.name} price`);
     };
@@ -2363,7 +2368,7 @@
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
     // markets_phone.js and dataviz_phone.js: the images in the phone design (each falls back to the older drawing)
-    return Promise.all([loadScript("dataviz.js?v=4"), loadScript("markets_viz.js?v=49"), loadScript("markets_phone.js?v=2"), loadScript("dataviz_phone.js?v=2"), loadScript("explained_viz.js?v=1")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz, ex: window.HFExplained } : null);
+    return Promise.all([loadScript("dataviz.js?v=5"), loadScript("markets_viz.js?v=50"), loadScript("markets_phone.js?v=3"), loadScript("dataviz_phone.js?v=3"), loadScript("explained_viz.js?v=2")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz, ex: window.HFExplained } : null);
   })());
   let dvTab = "markets";
   try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }

@@ -115,9 +115,9 @@
     c.fillStyle = C.ink2; c.fillRect(x, y + 40 + ph, pw, 2); c.fillRect(x, y + 40, 2, ph);
     const line = (arr, color, lw, dash) => { c.beginPath(); let st = false; arr.forEach((v, i) => { if (v == null) return; st ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)); st = true; }); c.strokeStyle = color; c.lineWidth = lw; c.setLineDash(dash || []); c.lineJoin = "round"; c.stroke(); c.setLineDash([]); };
     if (comp) line(comp, C.muted, 2.5, [8, 6]); line(vals, col, 4);
-    // months along the bottom (every other one when the range is long)
+    // dates along the bottom, the first trading day of each month (every other one when the range is long)
     let lastM = "", n = 0; const step = vals.length > 300 ? 2 : 1;
-    for (let i = 1; i < dates.length; i++) { const m = dates[i].slice(0, 7); if (m !== lastM && lastM) { if (n++ % step === 0 && X(i) < x + pw - 20 && X(i) > x + 20) tx(c, H.fmtDate(dates[i], { month: "short" }), X(i), y + 40 + ph + 26, { s: 18, w: 600, col: C.muted, a: "center" }); } lastM = m; }
+    for (let i = 1; i < dates.length; i++) { const m = dates[i].slice(0, 7); if (m !== lastM && lastM) { if (n++ % step === 0 && X(i) < x + pw - 20 && X(i) > x + 20) tx(c, H.fmtDate(dates[i], { day: "numeric", month: "short" }), X(i), y + 40 + ph + 26, { s: 18, w: 600, col: C.muted, a: "center" }); } lastM = m; }
     if (xTitle) tx(c, xTitle, x + pw / 2, y + h, { s: 18, w: 700, col: C.muted, a: "center" });
     for (const mk of marks) { const i = mk.i, mx = X(i), my = Y(vals[i]), up = my - 40 > y + 44, ty = up ? my - 34 : my + 34;
       c.strokeStyle = mk.col; c.lineWidth = 2; c.setLineDash([4, 4]); c.beginPath(); c.moveTo(mx, my); c.lineTo(mx, ty); c.stroke(); c.setLineDash([]);
