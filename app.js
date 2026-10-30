@@ -2297,7 +2297,7 @@
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
     // markets_phone.js and dataviz_phone.js: the images in the phone design (each falls back to the older drawing)
-    return Promise.all([loadScript("dataviz.js?v=4"), loadScript("markets_viz.js?v=49"), loadScript("markets_phone.js?v=1"), loadScript("dataviz_phone.js?v=1")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
+    return Promise.all([loadScript("dataviz.js?v=4"), loadScript("markets_viz.js?v=49"), loadScript("markets_phone.js?v=2"), loadScript("dataviz_phone.js?v=2")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz } : null);
   })());
   let dvTab = "markets";
   try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }

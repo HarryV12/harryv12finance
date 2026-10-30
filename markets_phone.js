@@ -87,8 +87,10 @@
     // the title, with one phrase in blue; it gets smaller rather than run off the edge
     ttl = ((Q.ttl || {})[Q.view] || "").trim() || ttl;
     let s = ts; font(c, 900, s); while (s > 40 && c.measureText(ttl).width > W - 2 * M) font(c, 900, --s);
-    const i = -1, y0 = 80 + s;
-    if (i < 0) tx(c, ttl, M, y0, { s, w: 900 }); else { let x = M; x += tx(c, ttl.slice(0, i), x, y0, { s, w: 900 }); x += tx(c, hi, x, y0, { s, w: 900, col: C.blue }); tx(c, ttl.slice(i + hi.length), x, y0, { s, w: 900 }); }
+    // a title still too long at the smallest size goes onto two lines
+    let y0 = 80 + s;
+    if (c.measureText(ttl).width <= W - 2 * M) tx(c, ttl, M, y0, { s, w: 900 });
+    else { const ls = layout(c, ttl, W - 2 * M, s, 900); ls.slice(0, 2).forEach((ln, j) => tx(c, ln.map((q) => q[0]).join(""), M, y0 + j * Math.round(s * 1.12), { s, w: 900, max: W - 2 * M })); y0 += Math.round(s * 1.12) * (Math.min(2, ls.length) - 1); }
     let y = y0 + 26; if (sub) y = para(c, sub, M, y, W - 2 * M, { s: subS, w: 500, col: C.ink2, lh: 1.32 });
     return y + 20;
   }
@@ -126,14 +128,14 @@
   // ---------- 1–2. market movers ----------
   async function movers(c, k) {
     const P = await H.loadAllPrices(), L = P.dates.length - 1, d = P.dates[L];
-    if (Q.mrank === "usd" || !on("mheat")) return FB;
+    const byUsd = Q.mrank === "usd", heatOn = on("mheat");
     const list = Q.list || "sp", sec = Q.msec && Q.msec !== "all" ? Q.msec : "", listName = H.LIST_NAMES[list] || "S&P 500", bySector = !!H.INDEX_LISTS[list] && !sec;
     const rows = H.listTks(P, list).filter((t) => !sec || H.sectorOf(t) === sec).map((t) => [t, H.moveOf(P, t, k)]).filter((x) => x[1] != null).sort((a, b) => b[1] - a[1]);
     if (rows.length < 4) return FB;
     const up = rows.filter((x) => x[1] > 0).length, dn = rows.filter((x) => x[1] < 0).length, cap = k === 1 ? 0.03 : 0.07;
     const when = k === 1 ? date(d, { weekday: "short", day: "numeric", month: "short", year: "numeric" }) : `${date(P.dates[L - k + 1])} – ${date(d, { day: "numeric", month: "short", year: "numeric" })}`;
     let y = header(c, `${listName}${sec ? " · " + sec : ""} · ${when}`, k === 1 ? "Today's market movers" : "This week's market movers", "movers",
-      `**${up}** of ${rows.length} ${listName}${sec ? " " + sec : ""} stocks rose and **${dn}** fell ${k === 1 ? "at the close" : "over the last five trading days"}. Each box below is a company, sized by its value and coloured by its move.`);
+      `**${up}** of ${rows.length} ${listName}${sec ? " " + sec : ""} stocks rose and **${dn}** fell ${k === 1 ? "at the close" : "over the last five trading days"}.${heatOn ? " Each box below is a company, sized by its value and coloured by its move." : ""}`);
     // the indexes
     if (on("midx")) { const IDX = [["SPY", "S&P 500", "blue"], ["QQQ", "Nasdaq 100", "purple"], ["DIA", "Dow", "gold"], ["IWM", "Small caps", "teal"]], tw = (W - 2 * M - 3 * 14) / 4;
     IDX.forEach(([tk, nm, col], i) => { const x = M + i * (tw + 14), r = H.moveOf(P, tk, k), mo = H.moveOf(P, tk, 21);
@@ -146,8 +148,16 @@
     tx(c, `▲ ${up} rose`, M, y + 52, { s: 22, w: 800, col: C.up }); tx(c, `${dn} fell ▼`, W - M, y + 52, { s: 22, w: 800, col: C.down, a: "right" });
     tx(c, `${Math.round(up / rows.length * 100)}% of stocks up`, W / 2, y + 52, { s: 21, w: 700, col: C.ink2, a: "center" });
     y += 72;
-    // the lists take what they need; the heatmap the rest
+    // the lists take what they need; the heatmap (or the sectors' average moves) the rest
     const n = Math.max(1, Math.min(+Q.mn || 5, 8, Math.floor(rows.length / 2))), rowH = 44, listH = 50 + n * rowH + 16, hh = BOTTOM - y - listH - 18;
+    if (!heatOn) {
+      const by = new Map(); for (const [tk, r] of rows) { const g2 = bySector ? H.sectorOf(tk) : H.subOf(tk); if (!by.has(g2)) by.set(g2, []); by.get(g2).push(r); }
+      const sr = [...by].map(([g2, l]) => [g2, l.reduce((a, r) => a + r, 0) / l.length, l.length]).sort((a, b) => b[1] - a[1]), nS = Math.min(sr.length, Math.floor((hh - 60) / 40)), smx = Math.max(...sr.map((x) => Math.abs(x[1])), 1e-6);
+      card(c, M, y, W - 2 * M, hh, "blue"); const ty = title(c, M + 22, y + 18, 0, `By ${bySector ? "sector" : "industry"} · average move`, "blue"), half = (W - 2 * M - 44 - 330 - 110) / 2, mid = M + 22 + 330 + half;
+      sr.slice(0, nS).forEach(([g2, r, cnt], i) => { const ry = ty + i * 40; if (i % 2 === 0) { rr(c, M + 12, ry, W - 2 * M - 24, 40, 8); fill(c, TINT.blue); }
+        tx(c, `${g2} (${cnt})`, M + 22, ry + 27, { s: 19, w: 600, col: C.ink2, max: 320 }); c.fillStyle = C.grid; c.fillRect(mid - 1, ry + 6, 2, 28);
+        const bl = half * Math.abs(r) / smx; rr(c, r >= 0 ? mid : mid - bl, ry + 12, Math.max(4, bl), 16, 8); fill(c, sc(r)); tx(c, pc(r), W - M - 22, ry + 27, { s: 19, w: 800, col: sc(r), f: MONO, a: "right" }); });
+    }
     const items = rows.map(([tk, r]) => ({ tk, r, v: Math.max(H.mcapOf(tk), 5e9), s: bySector ? H.sectorOf(tk) : H.subOf(tk), i: H.subOf(tk) }));
     const groups = (list, key) => { const m = new Map(); for (const it of list) { if (!m.has(it[key])) m.set(it[key], []); m.get(it[key]).push(it); }
       return [...m].map(([g, l]) => { const v = l.reduce((a, x) => a + x.v, 0); return { s: g, l, v, r: l.reduce((a, x) => a + x.r * x.v, 0) / v }; }); };
@@ -155,7 +165,7 @@
       const fs = Math.min(34, t.w / 3.6, t.h / 2.3); if (fs < 14) return; font(c, 800, fs); if (c.measureText(t.tk).width > t.w - 6) return;
       const two = t.h > fs * 2.3, cy = t.y + t.h / 2; tx(c, t.tk, t.x + t.w / 2, two ? cy - 2 : cy + fs * 0.36, { s: fs, w: 800, col: "#fff", a: "center" });
       if (two) tx(c, pc(t.r), t.x + t.w / 2, cy + fs * 0.85, { s: Math.max(14, fs * 0.66), w: 700, col: "#fff", a: "center", f: MONO }); };
-    for (const sb of H.squarify(groups(items, "s"), M, y, W - 2 * M, hh)) {
+    if (heatOn) for (const sb of H.squarify(groups(items, "s"), M, y, W - 2 * M, hh)) {
       font(c, 800, 16); const nm = sb.s.toUpperCase(), lab = sb.h > 50 && c.measureText(nm).width + 70 < sb.w;
       const ix = sb.x + 1, iy = sb.y + (lab ? 24 : 1), iw = sb.w - 2, ih = sb.h - (lab ? 25 : 2), subs = groups(sb.l, "i");
       if (subs.length > 1 && iw > 160 && ih > 110) for (const ib of H.squarify(subs, ix, iy, iw, ih)) { for (const t of H.squarify(ib.l, ib.x + 1, ib.y + 1, ib.w - 2, ib.h - 2)) tile(t); c.strokeStyle = C.bg; c.lineWidth = 3; c.strokeRect(ib.x, ib.y, ib.w, ib.h); }
@@ -164,13 +174,15 @@
     }
     y += hh + 18;
     // gainers and fallers under green and red bars
-    const cw = (W - 2 * M - 18) / 2, gain = rows.slice(0, n), lose = rows.slice(-n).reverse();
-    [[gain, M, "green", "▲ BIGGEST GAINERS"], [lose, M + cw + 18, "red", "▼ BIGGEST FALLERS"]].forEach(([arr, x, col, t]) => {
+    // ranked by % move, or by the value each company gained or lost (its value × its move)
+    const val = (tk, r) => byUsd ? H.mcapOf(tk) * r / (1 + r) : r, ranked = rows.map(([tk, r]) => [tk, r, val(tk, r)]).filter((x) => !byUsd || x[2]).sort((a, b) => b[2] - a[2]);
+    const cw = (W - 2 * M - 18) / 2, gain = ranked.slice(0, n).filter((x) => x[2] > 0), lose = ranked.slice(-n).reverse().filter((x) => x[2] < 0);
+    [[gain, M, "green", byUsd ? "▲ MOST VALUE GAINED" : "▲ BIGGEST GAINERS"], [lose, M + cw + 18, "red", byUsd ? "▼ MOST VALUE LOST" : "▼ BIGGEST FALLERS"]].forEach(([arr, x, col, t]) => {
       card(c, x, y, cw, listH, null); bar(c, x, y, cw, col, t, k === 1 ? "today" : "this week");
-      arr.forEach(([tk, r], i) => { const ry = y + 50 + 8 + i * rowH; if (i) { c.fillStyle = C.grid; c.fillRect(x + 16, ry, cw - 32, 1); }
+      arr.forEach(([tk, r, v], i) => { const ry = y + 50 + 8 + i * rowH; if (i) { c.fillStyle = C.grid; c.fillRect(x + 16, ry, cw - 32, 1); }
         tx(c, tk, x + 16, ry + 31, { s: 22, w: 800, col: C.blue, f: MONO }); tx(c, co(tk), x + 108, ry + 30, { s: 20, w: 600, col: C.ink2, max: cw - 108 - 110 });
-        tx(c, pc(r), x + cw - 16, ry + 31, { s: 22, w: 800, col: sc(r), f: MONO, a: "right" }); }); });
-    footer(c, `Yahoo Finance prices to ${date(d)} · Nasdaq company values · Not advice`);
+        tx(c, byUsd ? `${v > 0 ? "+" : ""}${H.usd(v)}` : pc(r), x + cw - 16, ry + 31, { s: 22, w: 800, col: sc(r), f: MONO, a: "right" }); }); });
+    footer(c, `Yahoo Finance prices to ${date(d)} · Nasdaq company values${byUsd ? " · value change = company value × its move" : ""} · Not advice`);
   }
 
   // ---------- 3–5. why it moved (today, this week, a drop or rise) ----------
@@ -278,7 +290,7 @@
 
   // ---------- 6. industries: today or this week ----------
   async function industries(c) {
-    if (Q.ind && Q.ind !== "all") return FB;
+    if (Q.ind && Q.ind !== "all") return industryOne(c);
     const P = await H.loadAllPrices(), Mv = await H.loadMoves(); if (!Mv || !Mv.themes) return "Industry moves haven't loaded.";
     const span = Q.ipd === "today" ? "today" : "now", mk = Mv.market[span], k = span === "today" ? 1 : 5;
     const when = span === "today" ? date(mk.end, { weekday: "short", day: "numeric", month: "short", year: "numeric" }) : `${date(mk.start)} – ${date(mk.end, { day: "numeric", month: "short", year: "numeric" })}`;
@@ -444,8 +456,8 @@
 
   // ---------- 11. production map ----------
   async function prodmap(c) {
-    if (String(Q.pmi || "").startsWith("grp:")) return FB;
     const D2 = await H.loadProd(), Wd = await H.loadWorld(); if (!D2) return "Production data hasn't loaded.";
+    if (String(Q.pmi || "").startsWith("grp:")) return prodField(c, D2, D2.groups.find((g) => g.name === Q.pmi.slice(4)) || D2.groups[0]);
     const it = D2.items[Q.pmi] || D2.items.chips, isPct = /^%/.test(it.unit), fv = (v) => isPct ? `${v}%` : v.toLocaleString();
     let y = header(c, `Where it's made · ${it.year.replace(/ \(.*\)$/, "")}`, it.name, "", on("pmwhy") ? plain(it.why) : "");
     // 1 the map, zoomed in on where it's made
@@ -497,8 +509,8 @@
   function sharePart(txt) { const t = plain(txt), m = t.match(/^(~|about |over |roughly |nearly )?(\d+(?:\.\d+)?)\s*%(?=\s*(of\b|\(|,|and\b|$))/i);
     if (m) return { v: +m[2], approx: !!m[1], rest: t.slice(m[0].length).trim() }; for (const [re, v] of WORDS) { const w = t.match(re); if (w && w.index === 0) return { v, approx: true, rest: t.slice(w[0].length).trim() }; } return null; }
   async function prodchain(c) {
-    if (String(Q.item || "").startsWith("grp:")) return FB;
     const D2 = await H.loadProd(); if (!D2) return "Production data hasn't loaded.";
+    if (String(Q.item || "").startsWith("grp:")) return chainField(c, D2, D2.groups.find((g) => g.name === Q.item.slice(4)) || D2.groups[0]);
     const it = D2.items[Q.item] || D2.items.chips, chain = it.chain || []; if (!chain.length) return `No supply chain written for ${it.name} yet.`;
     let y = header(c, `Supply chain · ${it.name}`, `${it.name}: the supply chain`, "", "Every step from raw material to market, and the country each step leans on.", { ts: 52 });
     const PAL = ["blue", "gold", "purple", "teal", "red", "navy"], cols = new Map(), cnt = new Map();
@@ -592,7 +604,177 @@
     footer(c, `Nasdaq company values · private values as reported (${date(A.labs[0].asOf)}) · Yahoo Finance · Not advice`);
   }
 
-  const V = { today: (c) => movers(c, 1), week: (c) => movers(c, 5), story: (c) => story(c, "today"), storywk: (c) => story(c, "now"), drop, industries, ai, stock, aftermath, invest, prodmap, prodchain, aiwatch, bubble };
+  // ---------- faces (the site's portraits), ringed in the party's colour ----------
+  const PARTY = { D: "#2f6fd6", R: "#d64545", I: "#7a7f87" }, imgCache = new Map();
+  const loadImg = (src) => { if (!src) return Promise.resolve(null); if (!imgCache.has(src)) imgCache.set(src, new Promise((res) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; })); return imgCache.get(src); };
+  async function face(c, m, cx, cy, r) {
+    const img = await loadImg(H.photoSrc(m)), ring = PARTY[m.party] || PARTY.I;
+    c.save(); c.beginPath(); c.arc(cx, cy, r + 4, 0, 7); c.fillStyle = ring; c.fill(); c.beginPath(); c.arc(cx, cy, r + 1.5, 0, 7); c.fillStyle = "#fff"; c.fill(); c.beginPath(); c.arc(cx, cy, r, 0, 7); c.clip();
+    if (img && img.width === img.height) c.drawImage(img, cx - r, cy - r, 2 * r, 2 * r); else if (img) c.drawImage(img, 0, Math.round(img.height * 0.04), img.width, img.width, cx - r, cy - r, 2 * r, 2 * r);
+    else { c.fillStyle = "#eef1f5"; c.fillRect(cx - r, cy - r, 2 * r, 2 * r); }
+    c.restore();
+  }
+
+  // ---------- 6b. one industry: the move, its last six months, every stock in it, why and the headlines ----------
+  async function industryOne(c) {
+    const Mv = await H.loadMoves(), t = Mv && Mv.themes && Mv.themes[Q.ind], span = Q.ipd === "today" ? "today" : "now", e = t && t[span];
+    if (!e) return "This industry's moves haven't loaded.";
+    const P = await H.loadAllPrices(), k = span === "today" ? 1 : 5, inW = W - 2 * M - 44;
+    const when = span === "today" ? date(e.end, { weekday: "short", day: "numeric", month: "short", year: "numeric" }) : `${date(e.start)} – ${date(e.end, { day: "numeric", month: "short", year: "numeric" })}`;
+    let y = header(c, `${t.name} · ${when}`, `${t.name} ${span === "today" ? "today" : "this week"}`, "", `The ${t.tickers.length} biggest stocks in ${t.name}, averaged.`);
+    // 1 the move
+    card(c, M, y, W - 2 * M, 150, "blue"); let yy = title(c, M + 22, y + 18, 1, "The move", "blue");
+    tx(c, `${e.move >= 0 ? "▲" : "▼"} ${pc(Math.abs(e.move)).replace(/^[+−-]/, "")}`, M + 22, yy + 62, { s: 60, w: 800, col: sc(e.move), f: MONO });
+    let cx = M + 330; for (const [l, r] of [["S&P 500", e.spy], ["Past month", e.month]]) if (r != null) cx += chip(c, cx, yy + 22, l, pc(r), sc(r), "blue", 21) + 10;
+    y += 150 + 16;
+    // 2 the last six months, weekly
+    const ser = (t.series || []).slice(-27);
+    if (ser.length > 2) { const h2 = 300; card(c, M, y, W - 2 * M, h2, "purple"); yy = title(c, M + 22, y + 18, 2, "The last six months", "purple");
+      const ch6 = ser[ser.length - 1][1] / ser[0][1] - 1; tx(c, `${pc(ch6, 0)} in six months`, W - M - 22, y + 42, { s: 20, w: 800, col: sc(ch6), a: "right" });
+      chart(c, M + 22, yy - 6, inW, y + h2 - 12 - (yy - 6), ser.map((p) => p[0]), ser.map((p) => p[1]), { yFmt: (v) => Math.round(v * 100), yTitle: "Basket (start = 100)", col: C.purple });
+      y += h2 + 16; }
+    // 3 every stock in the basket over the same days
+    let num = 3;
+    if (on("ibask")) { const rows = t.tickers.map((tk) => [tk, H.moveOf(P, tk, k)]).filter((x) => x[1] != null).sort((a, b) => b[1] - a[1]), mx = Math.max(...rows.map((x) => Math.abs(x[1])), 0.005);
+      const per = Math.ceil(rows.length / 2), rh = 36, h3 = 46 + per * rh + 12, colW = (inW - 30) / 2;
+      card(c, M, y, W - 2 * M, h3, "gold"); yy = title(c, M + 22, y + 18, num++, `Every stock in it · ${span === "today" ? "today" : "this week"}`, "gold");
+      rows.forEach(([tk, r], i) => { const x = M + 22 + Math.floor(i / per) * (colW + 30), ry = yy + (i % per) * rh, half = (colW - 190) / 2, mid = x + 90 + half;
+        tx(c, tk, x, ry + 24, { s: 20, w: 800, f: MONO }); c.fillStyle = C.grid; c.fillRect(mid - 1, ry + 6, 2, 24);
+        const bl = half * Math.abs(r) / mx; rr(c, r >= 0 ? mid : mid - bl, ry + 11, Math.max(4, bl), 14, 7); fill(c, sc(r));
+        tx(c, pc(r), x + colW, ry + 24, { s: 19, w: 800, col: sc(r), f: MONO, a: "right" }); });
+      y += h3 + 16; }
+    // 4 why it moved, and every step; 5 the headlines with the room left
+    const heads = on("ihead") ? (e.what || []).filter((h) => h.title) : [], steps = (e.detail || []).map(plain), sum = plain(e.summary || "");
+    if (on("iwhy") && (sum || steps.length)) {
+      const room = BOTTOM - y - (heads.length ? 150 : 0), whyH = (s) => 46 + 14 + (sum ? paraH(c, sum, inW, s + 1, 700) + 10 : 0) + steps.reduce((a, d) => a + paraH(c, d, inW - 44, s) + 10, 0) + 8;
+      const sW = fitS(whyH, room, 22, 15), wh = Math.min(room, whyH(sW));
+      card(c, M, y, W - 2 * M, wh, "green"); yy = title(c, M + 22, y + 18, num++, "Why it moved", "green") + 4;
+      if (sum) yy = para(c, sum, M + 22, yy, inW, { s: sW + 1, w: 700, col: C.ink }) + 10;
+      steps.forEach((d, j) => { rr(c, M + 22, yy + 3, 26, 26, 6); fill(c, C.green); tx(c, String(j + 1), M + 35, yy + 23, { s: 17, w: 800, col: "#fff", a: "center" }); yy = para(c, d, M + 66, yy, inW - 44, { s: sW }) + 10; });
+      y += wh + 16;
+    }
+    if (heads.length && BOTTOM - y > 110) { const hh = BOTTOM - y; card(c, M, y, W - 2 * M, hh, "teal"); yy = title(c, M + 22, y + 18, num, "In the news", "teal");
+      for (const h of heads) { const tt = plain(h.title), need = paraH(c, tt, inW, 20, 700, 1.3) + 26; if (yy + need > y + hh - 4) break;
+        yy = para(c, tt, M + 22, yy, inW, { s: 20, w: 700, col: C.ink, lh: 1.3 }); tx(c, `${plain(h.source)} · ${date(h.date)}`, M + 22, yy + 19, { s: 17, w: 600, col: C.teal }); yy += 32; } }
+    footer(c, `${t.name}: the ${t.tickers.length} biggest stocks, averaged · Yahoo Finance prices · reasons from the day's news · Not advice`);
+  }
+
+  // ---------- 11b. a whole field: who makes what (map shaded by how many each country leads, then each good's top three) ----------
+  async function prodField(c, D2, g) {
+    const Wd = await H.loadWorld(), items = g.items.map((k) => [k, D2.items[k]]).filter((x) => x[1] && x[1].rows.length), lead = new Map(), name = new Map();
+    for (const [, it] of items) { const [nm, id] = it.rows[0], key = String(id).padStart(3, "0"); if (!lead.has(key)) lead.set(key, []); lead.get(key).push(it.name); name.set(key, nm.split(" (")[0]); }
+    let y = header(c, `Where it's made · ${g.name}`, `${g.name}: who makes what`, "", on("pmwhy") ? `The biggest producer of each, and the two after it. Countries are shaded by how many of these ${items.length} they lead.` : "");
+    const n = items.length, rh = Math.min(96, Math.floor((BOTTOM - y - 16 - 46 - 360 - 46 - 10) / n)), listH = 46 + n * rh + 10, mapH = BOTTOM - y - 16 - listH;
+    card(c, M, y, W - 2 * M, mapH, "blue"); let yy = title(c, M + 22, y + 18, 1, "Who leads each one", "blue");
+    const mx0 = M + 16, my0 = yy, mw = W - 2 * M - 32, mh = y + mapH - 16 - yy;
+    if (Wd && window.d3) { const d3 = window.d3, feats = Wd.features.filter((f) => f.id !== "010"), land = { type: "FeatureCollection", features: feats };
+      const proj = d3.geoNaturalEarth1().fitExtent([[mx0, my0], [mx0 + mw, my0 + mh]], land), path = d3.geoPath(proj, c), mxn = Math.max(...[...lead.values()].map((l) => l.length), 1);
+      c.save(); rr(c, mx0, my0, mw, mh, 12); c.clip(); c.fillStyle = "#dbe7f7"; c.fillRect(mx0, my0, mw, mh);
+      for (const f of feats) { const l = lead.get(f.id); c.beginPath(); path(f); c.fillStyle = l ? C.blue : "#f6f8fb"; c.globalAlpha = l ? 0.35 + 0.65 * l.length / mxn : 1; c.fill(); c.globalAlpha = 1; c.strokeStyle = "#b9c6d8"; c.lineWidth = 0.8; c.stroke(); }
+      if (on("pmbub")) { const placed = [], hit = (b) => placed.some((q) => b.x < q.x + q.w && q.x < b.x + b.w && b.y < q.y + q.h && q.y < b.y + b.h);
+        const spots = [...lead].map(([id, l]) => { const f = feats.find((q) => q.id === id); if (!f) return null; const [px, py] = path.centroid(f); return { id, l, px, py, r: 13 + 9 * l.length }; }).filter(Boolean).sort((a, b) => b.l.length - a.l.length);
+        for (const b of spots) { c.fillStyle = C.red; c.globalAlpha = 0.9; c.beginPath(); c.arc(b.px, b.py, b.r, 0, 7); c.fill(); c.globalAlpha = 1; c.strokeStyle = "#fff"; c.lineWidth = 2.5; c.stroke(); tx(c, String(b.l.length), b.px, b.py + 8, { s: 22, w: 800, col: "#fff", a: "center" }); placed.push({ x: b.px - b.r, y: b.py - b.r, w: 2 * b.r, h: 2 * b.r }); }
+        for (const b of spots) { const lab = name.get(b.id); font(c, 800, 20); const lw = c.measureText(lab).width + 16;
+          for (const ly of [b.py - b.r - 10, b.py + b.r + 26]) { const bb = { x: b.px - lw / 2, y: ly - 20, w: lw, h: 26 }; if (hit(bb)) continue; placed.push(bb); rr(c, bb.x, bb.y, lw, 26, 7); fill(c, "rgba(255,255,255,.92)"); tx(c, lab, b.px, ly, { s: 20, w: 800, a: "center" }); break; } } }
+      c.restore(); }
+    y += mapH + 16;
+    // each good's top three: the leader filled, the next two with a bar against it
+    card(c, M, y, W - 2 * M, listH, "gold"); yy = title(c, M + 22, y + 18, 2, "Each one's top producers", "gold");
+    const cw0 = 270, bx = M + 22 + cw0, bw = W - 2 * M - 44 - cw0, chh = Math.min(64, rh - 10);
+    items.forEach(([, it], i) => { const ry = yy + i * rh, isPct = /^%/.test(it.unit), top = it.rows.slice(0, 3), mxv = top[0][2], f = (v) => isPct ? `${v}%` : v.toLocaleString();
+      const who = (nm) => it.byCompany && /\((.+)\)/.test(nm) ? nm.match(/\((.+)\)/)[1] : nm.split(" (")[0];
+      tx(c, it.name.replace(/ \(.*\)$/, ""), M + 22, ry + chh / 2 + 2, { s: 20, w: 800, max: cw0 - 14 }); tx(c, `${it.unit} · ${it.year.replace(/ \(.*\)$/, "")}`, M + 22, ry + chh / 2 + 24, { s: 15, w: 600, col: C.muted, max: cw0 - 14, min: 11 });
+      const widths = [bw * 0.42, bw * 0.29, bw * 0.29]; let x = bx;
+      top.forEach(([nm, , v], k) => { const ww = widths[k] - 8; rr(c, x, ry, ww, chh, 10); fill(c, k === 0 ? C.blue : TINT.gold);
+        tx(c, who(nm), x + 12, ry + chh / 2 - 4, { s: 18, w: 800, col: k === 0 ? "#fff" : C.ink, max: ww - 24, min: 11 });
+        tx(c, f(v), x + 12, ry + chh / 2 + 18, { s: 17, w: 700, col: k === 0 ? "#fff" : C.ink2, f: MONO, max: ww - 24, min: 11 });
+        if (k) { const bl = (ww - 24) * v / mxv; rr(c, x + 12, ry + chh - 8, ww - 24, 4, 2); fill(c, "#fff"); rr(c, x + 12, ry + chh - 8, Math.max(3, bl), 4, 2); fill(c, C.gold); }
+        x += widths[k]; }); });
+    footer(c, "USGS · Energy Institute · worldsteel · WNA · TrendForce · ASML · IEA · SIA/BCG · Figures rounded · Not advice");
+  }
+
+  // ---------- 12b. a whole field: every supply chain, one row of steps per good ----------
+  function chainField(c, D2, g) {
+    const items = g.items.map((k) => D2.items[k]).filter((it) => it && it.chain && it.chain.length);
+    if (!items.length) return `No supply chains written for ${g.name} yet.`;
+    let y = header(c, `Supply chains · ${g.name}`, `${g.name}: every supply chain`, "", "Each good's steps from raw material to market, and the place each step depends on.", { ts: 52 });
+    const n = items.length, gap = 12, rh = Math.min(230, Math.floor((BOTTOM - y - gap * (n - 1)) / n)), nameW = 180, COLS = ["blue", "gold", "purple", "teal", "red", "navy", "green"];
+    const where = new Map(); for (const it of items) for (const st of it.chain) for (const w of plain(st.where).split(/,\s*/)) where.set(w, (where.get(w) || 0) + 1);
+    items.forEach((it, i) => { const ry = y + i * (rh + gap), steps = it.chain, k = steps.length, col = COLS[i % COLS.length], x0 = M + nameW + 18, aw = 12, cw = (W - M - 12 - x0 - (k - 1) * aw) / k;
+      card(c, M, ry, W - 2 * M, rh, col);
+      para(c, it.name.replace(/ \(.*\)$/, ""), M + 18, ry + rh / 2 - 26, nameW - 10, { s: 21, w: 800, col: C[col], lh: 1.2 });
+      steps.forEach((st, j) => { const x = x0 + j * (cw + aw), top = ry + 14, h = rh - 24, sp = sharePart(st.share);
+        rr(c, x, top, cw, h, 10); fill(c, TINT[col]);
+        tx(c, plain(st.step).toUpperCase(), x + 9, top + 22, { s: 14, w: 800, col: C[col], max: cw - 16, min: 10 });
+        const wy = para(c, plain(st.where), x + 9, top + 28, cw - 18, { s: 17, w: 800, col: C.ink, lh: 1.15 });
+        if (sp) { const by = top + h - 14; rr(c, x + 9, by, cw - 18, 7, 3.5); fill(c, "#fff"); rr(c, x + 9, by, Math.max(5, (cw - 18) * Math.min(1, sp.v / 100)), 7, 3.5); fill(c, C[col]);
+          tx(c, `${sp.approx ? "~" : ""}${sp.v}%`, x + 9, Math.min(wy + 26, by - 8), { s: 22, w: 800, col: C[col], f: MONO }); }
+        else { const room = top + h - 8 - (wy + 4), s = fitS((q) => paraH(c, plain(st.share), cw - 18, q, 700, 1.2), room, 15, 11); para(c, plain(st.share), x + 9, wy + 4, cw - 18, { s, w: 700, col: C[col], lh: 1.2 }); }
+        if (j < k - 1) { c.fillStyle = C.muted; c.beginPath(); const ax = x + cw + 2, ay = ry + rh / 2; c.moveTo(ax, ay - 7); c.lineTo(ax + aw - 4, ay); c.lineTo(ax, ay + 7); c.closePath(); c.fill(); } }); });
+    const most = [...where].filter(([w]) => !/^Worldwide$/i.test(w)).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([w, cnt]) => `${w} ${cnt}`).join(", ");
+    footer(c, `Most named across these chains: ${most} · USGS · Energy Institute · TrendForce · ASML · IEA · Not advice`);
+  }
+
+  // ---------- 15. who holds it: a story, the stocks it could move, and what Trump and Congress hold ----------
+  async function holders(c) {
+    const I = await H.loadInvest(), P = await H.loadAllPrices(), stories = (I && I.stories) || [], st = stories.find((x) => x.id === Q.hlst) || stories[0];
+    if (!st) return "No stories yet.";
+    const R0 = H.storyHoldings(st, P), n = R0.rows.length, inW = W - 2 * M - 44;
+    let y = header(c, `In the news · ${date(st.date, { day: "numeric", month: "short", year: "numeric" })}`, plain(st.title), "", "", { ts: 44 });
+    // 1 the news
+    const newsH = 46 + paraH(c, plain(st.news), inW, 21) + 14; card(c, M, y, W - 2 * M, newsH, "navy"); let yy = title(c, M + 22, y + 18, 1, "The news", "navy");
+    para(c, plain(st.news), M + 22, yy, inW, { s: 21, col: C.ink }); y += newsH + 16;
+    // 2 the four headline figures
+    const k4 = [["Trump still holds", R0.trump ? "≈" + H.usd(R0.trump) : "–", C.ink, "red"], ["Return on his buys", pc(R0.tRet), sc(R0.tRet), "gold"], ["Congress still holds", R0.cong ? "≈" + H.usd(R0.cong) : "–", C.ink, "blue"], ["Members holding", String(R0.members), C.ink, "purple"]];
+    const tw = (W - 2 * M - 3 * 12) / 4; k4.forEach(([l, v, col, tc], i) => { const x = M + i * (tw + 12); rr(c, x, y, tw, 104, 14); fill(c, TINT[tc]); tx(c, l, x + 16, y + 30, { s: 18, w: 800, col: C[tc], max: tw - 28 }); tx(c, v, x + 16, y + 78, { s: 32, w: 800, col, f: MONO, max: tw - 28 }); });
+    y += 104 + 16;
+    // 3 one card per company
+    const gap = 12, ch = Math.floor((BOTTOM - y - gap * (n - 1)) / Math.max(1, n)), trumpM = R0.trumpM, COLS = ["blue", "gold", "teal", "purple", "red"];
+    for (const [i, r] of R0.rows.entries()) { const cy = y + i * (ch + gap), col = COLS[i % COLS.length]; card(c, M, cy, W - 2 * M, ch, col);
+      rr(c, M + 18, cy + 20, 100, 38, 8); fill(c, TINT[col]); tx(c, r.tk, M + 68, cy + 46, { s: 22, w: 800, f: MONO, a: "center", max: 92 });
+      tx(c, H.coName(r.tk), M + 132, cy + 47, { s: 23, w: 800, max: 520 });
+      if (on("hlsince")) tx(c, `${pc(r.since)} since the news`, W - M - 22, cy + 47, { s: 21, w: 800, col: sc(r.since), a: "right" });
+      const ry = cy + 76; if (trumpM) await face(c, trumpM, M + 48, ry + 26, 26);
+      caps(c, "Trump holds", M + 86, ry + 14, C.muted, 15); tx(c, r.trump ? "≈" + H.usd(r.trump) : "–", M + 86, ry + 44, { s: 26, w: 800, f: MONO }); tx(c, `${pc(r.tRet)} on his buys`, M + 86, ry + 68, { s: 17, w: 700, col: sc(r.tRet) });
+      const x2 = M + 360; caps(c, "Congress holds", x2, ry + 14, C.muted, 15); tx(c, r.cong ? "≈" + H.usd(r.cong) : "none", x2, ry + 44, { s: 26, w: 800, f: MONO }); tx(c, `${r.n} member${r.n === 1 ? "" : "s"}`, x2, ry + 68, { s: 17, w: 600, col: C.ink2 });
+      if (on("hltop") && r.top.length) { const hx = M + 600; caps(c, "Biggest holders", hx, ry + 14, C.muted, 15);
+        r.top.slice(0, ch >= 250 ? 3 : 2).forEach((x, j) => { const yy2 = ry + 26 + j * 30; c.fillStyle = PARTY[x.m.party] || PARTY.I; c.beginPath(); c.arc(hx + 7, yy2 + 12, 7, 0, 7); c.fill();
+          tx(c, H.surname(x.m.name), hx + 22, yy2 + 19, { s: 18, w: 700, max: 170 }); tx(c, "≈" + H.usd(x.v), W - M - 22, yy2 + 19, { s: 18, w: 700, col: C.ink2, f: MONO, a: "right" }); }); }
+      const cl = on("hlcom") ? r.links.filter((l) => l.short).slice(0, 2) : [];
+      if (cl.length && ch >= 220) { const txt = cl.map((l) => `**${H.surname(l.m.name)}** · ${l.c[0].replace(/ Committee$/, "")}: ${l.short}`).join("   "), ly = ry + (ch >= 250 ? 116 : 90);
+        c.fillStyle = C.grid; c.fillRect(M + 18, ly - 6, W - 2 * M - 36, 1.5); para(c, txt, M + 22, ly, inW, { s: fitS((q) => paraH(c, txt, inW, q), cy + ch - 10 - ly, 18, 13) }); } }
+    footer(c, `Holdings estimated from filings since ${date(H.D.start, { month: "short", year: "numeric" })} · shares held before, or from spin-offs, aren't counted · Not advice`);
+  }
+
+  // ---------- 16. hype check: Congress buys shared as tips, scored on how much they mean ----------
+  async function hypeCheck(c) {
+    await H.loadSignals(); const days = +Q.hyd || 45, who = Q.hych || "all", weak = Q.hy !== "strong";
+    const recent = H.trades.filter((t) => t.side === "B" && t.fd && t.t && H.stocks[t.t] && !H.isBiz(H.members[t.m]) && (who === "all" || H.members[t.m].chamber === who) && H.today - t.ftime < days * H.DAY).map((t) => ({ t, h: H.hype(t) })).filter((x) => x.h);
+    const seen = new Set(), list = [];
+    for (const x of recent.filter((x) => weak ? x.h.level === 1 : x.h.level === 3).sort((a, b) => weak ? a.h.score - b.h.score || b.t.amt - a.t.amt : b.h.score - a.h.score || b.t.amt - a.t.amt)) {
+      if (on("hyone") && seen.has(x.t.m)) continue; seen.add(x.t.m); list.push(x); if (list.length === (+Q.hyn || 5)) break; }
+    const whoName = { all: "Congress and officials", H: "The House", S: "The Senate", E: "Officials" }[who];
+    if (!list.length) return `No ${weak ? "weak" : "strong"}-signal buys by ${whoName.toLowerCase()} were disclosed in the last ${days} days.`;
+    let y = header(c, `${whoName} · buys disclosed in the last ${days} days`, weak ? "Hype check: the weakest 'copy this' buys" : "Hype check: the strongest signals", "",
+      "Every buy is scored out of 100% from about fifteen public facts: its size, basket buying, selling soon after, their committee, how late it was filed and their record.", { ts: 48 });
+    const nR = +Q.hyr || 3, inW = W - 2 * M - 44, legendH = 150, gap = 12, n = list.length, ch = Math.min(110 + nR * 32, Math.floor((BOTTOM - y - legendH - 16 - gap * (n - 1)) / n));
+    for (const [i, { t, h }] of list.entries()) { const m = H.members[t.m], cy = y + i * (ch + gap), col = h.level === 1 ? "red" : "green";
+      card(c, M, cy, W - 2 * M, ch, col); await face(c, m, M + 58, cy + 58, 36);
+      const lab = `${h.label} · ${h.score}%`; font(c, 800, 20); const bw = c.measureText(lab).width + 32; rr(c, W - M - 22 - bw, cy + 22, bw, 38, 19); fill(c, C[col]); tx(c, lab, W - M - 22 - bw / 2, cy + 48, { s: 20, w: 800, col: "#fff", a: "center" });
+      tx(c, m.name, M + 110, cy + 48, { s: 25, w: 800, max: W - 2 * M - 160 - bw }); tx(c, `${m.party ? m.party + " · " : ""}${H.seat(m)}`, M + 110, cy + 74, { s: 17, w: 600, col: C.muted, max: W - 2 * M - 140 });
+      const ry = cy + 92; rr(c, M + 110, ry, 92, 32, 7); fill(c, TINT[col]); tx(c, t.t, M + 156, ry + 23, { s: 18, w: 800, f: MONO, a: "center", max: 86 });
+      const amt = `${plain(H.rangeText(t))} · filed ${date(t.fd)}`; font(c, 700, 18); const aw = c.measureText(amt).width;
+      tx(c, H.coName(t.t), M + 214, ry + 23, { s: 19, w: 700, col: C.ink2, max: W - M - 30 - aw - (M + 214) }); tx(c, amt, W - M - 22, ry + 23, { s: 18, w: 700, col: C.ink2, a: "right" });
+      let yy = ry + 46; for (const f of h.f.slice(0, nR)) { if (yy + 26 > cy + ch - 6) break; c.fillStyle = f.v > 0 ? C.up : C.down; c.fillRect(M + 26, yy, 5, 24); tx(c, `${f.v > 0 ? "+" : "−"} ${plain(f.txt)}`, M + 42, yy + 19, { s: 18, w: 600, col: C.ink2, max: inW - 30, min: 12 }); yy += 30; } }
+    // how to read the score
+    const sy = y + n * (ch + gap) + 4, lh = BOTTOM - sy; card(c, M, sy, W - 2 * M, lh, "blue"); const yy = title(c, M + 22, sy + 18, 0, "How to read the score", "blue");
+    const bands = [[0, 40, C.down, "Weak"], [40, 65, C.muted, "Some"], [65, 100, C.up, "Strong"]], bx = M + 22;
+    bands.forEach(([a, b, col, l]) => { rr(c, bx + inW * a / 100 + 2, yy + 14, inW * (b - a) / 100 - 4, 24, 6); fill(c, col); tx(c, `${l} · ${a}–${b === 100 ? 100 : b - 1}%`, bx + inW * (a + b) / 200, yy + 64, { s: 18, w: 700, col: C.ink2, a: "center" }); });
+    list.forEach(({ h }) => { const px = bx + inW * h.score / 100; c.fillStyle = C.ink; c.beginPath(); c.moveTo(px, yy + 12); c.lineTo(px - 8, yy - 2); c.lineTo(px + 8, yy - 2); c.closePath(); c.fill(); });
+    footer(c, "Members' disclosure reports · scored by the site's Hype check · 50% is neutral · Not advice");
+  }
+
+  const V = { today: (c) => movers(c, 1), week: (c) => movers(c, 5), story: (c) => story(c, "today"), storywk: (c) => story(c, "now"), drop, industries, ai, stock, aftermath, invest, prodmap, prodchain, aiwatch, bubble, holders, hype: hypeCheck };
   window.HFMarketsPhone = {
     // draws the view on a 1080×1440 canvas; returns null, a message to show instead, or FALLBACK
     async draw(view, c, choices, helpers) {

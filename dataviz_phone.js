@@ -263,16 +263,17 @@
 
   // ---------- 4. latest disclosures ----------
   async function vList(c) {
-    if (V.P.side !== "B" || V.P.who !== "all") return FB;
-    const P = V.P, since = V.today - (+P.days) * 86400000;
-    const list = V.trades.filter((t) => t.st && (V.isSec(t) || t.cls === "option") && t.side === "B" && !V.isBiz(V.members[t.m]) && t.ftime && t.ftime >= since && t.T.ep);
+    const P = V.P, since = V.today - (+P.days) * 86400000, sc0 = V.postScope(), side = P.side || "B";
+    const list = V.trades.filter((t) => t.st && (V.isSec(t) || t.cls === "option") && sc0.test(t) && (side === "both" ? t.side !== "O" : t.side === side) && t.ftime && t.ftime >= since && t.T.ep);
+    const noun = { B: "buy", S: "sale", both: "trade" }[side], lwho = sc0.kind === "one" ? sc0.short : sc0.kind === "committee" ? `${sc0.short} Committee members` : "Congress";
+    if (!list.length) return FB;
     const by = new Map(); for (const t of list) { const g = by.get(t.m) || { m: V.members[t.m], list: [], amt: 0, newest: 0 }; g.list.push(t); g.amt += t.amt; g.newest = Math.max(g.newest, t.ftime); by.set(t.m, g); }
     const groups = [...by.values()].sort((a, b) => b.newest - a.newest || b.amt - a.amt); for (const g of groups) g.list.sort((a, b) => b.amt - a.amt || b.ftime - a.ftime);
-    let y = header(c, `Disclosed ${date(new Date(since).toISOString().slice(0, 10))} – ${date(V.D.prices_through, { day: "numeric", month: "short", year: "numeric" })}`, "What Congress just bought", "");
+    let y = header(c, `Disclosed ${date(new Date(since).toISOString().slice(0, 10))} – ${date(V.D.prices_through, { day: "numeric", month: "short", year: "numeric" })}`, { B: `What ${lwho} just bought`, S: `What ${lwho} just sold`, both: `Latest stock trades: ${lwho}` }[side], "");
     const HEAD = 64, ROW = 52, GAP = 10, avail = BOTTOM - y - 40 - 36, cost = (sh) => sh.reduce((a, n, i) => a + HEAD + n * ROW + (n < groups[i].list.length ? 26 : 8) + GAP, 0);
     let shown = [1]; while (shown.length < Math.min(8, groups.length) && cost([...shown, 1]) <= avail) shown.push(1);
     for (let added = true; added;) { added = false; for (let i = 0; i < shown.length; i++) { if (shown[i] >= groups[i].list.length) continue; shown[i]++; if (cost(shown) <= avail) added = true; else shown[i]--; } }
-    tx(c, `${V.plural(list.length, "buy")} by ${V.plural(groups.length, "politician")}${groups.length > shown.length ? ` · ${shown.length} shown` : ""}`, M, y + 4, { s: 23, w: 500, col: C.ink2 }); y += 26;
+    tx(c, `${V.plural(list.length, noun)} by ${V.plural(groups.length, "politician")}${groups.length > shown.length ? ` · ${shown.length} shown` : ""}`, M, y + 4, { s: 23, w: 500, col: C.ink2 }); y += 26;
     // the shared column heads, as on the site
     const X = { stock: M + 22, trade: M + 172, amt: M + 268, dates: M + 418, px: M + 590, since: M + 726, meta: M + 840 }, R = W - M - 18;
     rr(c, M, y, W - 2 * M, 32, 8); fill(c, TINT.blue);
@@ -282,20 +283,20 @@
     for (let gi = 0; gi < shown.length; gi++) { const g = groups[gi], n = shown[gi], more = g.list.length - n, col = COLS[gi % COLS.length], h = HEAD + n * ROW + (more > 0 ? 26 : 8);
       card(c, M, y, W - 2 * M, h, col); await face(c, g.m, M + 44, y + 36, 22);
       tx(c, V.plainName(g.m), M + 80, y + 33, { s: 24, w: 900, max: 520 });
-      const ds = g.list.map((t) => t.fd).sort(); tx(c, `${V.tagline(g.m)} · ${V.plural(g.list.length, "buy")} · filed ${date(ds[0])}${ds[ds.length - 1] !== ds[0] ? ` – ${date(ds[ds.length - 1])}` : ""}`, M + 80, y + 56, { s: 17, w: 600, col: C.ink2, max: 600 });
+      const ds = g.list.map((t) => t.fd).sort(); tx(c, `${V.tagline(g.m)} · ${V.plural(g.list.length, noun)} · filed ${date(ds[0])}${ds[ds.length - 1] !== ds[0] ? ` – ${date(ds[ds.length - 1])}` : ""}`, M + 80, y + 56, { s: 17, w: 600, col: C.ink2, max: 600 });
       tx(c, V.estText(V.estOf(g.list)), R, y + 42, { s: 24, w: 800, f: MONO, a: "right", col: C[col] });
       c.fillStyle = C.grid; c.fillRect(X.stock, y + HEAD - 2, R - X.stock, 1.5);
       g.list.slice(0, n).forEach((t, k) => { const ry = y + HEAD + k * ROW, l1 = ry + 22, l2 = ry + 42, v = V.eff(t, t.T.r), late = t.delay > 45;
         if (k) { c.fillStyle = C.grid; c.fillRect(X.stock, ry + 2, R - X.stock, 1); }
         const two = (x, w, a, b, fa, ca, cb, f = UI) => { tx(c, a, x, l1, { s: fa, w: 800, col: ca, f, max: w, min: 11 }); if (b) tx(c, b, x, l2, { s: 15, w: 600, col: cb || C.muted, max: w, min: 10 }); };
         two(X.stock, X.trade - X.stock - 8, t.t, short(t.st[0]), 19, C.ink, C.muted, MONO);
-        two(X.trade, X.amt - X.trade - 8, "BOUGHT", "", 15, C.up);
+        two(X.trade, X.amt - X.trade - 8, t.side === "S" ? (t.k === "SP" ? "PART SOLD" : "SOLD") : "BOUGHT", "", 15, t.side === "S" ? C.down : C.up);
         two(X.amt, X.dates - X.amt - 8, V.amountShort(t), t.exact || !t.lo || t.lo === t.hi ? "" : `filed ${V.usd(t.lo)}–${V.usd(t.hi)}`, 17, C.ink, C.muted, MONO);
         two(X.dates, X.px - X.dates - 8, `Traded ${date(t.d)}`, `Filed ${date(t.fd)} · ${t.delay}d${late ? " late" : ""}`, 17, C.ink2, late ? C.down : C.muted);
         two(X.px, X.since - X.px - 8, price(t.T.ep), `now ${price(V.lastClose(t.t))}`, 17, C.ink, C.muted, MONO);
         two(X.since, X.meta - X.since - 8, v == null ? "–" : pc(v), t.T.sr == null ? "" : `S&P ${pc(t.T.sr)}`, 18, sc(v), C.muted, MONO);
         two(X.meta, R - X.meta, V.ownUnknown(t) ? "–" : (V.OWNER[t.own] || "Own"), t.c && t.c.length ? V.committeeShort(t.c[0]) : "no match", 16, C.ink2, t.c && t.c.length ? C.down : C.muted); });
-      if (more > 0) tx(c, `+ ${V.plural(more, "smaller buy")} in this period`, X.stock, y + HEAD + n * ROW + 18, { s: 16, w: 600, col: C.muted });
+      if (more > 0) tx(c, `+ ${V.plural(more, "smaller " + noun)} in this period`, X.stock, y + HEAD + n * ROW + 18, { s: 16, w: 600, col: C.muted });
       y += h + GAP; }
     footer(c, "House, Senate and OGE filings · price = close on the trade date · since = the move from the trade date · Not advice");
   }
@@ -344,27 +345,53 @@
 
   // ---------- 6. bonds and debt ----------
   async function vBonds(c) {
-    if (V.P.bby === "issuer" || V.PE.memberKey === "all" || (V.P.debt && V.P.debt !== "all") || !V.PE.member) return FB;
-    const m = V.PE.member, since = V.windowStart(), KC = { treasury: C.blue, muni: "#1baf7a", corp: "#eb6834", bank: "#6f4cc3", fund: "#8e96a3" };
-    const pool = V.trades.filter((t) => t.time >= since && t.lo && V.isDebt(t) && t.m === m.i); for (const t of pool) t.debt = t.debt || V.debtInfo(t);
+    if (V.P.bby === "issuer") return vBondIssuer(c);
+    const all = V.PE.memberKey === "all", m = V.PE.member; if (!all && !m) return FB;
+    const since = V.windowStart(), KC = { treasury: C.blue, muni: "#1baf7a", corp: "#eb6834", bank: "#6f4cc3", fund: "#8e96a3" };
+    const poolAll = V.trades.filter((t) => t.time >= since && t.lo && V.isDebt(t) && !V.isBiz(V.members[t.m]) && (all || t.m === m.i)); for (const t of poolAll) t.debt = t.debt || V.debtInfo(t);
+    const DT = V.DEBT_KINDS.some(([k]) => k === V.P.debt) ? V.P.debt : "all", WHAT = { all: "bonds and debt", treasury: "U.S. Treasuries", muni: "municipal bonds", corp: "corporate bonds", bank: "bank notes and CDs", fund: "bond funds" }[DT];
+    const pool = DT === "all" ? poolAll : poolAll.filter((t) => t.debt.kind === DT);
     if (!pool.some((t) => t.side === "B")) return FB;
     const buys = pool.filter((t) => t.side === "B"), sells = pool.filter((t) => t.side === "S"), eb = V.estOf(buys), es = V.estOf(sells);
-    const theirAll = V.trades.filter((t) => t.m === m.i && t.time >= since && t.side === "B" && t.lo && t.cls !== "option");
-    let y = header(c, `${V.titleOf(m)} ${V.shortName(m)} · ${V.windowLabel()}`, `${V.lastName(m)}’s bonds and debt`, "Treasuries, municipal and corporate bonds, bank notes and bond funds: loans to governments and companies that pay interest.", { right: 150 });
-    await face(c, m, W - M - 62, 120, 58, true);
+    const per = V.P.window === "all" ? `since ${V.START_SHORT}` : V.windowLabel();
+    let y = all ? header(c, `Members and officials · ${WHAT} · ${per}`, `Who buys ${WHAT}`, "", DT === "all" ? "U.S. Treasuries, municipal and corporate bonds, bank notes and bond funds they bought: loans to governments and companies that pay interest." : `Only ${WHAT}; the bar below shows all their debt for comparison.`)
+      : header(c, `${V.titleOf(m)} ${V.shortName(m)} · ${per}`, `${V.lastName(m)}’s ${WHAT}`, DT === "all" ? "Treasuries, municipal and corporate bonds, bank notes and bond funds: loans to governments and companies that pay interest." : `Only ${WHAT}; the bar below shows all their debt for comparison.`, { right: 150 });
+    if (!all) await face(c, m, W - M - 62, 120, 58, true);
     const inW = W - 2 * M - 44, fw = (inW - 2 * 12) / 3;
+    const theirAll = all ? null : V.trades.filter((t) => t.m === m.i && t.time >= since && t.side === "B" && t.lo && t.cls !== "option");
     const facts = [["blue", V.usdEst(eb.best), "Bought", `${V.plural(buys.length, "purchase")}${eb.exact ? "" : `, likely ${V.spanText(eb.lo, eb.hi)}`}.`], ["red", sells.length ? V.usdEst(es.best) : "$0", "Sold or redeemed", sells.length ? `${V.plural(sells.length, "sale")}${es.exact ? "" : `, likely ${V.spanText(es.lo, es.hi)}`}.` : "None in this period."],
-      ["purple", `${Math.round(eb.best / (V.estOf(theirAll).best || 1) * 100)}%`, "Of all their buying", "went into bonds and debt rather than stocks or funds."]];
+      all ? ["purple", String(new Set(buys.map((t) => t.m)).size), "People", `members and officials who bought ${WHAT} in this period.`]
+        : ["purple", `${Math.round(eb.best / (V.estOf(theirAll).best || 1) * 100)}%`, "Of all their buying", `went into ${WHAT}${DT === "all" ? " rather than stocks or funds" : ""}.`]];
     const fh = 46 + 76 + Math.max(...facts.map((f) => paraH(c, f[3], fw - 28, 18))) + 20; card(c, M, y, W - 2 * M, fh, "blue"); let yy = title(c, M + 22, y + 18, 1, "The totals", "blue");
     facts.forEach(([col, big, head, body], i) => { const x = M + 22 + i * (fw + 12); rr(c, x, yy, fw, fh - 60, 12); fill(c, TINT[col]);
       tx(c, big, x + 14, yy + 40, { s: 32, w: 800, col: C[col], f: MONO, max: fw - 28 }); tx(c, head, x + 14, yy + 66, { s: 19, w: 800 }); para(c, body, x + 14, yy + 74, fw - 28, { s: 18 }); });
     y += fh + 16;
     // 2 what kind of debt
-    const byKind = new Map(V.DEBT_KINDS.map(([k]) => [k, 0])); for (const t of buys) byKind.set(t.debt.kind, byKind.get(t.debt.kind) + t.amt); const tot = [...byKind.values()].reduce((a, v) => a + v, 0) || 1;
-    card(c, M, y, W - 2 * M, 46 + 34 + 60, "purple"); yy = title(c, M + 22, y + 18, 2, "What kind of debt", "purple");
-    let bx = M + 22; for (const [k] of V.DEBT_KINDS) { const w = inW * byKind.get(k) / tot; if (w > 0) { rr(c, bx, yy, Math.max(4, w - 3), 26, 6); fill(c, KC[k]); bx += w; } }
-    let lx = M + 22; for (const [k, l] of V.DEBT_KINDS) { const v = byKind.get(k); if (!v) continue; rr(c, lx, yy + 42, 18, 18, 4); fill(c, KC[k]); lx += 26 + tx(c, `${l} ${V.usdEst(v)} · ${Math.round(v / tot * 100)}%`, lx + 26, yy + 58, { s: 20, w: 700, col: C.ink2 }) + 30; }
-    y += 46 + 34 + 60 + 16;
+    const byKind = new Map(V.DEBT_KINDS.map(([k]) => [k, 0])); for (const t of poolAll) if (t.side === "B") byKind.set(t.debt.kind, byKind.get(t.debt.kind) + t.amt); const tot = [...byKind.values()].reduce((a, v) => a + v, 0) || 1;
+    // the legend wraps onto as many lines as it needs
+    const legend = V.DEBT_KINDS.filter(([k]) => byKind.get(k)).map(([k, l]) => [k, `${l} ${V.usdEst(byKind.get(k))} · ${Math.round(byKind.get(k) / tot * 100)}%`]);
+    let lines = 1, lw0 = 0; for (const [, t] of legend) { font(c, 700, 20); const w = 26 + c.measureText(t).width + 30; if (lw0 + w > inW) { lines++; lw0 = 0; } lw0 += w; }
+    const h2 = 46 + 34 + lines * 32 + 24; card(c, M, y, W - 2 * M, h2, "purple"); yy = title(c, M + 22, y + 18, 2, "What kind of debt", "purple");
+    let bx = M + 22; for (const [k] of V.DEBT_KINDS) { const w = inW * byKind.get(k) / tot; if (w > 0) { c.globalAlpha = DT === "all" || DT === k ? 1 : 0.25; rr(c, bx, yy, Math.max(4, w - 3), 26, 6); fill(c, KC[k]); c.globalAlpha = 1; bx += w; } }
+    let lx = M + 22, ly = yy + 58; for (const [k, t] of legend) { font(c, 700, 20); const w = 26 + c.measureText(t).width + 30; if (lx + w - 30 > M + 22 + inW) { lx = M + 22; ly += 32; }
+      c.globalAlpha = DT === "all" || DT === k ? 1 : 0.45; rr(c, lx, ly - 16, 18, 18, 4); fill(c, KC[k]); tx(c, t, lx + 26, ly, { s: 20, w: DT === k ? 800 : 700, col: C.ink2 }); c.globalAlpha = 1; lx += w; }
+    y += h2 + 16;
+    if (all) {
+      // 3 who bought the most, each split by kind
+      const pp = new Map(); for (const t of buys) { const e = pp.get(t.m) || { m: V.members[t.m], list: [], kinds: new Map() }; e.list.push(t); e.kinds.set(t.debt.kind, (e.kinds.get(t.debt.kind) || 0) + t.amt); pp.set(t.m, e); }
+      const rank = [...pp.values()].map((e) => ({ ...e, est: V.estOf(e.list) })).sort((a, b) => b.est.best - a.est.best), h3 = BOTTOM - y, rowH = 62, n = Math.min(rank.length, Math.floor((h3 - 46 - 10) / rowH)), maxV = rank[0].est.best || 1;
+      card(c, M, y, W - 2 * M, h3, "teal"); yy = title(c, M + 22, y + 18, 3, "Who bought the most", "teal");
+      const WN = { treasury: "U.S. Treasuries", muni: "municipal bonds", corp: "corporate bonds", bank: "bank notes and CDs", fund: "bond funds" };
+      for (let i = 0; i < n; i++) { const e = rank[i], ry = yy + i * rowH, cyy = ry + rowH / 2; if (i % 2 === 0) { rr(c, M + 14, ry, W - 2 * M - 28, rowH, 8); fill(c, TINT.teal); }
+        await face(c, e.m, M + 50, cyy, 22);
+        tx(c, `${V.shortName(e.m)} · ${V.party(e.m)}`, M + 84, cyy - 3, { s: 20, w: 800, max: 330 });
+        const topK = [...e.kinds.entries()].sort((a, b) => b[1] - a[1])[0][0]; tx(c, `${V.plural(e.list.length, "purchase")}${DT === "all" ? ` · mostly ${WN[topK]}` : ""}`, M + 84, cyy + 21, { s: 16, w: 600, col: C.ink2, max: 330 });
+        const bx0 = M + 440, bw = W - M - 22 - 170 - bx0; let x = bx0; for (const [k] of V.DEBT_KINDS) { const w = bw * (e.kinds.get(k) || 0) / maxV; if (w > 0) { c.fillStyle = KC[k]; c.fillRect(x, cyy - 9, w, 18); x += w; } }
+        tx(c, V.usdEst(e.est.best), W - M - 30, cyy + 7, { s: 21, w: 800, f: MONO, a: "right" }); }
+      if (rank.length > n) tx(c, `+${rank.length - n} more people`, M + 22, yy + n * rowH + 24, { s: 17, w: 600, col: C.muted });
+      footer(c, "House, Senate and OGE filings · best estimates of the ranges · Not advice");
+      return;
+    }
     // 3 each issue they bought: the site's table
     const gs = new Map(); for (const t of buys) { const d = t.debt, k = `${d.name}|${d.coupon}|${d.mdate}`, g = gs.get(k) || { d, list: [] }; g.list.push(t); gs.set(k, g); }
     const rows = [...gs.values()].map((g) => ({ ...g, est: V.estOf(g.list) })).sort((a, b) => b.est.best - a.est.best), rowH = 40, h3 = BOTTOM - y, n = Math.min(rows.length, Math.floor((h3 - 46 - 38 - 44) / rowH));
@@ -378,18 +405,52 @@
     footer(c, "House filings · best estimates of the ranges · maturity from the filing or a CUSIP lookup (OpenFIGI) · Not advice");
   }
 
+  // ---------- 6b. bonds by issuer: who bought one issuer's bonds, with each person's coupons and maturities ----------
+  async function vBondIssuer(c) {
+    const since = V.windowStart(), name = V.PE.bond; if (!name) return FB;
+    const KC = { treasury: C.blue, muni: "#1baf7a", corp: "#eb6834", bank: "#6f4cc3", fund: "#8e96a3" }, WN = { treasury: "U.S. Treasuries", muni: "municipal bonds", corp: "corporate bonds", bank: "bank notes and CDs", fund: "bond funds" };
+    const pool = V.trades.filter((t) => t.time >= since && t.lo && V.isDebt(t) && !V.isBiz(V.members[t.m]) && (t.debt = t.debt || V.debtInfo(t)).name === name);
+    const buys = pool.filter((t) => t.side === "B"), sells = pool.filter((t) => t.side === "S"); if (!buys.length) return FB;
+    const kind = buys[0].debt.kind, eb = V.estOf(buys), es = V.estOf(sells), per = new Map();
+    for (const t of pool) { const e = per.get(t.m) || { m: V.members[t.m], b: [], s: [], issues: new Map() }; (t.side === "B" ? e.b : e.s).push(t); if (t.side === "B") e.issues.set(`${t.debt.coupon ?? ""}|${t.debt.mdate || ""}`, t.debt); per.set(t.m, e); }
+    const rows = [...per.values()].filter((e) => e.b.length).map((e) => ({ ...e, eb: V.estOf(e.b), es: V.estOf(e.s) })).sort((a, b) => b.eb.best - a.eb.best);
+    const perL = V.P.window === "all" ? `since ${V.START_SHORT}` : V.windowLabel(), inW = W - 2 * M - 44;
+    let y = header(c, `${V.DEBT_KINDS.find(([k]) => k === kind)[1]} · ${perL}`, `Who bought ${name}`, "", `${rows.length === 1 ? "One person" : `${rows.length} people`} bought its bonds ${V.P.window === "all" ? `since ${V.START_SHORT}` : `in ${V.periodLong()}`}.`, { ts: 46 });
+    const fw = (inW - 24) / 3, facts = [["blue", V.usdEst(eb.best), "Bought", `${V.plural(buys.length, "purchase")}${eb.exact ? "" : `, likely ${V.spanText(eb.lo, eb.hi)}`}.`],
+      ["red", sells.length ? V.usdEst(es.best) : "$0", "Sold or redeemed", sells.length ? `${V.plural(sells.length, "sale")}${es.exact ? "" : `, likely ${V.spanText(es.lo, es.hi)}`}.` : "None in this period."],
+      ["purple", String(rows.length), rows.length === 1 ? "Person" : "People", `${WN[kind]} bought by members and officials.`]];
+    const fh = 46 + 76 + Math.max(...facts.map((f) => paraH(c, f[3], fw - 28, 18))) + 20; card(c, M, y, W - 2 * M, fh, "blue"); let yy = title(c, M + 22, y + 18, 1, "The totals", "blue");
+    facts.forEach(([col, big, head, body], i) => { const x = M + 22 + i * (fw + 12); rr(c, x, yy, fw, fh - 60, 12); fill(c, TINT[col]);
+      tx(c, big, x + 14, yy + 40, { s: 32, w: 800, col: C[col], f: MONO, max: fw - 28 }); tx(c, head, x + 14, yy + 66, { s: 19, w: 800 }); para(c, body, x + 14, yy + 74, fw - 28, { s: 18 }); });
+    y += fh + 16;
+    const h2 = BOTTOM - y, rowH = 54, n = Math.min(rows.length, Math.floor((h2 - 46 - 38 - 40) / rowH));
+    card(c, M, y, W - 2 * M, h2, "teal"); yy = title(c, M + 22, y + 18, 2, "Who bought it", "teal");
+    const X0 = M + 22, cols = [["Person", X0 + 46, 290], ["Issues (coupon · matures)", X0 + 360, 330], ["Bought", X0 + 820, 130, "right"], ["Sold", W - M - 32, 100, "right"]];
+    table(c, M + 14, yy - 4, W - 2 * M - 28, cols, rows.slice(0, n).map((e) => { const iss = [...e.issues.values()].map((d) => [d.coupon != null ? `${+d.coupon.toFixed(3)}%` : "", d.mdate ? V.fmtDate(d.mdate, { month: "short", year: "numeric" }) : ""].filter(Boolean).join(" · ") || "not given");
+      return [[`${V.shortName(e.m)} · ${V.party(e.m)}`, V.plural(e.b.length, "purchase"), C.ink], [iss.slice(0, 2).join("   ") + (iss.length > 2 ? `   +${iss.length - 2}` : ""), null, C.ink2, null, MONO],
+        [e.b.length === 1 ? V.amountShort(e.b[0]) : V.usdEst(e.eb.best), null, C.ink, null, MONO], [e.s.length ? V.usdEst(e.es.best) : "–", null, e.s.length ? C.down : C.muted, null, MONO]]; }), { rowH, col: "teal", s1: 18 });
+    for (let i = 0; i < n; i++) await face(c, rows[i].m, X0 + 20, yy - 4 + 38 + i * rowH + rowH / 2, 17);
+    if (rows.length > n) tx(c, `+${rows.length - n} more people`, M + 22, yy + 38 + n * rowH + 24, { s: 17, w: 600, col: C.muted });
+    footer(c, "House, Senate and OGE filings · best estimates of the ranges · issuer names are the filings' abbreviations written out · Not advice");
+  }
+
   // ---------- 7. biggest buys: the site's ring, logo badges and side cards, with the Markets & AI look and larger text ----------
   async function vHoldings(c) {
-    if (V.P.hby === "stock" || !V.PE.member) return FB;
-    const m = V.PE.member, since = V.windowStart();
-    const mine = V.trades.filter((t) => t.m === m.i && t.time >= since && t.side !== "O" && t.cls !== "option" && t.lo), by = new Map();
-    for (const t of mine) { const k = V.holdingKey(t); if (!k) continue; const g = by.get(k) || { k, info: V.holdingInfo(t), t: t.t, first: t, b: 0, s: 0 }; if (t.side === "B") g.b += t.amt; else g.s += t.amt; by.set(k, g); }
+    const byStock = V.P.hby === "stock", tk = V.PE.ticker, m = byStock ? null : V.PE.member;
+    if (byStock ? !tk || !V.stocks[tk] : !m) return FB;
+    const since = V.windowStart();
+    const mine = V.trades.filter((t) => (byStock ? t.t === tk && !V.isBiz(V.members[t.m]) : t.m === m.i) && t.time >= since && t.side !== "O" && t.cls !== "option" && t.lo), by = new Map();
+    for (const t of mine) { const k = byStock ? t.m : V.holdingKey(t); if (k == null || k === "") continue; const pm = V.members[t.m];
+      const g = by.get(k) || (byStock ? { k, m: pm, info: { name: `${V.shortName(pm)} · ${V.isExec(pm) ? pm.party : V.party(pm)}`, kind: "stock" }, t: tk, first: t, b: 0, s: 0 } : { k, info: V.holdingInfo(t), t: t.t, first: t, b: 0, s: 0 });
+      if (t.side === "B") g.b += t.amt; else g.s += t.amt; by.set(k, g); }
     const all = [...by.values()], top = all.filter((g) => g.b > 0).sort((a, b) => b.b - a.b).slice(0, 15); if (!top.length) return FB; const buys = mine.filter((t) => t.side === "B"), sells = mine.filter((t) => t.side === "S");
     const eb = V.estOf(buys), es = V.estOf(sells), total = top.reduce((a, g) => a + g.b, 0);
     const money = (v) => v >= 1e9 ? `$${(v / 1e9).toFixed(2)}B` : v >= 1e8 ? `$${Math.round(v / 1e6)}M` : v >= 1e6 ? `$${(v / 1e6).toFixed(1)}M` : v >= 1e3 ? `$${Math.round(v / 1e3)}K` : `$${Math.round(v)}`;
     let pi = 0;
-    for (const g of top) { const b = V.brandOf(g.first); g.col = b ? b[0] : V.HOLD_PALETTE[pi++ % V.HOLD_PALETTE.length]; g.brand = b; g.logo = b && b[1] && b[1] !== "ms" ? await V.loadLogo(b[1]) : null; g.soft = V.mixHex(g.col, "#6b7584", 0.3); }
-    let y = header(c, `${V.titleOf(m)} ${V.shortName(m)} · ${V.windowLabel()}`, `${V.lastName(m)}’s biggest buys`, `The ${top.length} largest buys in ${V.periodLong()}, and how much of each was also sold.`);
+    for (const g of top) { if (byStock) { g.col = V.HOLD_PALETTE[pi++ % V.HOLD_PALETTE.length]; } else { const b = V.brandOf(g.first); g.col = b ? b[0] : V.HOLD_PALETTE[pi++ % V.HOLD_PALETTE.length]; g.brand = b; g.logo = b && b[1] && b[1] !== "ms" ? await V.loadLogo(b[1]) : null; } g.soft = V.mixHex(g.col, "#6b7584", 0.3); }
+    const stName = byStock ? short(V.stocks[tk][0]) : "";
+    let y = byStock ? header(c, `${tk} · ${V.windowLabel()}`, `Who bought ${stName}`, `The ${top.length === 1 ? "buyer" : `${top.length} biggest buyers`} in ${V.periodLong()}, and how much each also sold.`)
+      : header(c, `${V.titleOf(m)} ${V.shortName(m)} · ${V.windowLabel()}`, `${V.lastName(m)}’s biggest buys`, `The ${top.length} largest buys in ${V.periodLong()}, and how much of each was also sold.`);
     const factH = 214, h1 = BOTTOM - y - factH - 16;
     // 1 the ring, with each holding's card beside its slice
     card(c, M, y, W - 2 * M, h1, "blue"); const yy = title(c, M + 22, y + 18, 1, "Where the money went", "blue");
@@ -397,7 +458,7 @@
     let a = top.length > 1 && top[0].b / total > 0.4 ? -Math.PI * top[0].b / total : -Math.PI / 2;
     for (const g of top) { const sw = 2 * Math.PI * g.b / total; g.mid = a + sw / 2; c.beginPath(); c.arc(CX, CY, RO, a, a + sw); c.arc(CX, CY, RI, a + sw, a, true); c.closePath(); c.fillStyle = g.soft; c.fill(); if (top.length > 1) { c.lineWidth = 3; c.strokeStyle = "#fff"; c.stroke(); } a += sw; }
     c.beginPath(); c.arc(CX, CY, RI - 8, 0, 7); c.strokeStyle = C.blue; c.lineWidth = 3; c.stroke();
-    await face(c, m, CX, CY, RI - 14, true);
+    if (!byStock) await face(c, m, CX, CY, RI - 14, true);
     const right = top.filter((g) => Math.cos(g.mid) >= 0).sort((p, q) => Math.sin(p.mid) - Math.sin(q.mid)), left = top.filter((g) => Math.cos(g.mid) < 0).sort((p, q) => Math.sin(p.mid) - Math.sin(q.mid));
     const maxN = Math.max(right.length, left.length), CH = Math.min(78, Math.floor((bot0 - top0 - 6 * (maxN - 1)) / maxN));
     for (const [col, sg] of [[right, 1], [left, -1]]) {
@@ -412,11 +473,13 @@
       rr(c, x, y0, z, z, 9); fill(c, b[2] || b[0]);
       if (g.logo) { const n = Math.round(z * 1.2), off = document.createElement("canvas"); off.width = off.height = n; const oc = off.getContext("2d"); oc.drawImage(g.logo, 0, 0, n, n); oc.globalCompositeOperation = "source-in"; oc.fillStyle = b[2] ? b[0] : "#fff"; oc.fillRect(0, 0, n, n); c.drawImage(off, x + z * 0.2, y0 + z * 0.2, z * 0.6, z * 0.6); return; }
       const t = b[3] || g.info.badge; font(c, 800, t.length > 3 ? z * 0.3 : t.length > 2 ? z * 0.36 : t.length > 1 ? z * 0.42 : z * 0.56); c.fillStyle = "#fff"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(t, x + z / 2, y0 + z / 2 + 1); c.textAlign = "left"; c.textBaseline = "alphabetic"; };
+    if (byStock) { const b = V.brandOf({ t: tk, a: V.stocks[tk][0] }), ctr = { brand: b || [C.blue, null, null, tk.slice(0, 4)], info: { badge: tk.slice(0, 4) }, col: b ? b[0] : C.blue, logo: b && b[1] && b[1] !== "ms" ? await V.loadLogo(b[1]) : null };
+      c.beginPath(); c.arc(CX, CY, RI - 14, 0, 7); fill(c, "#fff"); badge(ctr, CX - 40, CY - 64, 80); tx(c, tk, CX, CY + 50, { s: 26, w: 800, f: MONO, a: "center" }); tx(c, stName, CX, CY + 74, { s: 15, w: 600, col: C.muted, a: "center", max: 2 * RI - 50, min: 11 }); }
     for (const g of top) {
       const x0 = g.side > 0 ? W - M - 16 - CW : M + 16, y0 = g.ty - CH / 2, ax = g.side > 0 ? x0 : x0 + CW, ex = CX + (RO + 3) * Math.cos(g.mid), ey = CY + (RO + 3) * Math.sin(g.mid);
       c.strokeStyle = g.soft; c.lineWidth = 2; c.beginPath(); c.moveTo(ex, ey); c.lineTo(ax - g.side * 18, g.ty); c.lineTo(ax, g.ty); c.stroke(); c.beginPath(); c.arc(ex, ey, 4.5, 0, 7); c.fillStyle = g.soft; c.fill();
       c.save(); c.shadowColor = "rgba(20,40,80,0.10)"; c.shadowBlur = 8; c.shadowOffsetY = 2; rr(c, x0, y0, CW, CH, 10); fill(c, "#fff"); c.restore(); rr(c, x0, y0, 7, CH, 3); fill(c, g.soft);
-      const z = Math.min(48, CH - 16); badge(g, x0 + 16, y0 + (CH - z) / 2, z);
+      const z = Math.min(48, CH - 16); if (byStock) await face(c, g.m, x0 + 16 + z / 2, y0 + CH / 2, z / 2 - 2); else badge(g, x0 + 16, y0 + (CH - z) / 2, z);
       const tx0 = x0 + 28 + z, tw = CW - (tx0 - x0) - 10, small = CH < 76;
       tx(c, g.info.name, tx0, y0 + (small ? 21 : 24), { s: 17, w: 700, col: C.ink2, max: tw, min: 12 });
       tx(c, money(g.b), tx0, y0 + (small ? 44 : 50), { s: small ? 21 : 24, w: 800, f: MONO });
@@ -425,7 +488,9 @@
     y += h1 + 16;
     // 2–4 the three facts, as the Markets & AI tiles
     const kinds = { stock: 0, fund: 0, bond: 0 }; for (const g of all) kinds[g.info.kind] += g.b; const share = (v) => Math.round(v / (eb.best || 1) * 100) + "%", net = eb.best - es.best;
-    const third = kinds.bond / (eb.best || 1) >= 0.1 ? ["gold", money(kinds.bond), "Went into bonds and notes", `Bonds and bank notes took ${share(kinds.bond)} of the buying; stocks ${share(kinds.stock)}, funds ${share(kinds.fund)}.`]
+    const pSum = (k) => all.filter((g) => (g.m && g.m.party) === k).reduce((a, g) => a + g.b, 0);
+    const third = byStock ? ["purple", `${share(pSum("D"))} · ${share(pSum("R"))}`, "Democrats · Republicans", `Democrats bought ${money(pSum("D"))} and Republicans ${money(pSum("R"))} of it in ${V.periodLong()}.`]
+      : kinds.bond / (eb.best || 1) >= 0.1 ? ["gold", money(kinds.bond), "Went into bonds and notes", `Bonds and bank notes took ${share(kinds.bond)} of the buying; stocks ${share(kinds.stock)}, funds ${share(kinds.fund)}.`]
       : kinds.fund / (eb.best || 1) >= 0.1 ? ["green", money(kinds.fund), "Went into funds and ETFs", `Funds and ETFs took ${share(kinds.fund)} of the buying; single stocks ${share(kinds.stock)}.`]
       : ["green", share(total), `In these ${top.length}`, `Of all the buying, ${share(total)} went into the holdings shown.`];
     const facts = [["blue", money(eb.best), "Bought", `Best estimate from ${buys.length.toLocaleString()} buys, likely ${money(eb.lo)}–${money(eb.hi)}. The filings' ranges alone allow ${money(eb.min)}–${money(eb.max)}.`],
@@ -434,7 +499,7 @@
     facts.forEach(([col, big, head, body], i) => { const x = M + i * (fw + 12); card(c, x, y, fw, factH, col);
       tx(c, big, x + 20, y + 58, { s: 42, w: 800, col: C[col], f: MONO, max: fw - 40 }); tx(c, head, x + 20, y + 90, { s: 21, w: 800 }); para(c, body, x + 20, y + 98, fw - 36, { s: fs }); });
     const lastFiled = mine.reduce((mx, t) => t.fd && t.fd > mx ? t.fd : mx, "");
-    footer(c, `STOCK Act transaction reports${lastFiled ? `, filed through ${date(lastFiled)}` : ""} (${mine.length.toLocaleString()} trades) · best estimates of the filed ranges · options left out · Not advice`);
+    footer(c, `${byStock ? "STOCK Act and OGE" : "STOCK Act"} transaction reports${lastFiled ? `, filed through ${date(lastFiled)}` : ""} (${mine.length.toLocaleString()} trades) · best estimates of the filed ranges · options left out · Not advice`);
   }
 
   // ---------- 8. member factsheet: the site's two columns, with its bar chart and largest buys ----------
@@ -527,7 +592,8 @@
 
   // ---------- 10. committee overlap ----------
   async function vConflict(c) {
-    if (V.PE.memberKey === "all" || !V.PE.member || V.noSeat(V.PE.member)) return FB;
+    if (V.PE.memberKey === "all") return vConflictAll(c);
+    if (!V.PE.member || V.noSeat(V.PE.member)) return FB;
     const m = V.PE.member, S = V.S, since = V.windowStart(), HOT = "#d9480f", COLD = "#b4bcc7";
     const list = V.trades.filter((t) => t.st && (V.isSec(t) || (t.cls === "option" && S.options)) && t.side !== "O" && t.time >= since && t.amt > 0 && t.m === m.i), inArea = (t) => !!(t.c && t.c.length);
     if (!list.length) return FB; const total = V.sumAmt(list), hot = V.sumAmt(list.filter(inArea));
@@ -577,6 +643,29 @@
     topIn.forEach((g, i) => { const ry = yy + i * 54; rr(c, M + 14, ry, W - 2 * M - 28, 48, 8); fill(c, TINT.red); tx(c, g.t, M + 26, ry + 31, { s: 21, w: 800, f: MONO });
       tx(c, `${short(V.stocks[g.t][0])} · ${V.cname(g.c)}`, M + 120, ry + 31, { s: 19, w: 600, col: C.ink2, max: inW - 320 }); tx(c, V.usdEst(g.amt), W - M - 30, ry + 31, { s: 21, w: 800, f: MONO, a: "right", col: HOT }); });
     footer(c, "House filings · committee areas are this site's reading of each committee's remit · a match is not evidence of wrongdoing · Not advice");
+  }
+
+  // ---------- 10b. committee overlap for all of Congress: which committees' members trade most in their own areas ----------
+  async function vConflictAll(c) {
+    const S = V.S, since = V.windowStart(), HOT = "#d9480f", inW = W - 2 * M - 44;
+    const list = V.trades.filter((t) => t.st && (V.isSec(t) || (t.cls === "option" && S.options)) && t.side !== "O" && t.time >= since && t.amt > 0 && !V.noSeat(V.members[t.m])), inArea = (t) => !!(t.c && t.c.length);
+    if (!list.length) return FB;
+    const total = V.sumAmt(list), hot = V.sumAmt(list.filter(inArea)), nm = new Set(list.map((t) => t.m)).size;
+    let y = header(c, `Committee overlap · all of Congress · ${V.periodLong()}`, "All of Congress", `${V.listSpan(list.filter(inArea))} of ${V.listSpan(list)} traded · ${list.length.toLocaleString()} trades by ${nm} members.`);
+    card(c, M, y, W - 2 * M, 190, "red"); let yy = title(c, M + 22, y + 18, 1, "Trading in their own committees' areas", "red");
+    const sw = tx(c, `${Math.round(hot / total * 100)}%`, M + 22, yy + 92, { s: 110, w: 900, col: HOT });
+    para(c, "of stock trading by members of Congress was in industries **their own committees oversee**.", M + 50 + sw, yy + 14, inW - sw - 30, { s: 24, col: C.ink });
+    y += 190 + 16;
+    const byC = new Map(); for (const t of list) if (inArea(t)) for (const cc of t.c) { const g = byC.get(cc) || { c: cc, amt: 0, n: 0, ms: new Set(), tk: new Map() }; g.amt += t.amt; g.n++; g.ms.add(t.m); g.tk.set(t.t, (g.tk.get(t.t) || 0) + t.amt); byC.set(cc, g); }
+    const rows = [...byC.values()].sort((a, b) => b.amt - a.amt), h2 = BOTTOM - y, rowH = 78, N = Math.min(rows.length, Math.floor((h2 - 46 - 10) / rowH)), max = rows.length ? rows[0].amt : 1;
+    card(c, M, y, W - 2 * M, h2, "gold"); yy = title(c, M + 22, y + 18, 2, "Dollars members traded in their committee's area", "gold");
+    rows.slice(0, N).forEach((g, i) => { const ry = yy + i * rowH, cy = ry + rowH / 2; if (i % 2 === 0) { rr(c, M + 14, ry, W - 2 * M - 28, rowH, 8); fill(c, TINT.gold); }
+      tx(c, V.cname(g.c), M + 26, cy - 6, { s: 21, w: 800, max: 380 });
+      tx(c, `${V.plural(g.ms.size, "member")} · ${V.plural(g.n, "trade")} · ${[...g.tk.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([t]) => t).join(", ")}`, M + 26, cy + 20, { s: 16, w: 600, col: C.ink2, max: 380 });
+      const bx0 = M + 430, bx1 = W - M - 160; rr(c, bx0, cy - 12, Math.max(4, (bx1 - bx0) * g.amt / max), 24, 6); fill(c, HOT);
+      tx(c, V.usdEst(g.amt), W - M - 28, cy + 8, { s: 21, w: 800, f: MONO, a: "right" }); });
+    if (!rows.length) tx(c, "No trades matched a committee area in this period.", M + 22, yy + 40, { s: 22, w: 600, col: C.muted });
+    footer(c, "House and Senate filings · committee areas are this site's reading of each committee's remit · a match is not evidence of wrongdoing · Not advice");
   }
 
   // ---------- 11. buying spikes ----------
