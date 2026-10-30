@@ -458,5 +458,58 @@
  "now|health|2026-10-27": [
   "WSJ (21 Oct) noted the sector's rally was itself a warning sign for the market → Merck −4.4%, UnitedHealth −2.1%, Pfizer −1.0% this week.",
   "J&J +3.6% went the other way."
+ ],
+ "drop|2026-10-30": [
+  "Amazon and Intel reported disappointing earnings (30 Oct headlines) → tech selling deepened: Intel −28.6%, SanDisk −13.5%, Datadog −11.5%, Qualcomm −11.1%, AMD −10.9%.",
+  "Investors questioned returns on AI spending, which is nearing $1 trillion (BBC, CNN, Reuters, 30 Oct) → Alphabet lost $475 billion in market value, the biggest drop in its history (Yahoo Finance).",
+  "Nasdaq 100 −3.5%, S&P 500 −1.8%, Dow −1.1%; basic materials −4.3% and technology −3.4% were the weakest sectors, while oil rose (Bloomberg)."
+ ],
+ "today|all|2026-10-30": [
+  "Intel −28.6%, SanDisk −13.5% and Datadog −11.5% fell hardest after Amazon's and Intel's earnings and worries about AI spending (30 Oct headlines); Regeneron rose 13.3%.",
+  "Basic materials −4.3% and technology −3.4% were the weakest sectors."
+ ],
+ "now|all|2026-10-30": [
+  "S&P 500 −0.6% over the week and −1.1% over the month, with Friday's tech selloff after Amazon and Intel earnings (30 Oct) the main drag.",
+  "Biggest movers: ServiceNow −33.9%, Itaú −26.3%, Fortinet −24.4%, Intel −24.4% (the news we have doesn't say why)."
+ ],
+ "today|ai|2026-10-30": [
+  "AMD −10.9%, Marvell −10.1%, Arm −10.0% and Applied Materials −7.5% fell, as Amazon's and Intel's earnings and worries about AI spending hit tech (30 Oct headlines).",
+  "The basket is −17.6% over the past month, against the S&P 500 −1.8% today."
+ ],
+ "now|ai|2026-10-30": [
+  "Marvell −14.1% and Palantir −6.4% fell this week; KLA +8.5% and Lam Research +3.9% rose, after Friday's 6.8% drop in the basket.",
+  "Anthropic's IPO filing buoyed AI stocks on 26 Oct (Reuters); the basket is still −17.6% over the month."
+ ],
+ "today|defense|2026-10-30": [
+  "AeroVironment −6.5% and Lockheed −1.0%; Booz Allen +5.1% and Leidos +1.4% (the news we have doesn't say why).",
+  "The basket is up 13.9% over the month; the S&P 500 fell 1.8% today."
+ ],
+ "now|defense|2026-10-30": [
+  "Huntington Ingalls +15.6%, Booz Allen +13.0%, L3Harris +9.3% and General Dynamics +6.7% this week; L3Harris and Huntington posted strong earnings (Barron's, 29 Oct).",
+  "The S&P 500 fell 0.6% over the same week."
+ ],
+ "today|banks|2026-10-30": [
+  "Goldman Sachs −3.6%, Morgan Stanley −3.0%, Citi −2.5% and Bank of America −2.2% (the news we have doesn't name a bank-specific cause).",
+  "The basket is down 0.7% over the month; the S&P 500 fell 1.8% today."
+ ],
+ "now|banks|2026-10-30": [
+  "Morgan Stanley +2.7%, Goldman Sachs +2.2% and Citi +1.7% this week; Schwab −2.8%.",
+  "The basket is down 0.7% over the month."
+ ],
+ "today|oil|2026-10-30": [
+  "Oil rose on the day (Bloomberg, 30 Oct) → Phillips 66 +3.4%, Marathon Petroleum +2.8%, ConocoPhillips +2.7%, Exxon +2.2%.",
+  "The basket is up 12.7% over the month; Brent topped $115 earlier in the week (Yahoo Finance, 28 Oct)."
+ ],
+ "now|oil|2026-10-30": [
+  "Halliburton +3.6%, Exxon +2.2% and ConocoPhillips +2.2% this week; Marathon Petroleum −2.7%.",
+  "US crude and distillate inventories fell (EIA, Reuters, 28 Oct); the S&P 500 fell 0.6% over the week."
+ ],
+ "today|health|2026-10-30": [
+  "Lilly +3.2%, Merck +2.2% and Pfizer +1.9% rose; Thermo Fisher −1.7% (the news we have doesn't say why).",
+  "MarketWatch (28 Oct) called it the sector's biggest hot streak in a generation; the basket is up 10.7% over the month."
+ ],
+ "now|health|2026-10-30": [
+  "Lilly +11.3%, J&J +3.6%, Thermo Fisher +3.4% and AbbVie +3.2% this week.",
+  "Bloomberg (27 Oct) described healthcare as an anti-AI bet as investors turned defensive."
  ]
 }

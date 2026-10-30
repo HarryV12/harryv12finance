@@ -386,5 +386,33 @@
    }
   ],
   "why": "With no company-specific news in the headlines, the fall looks like a gradual loss of investor interest rather than a reaction to one event."
+ },
+ "PH": {
+  "cause": "No single cause: shares slid from an August high with no reported bad news",
+  "clear": false,
+  "summary": "Parker-Hannifin peaked at $1,071.70 on 7 August and has fallen about 16% since, against a 2% fall for the S&P 500 and 2% for its sector. The headlines we have name no company-specific bad news; it completed its Filtration Group acquisition on 15 August, and an analyst kept a Hold rating in September.",
+  "events": [
+   {
+    "date": "2026-08-07",
+    "kind": "peak",
+    "text": "Shares at their high, $1,071.70"
+   },
+   {
+    "date": "2026-08-10",
+    "kind": "bad",
+    "text": "Shares underperform competitors (MarketWatch); no cause given"
+   },
+   {
+    "date": "2026-08-15",
+    "kind": "good",
+    "text": "Completes the Filtration Group acquisition (Yahoo Finance)"
+   },
+   {
+    "date": "2026-09-30",
+    "kind": "neutral",
+    "text": "Deutsche Bank raises its price target to $1,023 from $998 but keeps a Hold rating"
+   }
+  ],
+  "why": "With no company-specific bad news in the headlines, the slide looks like investors taking profits after a high, together with weakness across industrial stocks. A Hold rating with a price target near the share price suggests analysts saw little room for further gains."
  }
 }
