@@ -1141,15 +1141,18 @@
     const line = idx.map((i, k) => `${k ? "L" : "M"}${X(i).toFixed(1)},${Y(s[i]).toFixed(1)}`).join("");
     const area = `${line}L${X(idx[idx.length - 1]).toFixed(1)},${H - Bm}L${X(idx[0]).toFixed(1)},${H - Bm}Z`;
     const ticks = [0, 1, 2, 3, 4].map((k) => lo + (hi - lo) * k / 4);
-    const months = []; let lastM = ""; for (let i = i0; i <= i1; i++) { const mo = dates[i].slice(0, 7); if (mo !== lastM) { if (lastM) months.push(i); lastM = mo; } }
-    const every = Math.ceil(months.length / (narrow ? 4 : 8));
+    // date ticks: the first trading day of each month, plus the middle of the month on periods of six months or less
+    const months = []; let lastM = "", midDone = ""; const shortSpan = i1 - i0 <= 130;
+    for (let i = i0; i <= i1; i++) { const mo = dates[i].slice(0, 7); if (mo !== lastM) { if (lastM) months.push(i); lastM = mo; } else if (shortSpan && +dates[i].slice(8, 10) >= 15 && midDone !== mo) { midDone = mo; months.push(i); } }
+    const every = Math.ceil(months.length / (narrow ? 4 : 9)), shown = months.filter((_, k) => k % every === 0).filter((i, k, arr) => !(k === 0 && arr[1] != null && X(arr[1]) - X(i) < (narrow ? 70 : 64)) && X(i) > L + 24);
+    const tickLabel = (i, k) => fmtDate(dates[i], { day: "numeric", month: "short", ...(k === 0 || dates[i].slice(5, 7) === "01" && +dates[i].slice(8, 10) < 15 ? { year: "2-digit" } : {}) });
     const groups = new Map();  // one marker per day and side
     for (const t of list) { const i = idxOf(t.d); if (i < i0 || i > i1) continue; const k = i + t.side; const g = groups.get(k) || { k, i, side: t.side, list: [] }; g.list.push(t); groups.set(k, g); }
     const G = [...groups.values()];
     const tri = (g) => { const x = X(g.i), y = Y(pv(g.i)), n = Math.min(4, g.list.length - 1), w = 6 + n, h = 11 + n; return g.side === "B" ? `M${x.toFixed(1)},${(y + 4).toFixed(1)}l-${w},${h}h${2 * w}z` : `M${x.toFixed(1)},${(y - 4).toFixed(1)}l-${w},-${h}h${2 * w}z`; };
     el.innerHTML = `<div class="chart">${svgBox(W, H, `
       ${ticks.map((v) => `<line x1="${L}" x2="${W - R}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)"/><text x="${W - R + 8}" y="${(Y(v) + 4).toFixed(1)}" font-size="12" fill="var(--muted)" font-family="var(--font-mono)">$${v.toFixed(v < 10 ? 2 : 0)}</text>`).join("")}
-      ${months.filter((_, k) => k % every === 0).map((i) => `<text x="${X(i).toFixed(1)}" y="${H - 8}" font-size="12" fill="var(--muted)" text-anchor="middle">${fmtDate(dates[i], { month: "short", ...(dates[i].slice(5, 7) === "01" ? { year: "2-digit" } : {}) })}</text>`).join("")}
+      ${shown.map((i, k) => `<line x1="${X(i).toFixed(1)}" x2="${X(i).toFixed(1)}" y1="${H - Bm}" y2="${H - Bm + 5}" stroke="var(--muted)"/><text x="${X(i).toFixed(1)}" y="${H - 8}" font-size="12" fill="var(--muted)" text-anchor="middle">${tickLabel(i, k)}</text>`).join("")}
       <path d="${area}" fill="var(--chart-area)"/><path d="${line}" fill="none" stroke="var(--chart)" stroke-width="2.2" stroke-linejoin="round"/>
       <line class="cx" x1="0" x2="0" y1="${T}" y2="${H - Bm}" stroke="var(--ink-2)" stroke-dasharray="3 3" visibility="hidden"/>
       <g class="links"></g>
@@ -2279,6 +2282,69 @@
       ${sec("Photo credits", photos)}
       <p class="small muted">Sources: U.S. House Clerk financial disclosures (Periodic Transaction Reports) and the Office of Government Ethics (Form 278-T). Senate trades: Quiver Quantitative's transcriptions of Senate reports. Prices: Yahoo Finance. Company size and industry: Nasdaq. Committees and official portraits: the congress-legislators and unitedstates/images projects. This is a research tool, not financial advice.</p>`;
   }
+
+  // ---------- every dropdown on the site is a search box: type to narrow its options, arrows and Enter to pick ----------
+  // The <select> stays (hidden) as the source of truth, so the code that fills it and listens to its "change" is unchanged.
+  // Grouped options (<optgroup>) keep their group headings. Selects added later (pages, filters, image makers) are converted too.
+  let gsN = 0;
+  function searchable(sel) {
+    if (sel.dataset.gs || sel.hidden || sel.multiple) return;
+    sel.dataset.gs = "1";
+    const n = ++gsN, wrap = document.createElement("div"), box = document.createElement("input"), ul = document.createElement("ul");
+    wrap.className = "gsel"; box.type = "text"; box.id = `gs${n}`; box.autocomplete = "off"; box.spellcheck = false;
+    box.setAttribute("role", "combobox"); box.setAttribute("aria-expanded", "false"); box.setAttribute("aria-controls", `gsList${n}`); box.setAttribute("aria-autocomplete", "list");
+    // the list lives on the page body, so no scrolling bar, card or sticky header can clip or shift it
+    ul.id = `gsList${n}`; ul.className = "gsel-list"; ul.setAttribute("role", "listbox"); ul.hidden = true;
+    wrap.append(box); sel.after(wrap); sel.hidden = true; document.body.append(ul);
+    const label = sel.id && document.querySelector(`label[for="${sel.id}"]`);
+    if (label) label.htmlFor = box.id; else box.setAttribute("aria-label", sel.getAttribute("aria-label") || "Search");
+    let items = [], at = -1;
+    const current = () => sel.options[sel.selectedIndex]?.textContent || "";
+    const sync = () => { if (document.activeElement !== box && box.value !== current()) box.value = current(); box.placeholder = current() || "Type to search"; };
+    const close = () => { ul.hidden = true; box.setAttribute("aria-expanded", "false"); at = -1; };
+    // the list floats above the page (fixed), so a scrolling filter bar or a card can't cut it off
+    const place = () => { if (ul.hidden) return; const r = box.getBoundingClientRect(), vw = document.documentElement.clientWidth, vh = window.innerHeight, w = Math.min(Math.max(r.width, 260), vw - 16);
+      const below = vh - r.bottom - 8, above = r.top - 8, up = below < 220 && above > below, maxH = Math.max(140, Math.min(340, up ? above : below));
+      Object.assign(ul.style, { position: "fixed", left: `${Math.max(8, Math.min(r.left, vw - w - 8))}px`, width: `${w}px`, right: "auto", maxHeight: `${maxH}px`, top: up ? "auto" : `${r.bottom + 4}px`, bottom: up ? `${vh - r.top + 4}px` : "auto" }); };
+    window.addEventListener("scroll", place, true); window.addEventListener("resize", place);
+    const show = () => {
+      const words = box.value.trim().toLowerCase().split(/\s+/).filter(Boolean), hit = (o) => !o.disabled && words.every((w) => `${o.textContent} ${o.parentElement.label || ""}`.toLowerCase().includes(w));
+      items = [...sel.options].filter(hit).slice(0, 400);
+      let html = "", lastGroup = null;
+      items.forEach((o, k) => {
+        const g = o.parentElement.tagName === "OPTGROUP" ? o.parentElement.label : "";
+        if (g && g !== lastGroup) html += `<li class="head">${esc(g)}</li>`; lastGroup = g;
+        const [main, ...rest] = o.textContent.split(" · ");
+        html += `<li role="option" id="gs${n}o${k}" data-k="${k}" aria-selected="${k === at}"${o.selected ? ' class="cur"' : ""}><span class="nm">${esc(main)}${rest.length ? `<span class="sub"> · ${esc(rest.join(" · "))}</span>` : ""}</span></li>`;
+      });
+      ul.innerHTML = html || '<li class="head">Nothing matches.</li>';
+      ul.hidden = false; box.setAttribute("aria-expanded", "true"); place();
+      if (!words.length) { const cur = ul.querySelector("li.cur"); if (cur) ul.scrollTop = cur.offsetTop - ul.clientHeight / 2; }
+    };
+    const pick = (o) => { close(); box.blur(); if (o && o.value !== sel.value) { sel.value = o.value; sel.dispatchEvent(new Event("change", { bubbles: true })); } sync(); };
+    box.addEventListener("focus", () => { box.value = ""; show(); });
+    box.addEventListener("input", () => { at = -1; show(); });
+    box.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault(); if (ul.hidden) show();
+        at = Math.max(0, Math.min(items.length - 1, at + (e.key === "ArrowDown" ? 1 : -1)));
+        ul.querySelectorAll("li[role=option]").forEach((li) => li.setAttribute("aria-selected", String(+li.dataset.k === at)));
+        ul.querySelector(`#gs${n}o${at}`)?.scrollIntoView({ block: "nearest" }); box.setAttribute("aria-activedescendant", `gs${n}o${at}`);
+      } else if (e.key === "Enter") { e.preventDefault(); pick(items[at >= 0 ? at : 0]); }
+      else if (e.key === "Escape") { close(); box.blur(); sync(); }
+    });
+    ul.addEventListener("mousedown", (e) => { const li = e.target.closest("li[role=option]"); if (li) { e.preventDefault(); pick(items[+li.dataset.k]); } });
+    box.addEventListener("blur", () => setTimeout(() => { if (document.activeElement !== box) { close(); sync(); } }, 120));
+    // the page fills and sets the <select> in many places: keep the box showing its current choice
+    new MutationObserver(sync).observe(sel, { childList: true, subtree: true, attributes: true });
+    sel.addEventListener("change", sync);
+    const tick = setInterval(() => { if (!sel.isConnected) { ul.remove(); clearInterval(tick); return; } sync(); }, 500);
+    sync();
+  }
+  const searchAll = (root = document) => root.querySelectorAll && root.querySelectorAll("select:not([hidden]):not([data-gs])").forEach(searchable);
+  new MutationObserver((muts) => { for (const m of muts) for (const nd of m.addedNodes) if (nd.nodeType === 1) { if (nd.tagName === "SELECT") searchable(nd); else searchAll(nd); } })
+    .observe(document.documentElement, { childList: true, subtree: true });
+  searchAll();
 
   // the Markets & AI image maker (markets_viz.js) draws from the same data and calculations as these pages
   window.HFSite = {
