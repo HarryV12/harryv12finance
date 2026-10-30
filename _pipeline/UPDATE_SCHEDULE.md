@@ -46,9 +46,11 @@ posts them with a fixed caption and no link:
 - **Today's market movers, every weekday with a new close:** the job runs each time the daily update finishes, so this
   goes out as soon as the site has the close, normally about 9:25 pm UK.
 - **This week's market movers, Fridays at 11 pm UK:** the Cloudflare timer starts the job.
+- **What Congress just bought, once a week at most:** Monday to Thursday with that evening's movers, when the PC's weekly
+  build has brought new filings. Filings from a Friday build go out on Monday. No new filings that week, no post.
 
-What Congress just bought and the Copy-trading leaderboard aren't automatic: run the workflow by hand and pick one under
-"post_now". The repository variable `X_POST_MODE` is `live`, or `test` to stop the daily posts at once (nothing posted;
+The Copy-trading leaderboard isn't automatic: run the workflow by hand and pick it under "post_now". The repository
+variable `X_POST_MODE` is `live`, or `test` to stop the daily posts at once (nothing posted;
 see https://x-preview.harryv12finance.pages.dev). `_pipeline/x_posts/state.json` remembers what went out, so nothing
 goes out twice.
 

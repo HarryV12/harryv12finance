@@ -5,8 +5,10 @@ Run by .github/workflows/x_posts.yml. What goes out, at most MAX_A_DAY posts a d
   - Today's market movers: every weekday the US market has a new close, as soon as the daily update has put it on the
     site (the workflow runs each time that update finishes; once a close has gone out, later runs find nothing to do)
   - This week's market movers: Fridays at 11 pm UK (the Cloudflare timer starts the workflow)
+  - What Congress just bought: once a week at most, Monday to Thursday with that evening's movers, when the PC's weekly
+    build has brought new filings. Fridays are full, so filings from a Friday build go out on Monday. No new filings, no post.
 
-What Congress just bought and the Copy-trading leaderboard aren't automatic; --post-now posts any image by hand.
+The Copy-trading leaderboard isn't automatic; --post-now posts any image by hand.
 
 The images come from the site's own Data Visualization page, opened in an invisible browser, so they are exactly
 what its Download button gives. The captions are fixed sentences filled in from the data, with no links (X charges
@@ -138,6 +140,16 @@ def choose(facts, state, today, uk_now):
         due.append({**images["week"], "mark": {"week_close": facts["close"]}})
     else:
         skipped.append("This week's market movers: Fridays at 11 pm UK, once a week")
+
+    newest, week = facts["newestBuyFiled"], "{}-W{}".format(*uk_now.isocalendar()[:2])
+    if uk_now.weekday() > 3 or facts["close"] != today["ny"]:
+        skipped.append("What Congress just bought: Monday to Thursday, on a day with a new close")
+    elif not newest or newest == state.get("congress_filed"):
+        skipped.append(f"What Congress just bought: no new filings (newest is {newest})")
+    elif state.get("congress_week") == week:
+        skipped.append("What Congress just bought: already posted this week")
+    else:
+        due.append({**images["disclosures"], "mark": {"congress_filed": newest, "congress_week": week}})
 
     room = max(0, MAX_A_DAY - state.get("posted_on", {}).get(today["uk"], 0))
     for post in due[room:]:
