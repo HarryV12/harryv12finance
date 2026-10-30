@@ -184,21 +184,30 @@ def check_caption(text):
 
 
 # ---------- X ----------
-def x_session():
+def x_session(state):
     from requests_oauthlib import OAuth1Session
     names = ["X_API_KEY", "X_API_SECRET", "X_ACCESS_TOKEN", "X_ACCESS_SECRET"]
     missing = [n for n in names if not os.environ.get(n)]
     if missing:
         raise RuntimeError(f"live mode needs these secrets: {', '.join(missing)}")
     session = OAuth1Session(*(os.environ[n] for n in names))
+    # An access token starts with its account's ID, so once X has confirmed the account ($0.01), the same ID means the
+    # same account and needs no paid check. Different keys, or a token not in that form, get asked about every time.
+    token_id = os.environ["X_ACCESS_TOKEN"].split("-")[0]
+    if token_id == state.get("x_account_id"):
+        print(f"posting as @{X_ACCOUNT} (the keys haven't changed)")
+        return session
     # checked before anything is posted: keys for any other account stop the run here
     me = session.get("https://api.x.com/2/users/me", timeout=60)
     if not me.ok:
         raise RuntimeError(f"X refused the keys: {me.status_code} {me.text[:400]}")
-    name = me.json()["data"]["username"]
-    if name.lower() != X_ACCOUNT.lower():
-        raise RuntimeError(f"these keys post as @{name}, not @{X_ACCOUNT}, so nothing was posted")
-    print(f"posting as @{name}")
+    account = me.json()["data"]
+    if account["username"].lower() != X_ACCOUNT.lower():
+        raise RuntimeError(f"these keys post as @{account['username']}, not @{X_ACCOUNT}, so nothing was posted")
+    if token_id == account["id"]:
+        state["x_account_id"] = account["id"]
+        save_state(state)
+    print(f"posting as @{account['username']}")
     return session
 
 
@@ -321,7 +330,7 @@ def main():
             posts, skipped = choose(facts, state, today, uk_now.weekday())
         for s in skipped:
             print("not today:", s)
-        session = x_session() if mode == "live" and posts else None
+        session = x_session(state) if mode == "live" and posts else None
 
         for post in posts:
             print(f"making: {post['title']}")
