@@ -1,5 +1,6 @@
 /* HarryV12 Finance · Data Visualization, Explained: beginner's guides to how markets work (bonds, stock trades,
-   futures, options, money, derivatives, commodities, fundamental analysis, ETFs, EBITDA, dividends), one 1080×1440
+   futures, options, money, derivatives, commodities, fundamental analysis, ETFs, EBITDA, dividends, short selling, margin,
+   inflation, interest rates, the yield curve, market cap and P/E, earnings, the balance sheet, IPOs, compounding), one 1080×1440
    image each, in the same design as the Markets & AI images. Worked examples are labelled as such; the live figures
    (bond, gold, ETF, commodity and NVIDIA numbers) come from the site's own data (window.HFSite). */
 (() => {
@@ -415,6 +416,221 @@
     footer(c, "Worked example with a made-up stock · tax rules depend on where you live · Not advice");
   }
 
+  // a line chart with labelled axes: series = [{ pts: [[x, y]…], col, lw, dash }]
+  function plot(c, a, { x0, x1, xTicks, xFmt, y0, y1, yTicks, yFmt, xTitle, series }) {
+    const px0 = a.x + 84, pw = a.w - 84 - 14, top = a.y + 8, ph = a.h - 8 - 62, X = (v) => px0 + (v - x0) / (x1 - x0) * pw, Y = (v) => top + (y1 - v) / (y1 - y0) * ph;
+    for (const v of yTicks) { c.fillStyle = v === 0 ? C.ink2 : C.grid; c.fillRect(px0, Y(v), pw, v === 0 ? 2 : 1.2); tx(c, yFmt(v), px0 - 8, Y(v) + 6, { s: 17, w: 600, col: C.muted, f: MONO, a: "right" }); }
+    c.fillStyle = C.ink2; c.fillRect(px0, top + ph, pw, 2); c.fillRect(px0, top, 2, ph);
+    for (const v of xTicks) { c.fillStyle = C.ink2; c.fillRect(X(v) - 1, top + ph, 2, 6); tx(c, xFmt(v), X(v), top + ph + 28, { s: 18, w: 600, col: C.muted, a: "center" }); }
+    if (xTitle) tx(c, xTitle, px0 + pw / 2, top + ph + 54, { s: 17, w: 700, col: C.muted, a: "center" });
+    for (const s of series) { c.beginPath(); s.pts.forEach(([u, v], i) => { i ? c.lineTo(X(u), Y(v)) : c.moveTo(X(u), Y(v)); }); c.strokeStyle = s.col; c.lineWidth = s.lw || 4.5; c.setLineDash(s.dash || []); c.lineJoin = "round"; c.stroke(); c.setLineDash([]); }
+    return { X, Y };
+  }
+  // a tinted label on a chart
+  function tag(c, x, y, text, col) { font(c, 800, 20); const w = c.measureText(text).width + 24; rr(c, x, y - 24, w, 36, 8); fill(c, TINT[col]); tx(c, text, x + 12, y, { s: 20, w: 800, col: C[col] }); }
+
+  // ---------- 12. Short selling ----------
+  async function shorting(c) {
+    let y = header(c, "Short selling explained · beginner's guide", "What is short selling?", "", "Betting a stock will fall: **sell shares you borrowed**, then buy them back cheaper and keep the difference.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 240, 1, "The four steps", "blue");
+    boxes(c, a, [["Borrow", "100 shares from your broker, at $50 each"], ["Sell", "them straight away and receive $5,000"], ["Wait", "and pay a fee while you hold the loan"], ["Buy back", "at $30 for $3,000, return them, keep $2,000"]], { cols: 4, arrows: true });
+    y += 240 + 16;
+    a = sec(c, M, y, W - 2 * M, 410, 2, "Profit or loss, 100 shares bought or shorted at $50", "red");
+    const usd0 = (v) => (v > 0 ? "+$" : v < 0 ? "−$" : "$") + Math.abs(v).toLocaleString();
+    const pl = plot(c, a, { x0: 0, x1: 120, xTicks: [0, 20, 40, 60, 80, 100, 120], xFmt: (v) => "$" + v, y0: -7000, y1: 7000, yTicks: [-6000, -3000, 0, 3000, 6000], yFmt: usd0, xTitle: "share price later",
+      series: [{ pts: [[0, -5000], [120, 7000]], col: C.green }, { pts: [[0, 5000], [120, -7000]], col: C.red }] });
+    tag(c, pl.X(50), pl.Y(6300), "Owner: can lose at most $5,000", "green"); tag(c, pl.X(40), pl.Y(-5000), "Short seller: the loss has no limit", "red");
+    y += 410 + 16;
+    a = sec(c, M, y, W - 2 * M, 200, 3, "The short squeeze", "purple");
+    boxes(c, a, [["The price jumps", "short sellers start losing fast", "purple"], ["They must buy", "to get out, which pushes it higher", "purple"], ["January 2021", "GameStop went from under $20 to over $300 in weeks", "purple"]], { cols: 3, arrows: true });
+    y += 200 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = BOTTOM - y;
+    bulletCard(c, M, y, hw, bh, "blue", "WHY PEOPLE DO IT", "", [["Bet on a fall", "a firm looks overpriced"], ["Hedge", "protect other holdings"], ["Expose problems", "researchers publish why"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "red", "WHAT IT COSTS", "", [["Borrow fee", "high on popular shorts"], ["Dividends", "you must pay them"], ["Margin calls", "add cash or be closed out"]]);
+    footer(c, "Worked example with a made-up stock · before fees · GameStop from public price history · Not advice");
+  }
+
+  // ---------- 13. Margin and leverage ----------
+  async function margin(c) {
+    let y = header(c, "Leverage explained · beginner's guide", "Buying on margin", "", "Borrowing from your broker to buy more stock. **Gains and losses both grow**, and you pay interest on the loan.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 210, 1, "How it works", "blue");
+    boxes(c, a, [["Your money", "you put in $10,000"], ["The loan", "the broker lends you another $10,000"], ["The stock", "you hold $20,000 of shares, and the shares secure the loan"]], { cols: 3, arrows: true });
+    y += 210 + 16;
+    a = sec(c, M, y, W - 2 * M, 420, 2, "What happens to your $10,000", "green");
+    bars(c, AREA(a.x, a.y, a.w, a.h - 16), [["Up 25%, no loan", 25, C.blue, "+25%"], ["Up 25%, with loan", 50, C.green, "+50%"], ["Down 25%, no loan", -25, C.blue, "−25%"], ["Down 25%, with loan", -50, C.red, "−50%"], ["Down 50%, no loan", -50, C.blue, "−50%"], ["Down 50%, with loan", -100, C.red, "−100%"]], { fmt: (v) => `${v}%` });
+    y += 420 + 16;
+    a = sec(c, M, y, W - 2 * M, 230, 3, "The margin call", "red");
+    boxes(c, a, [["The rule", "US rules: borrow up to half to buy, and keep at least 25% of your own money in. Many brokers ask for more.", "red"], ["The trigger", "With a 25% minimum, it comes when the $20,000 falls to about $13,333 (−33%).", "red"], ["The result", "Add cash, or the broker sells your shares, often at the worst moment.", "red"]], { cols: 3 });
+    y += 230 + 16;
+    keyBand(c, y, "2021", "Archegos, a private investment firm, used huge borrowing to hold a few stocks. When they fell, its lenders sold out in days. It lost about $20 billion, and its banks lost more than $10 billion between them.", "red");
+    footer(c, "Worked example, before interest · FINRA and Federal Reserve margin rules · Archegos from public reports · Not advice");
+  }
+
+  // ---------- 14. Inflation ----------
+  async function inflation(c) {
+    let y = header(c, "The economy explained · beginner's guide", "What is inflation?", "", "Prices across the economy rising over time, so **each dollar buys a little less**. The Fed aims for about 2% a year.", { ts: 60 });
+    const hw = (W - 2 * M - 16) / 2;
+    let a = sec(c, M, y, hw, 390, 1, "What $100 buys at 3% a year", "red");
+    bars(c, AREA(a.x, a.y, a.w, a.h - 6), [["Today", 100, C.blue, "$100"], ["10 years", 74, C.gold, "$74"], ["20 years", 55, C.gold, "$55"], ["30 years", 41, C.red, "$41"]], { fmt: (v) => "$" + v });
+    a = sec(c, M + hw + 16, y, hw, 390, 2, "How it's measured", "blue");
+    boxes(c, a, [["CPI", "the price of a typical basket of goods and services, published monthly"], ["Core", "the same without food and energy, which jump around"], ["PCE", "a broader measure, and the one the Fed targets"]], { cols: 1 });
+    y += 390 + 16;
+    a = sec(c, M, y, W - 2 * M, 230, 3, "What causes it", "gold");
+    boxes(c, a, [["Too much demand", "people spend faster than firms can supply"], ["Rising costs", "oil, wages or shipping get dearer"], ["More money", "loose lending or large stimulus"], ["Expectations", "people expect rises and ask for higher pay"]], { cols: 4, col: "gold" });
+    y += 230 + 16;
+    const bh = 280;
+    bulletCard(c, M, y, hw, bh, "green", "WHO GAINS", "", [["Fixed-rate borrowers", "repay in cheaper dollars"], ["Owners of real things", "homes, commodities"], ["Firms with pricing power", "they can pass costs on"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "red", "WHO LOSES", "", [["Cash savers", "money buys less each year"], ["Bondholders", "fixed payments shrink in value"], ["Workers", "when pay rises lag prices"]]);
+    y += bh + 16;
+    keyBand(c, y, "Real return", "What you earn after inflation. A 5% savings rate with 3% inflation is about **2%** in real terms. US inflation peaked near 15% in 1980 and near 9% in 2022.");
+    footer(c, "Worked example at 3% a year · US Bureau of Labor Statistics, Federal Reserve · Not advice");
+  }
+
+  // ---------- 15. Interest rates and the Fed ----------
+  async function rates(c) {
+    let y = header(c, "The Fed explained · beginner's guide", "Interest rates and the Fed", "", "The Federal Reserve sets the rate banks charge each other overnight. That rate **feeds into almost every other loan** in the economy.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 215, 1, "Who decides, and why", "blue");
+    boxes(c, a, [["The FOMC", "12 voting members meet 8 times a year"], ["Its two goals", "as many jobs as possible, and stable prices"], ["Its target", "inflation of about 2% a year"]], { cols: 3 });
+    y += 215 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = 330;
+    bulletCard(c, M, y, hw, bh, "green", "WHEN THE FED CUTS", "to lift a weak economy", [["Loans get cheaper", "homes, cars, business"], ["More spending", "and more hiring"], ["Bond prices rise", "old bonds pay more than new"], ["Stocks often rise", "future profits are worth more"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "red", "WHEN THE FED RAISES", "to cool inflation", [["Loans cost more", "fewer people borrow"], ["Less spending", "firms hire less"], ["Bond prices fall", "new bonds pay more"], ["Stocks often fall", "above all fast growers"]]);
+    y += bh + 16;
+    a = sec(c, M, y, W - 2 * M, 340, 2, "The Fed's target rate, at turning points (top of the range)", "gold");
+    bars(c, AREA(a.x, a.y, a.w, a.h - 8), [["1981", 20, C.red, "~20%"], ["2000", 6.5, C.gold, "6.5%"], ["2007", 5.25, C.gold, "5.25%"], ["2009", 0.25, C.green, "0.25%"], ["2019", 2.5, C.gold, "2.5%"], ["2020", 0.25, C.green, "0.25%"], ["2023", 5.5, C.gold, "5.5%"]], { fmt: (v) => `${v}%` });
+    y += 340 + 16;
+    keyBand(c, y, "Remember", "Rate moves take time: often a year or more to work through the economy. Markets move sooner, because they trade on where rates are expected to go, so a cut everyone expected may do little on the day.");
+    footer(c, "Federal Reserve target rate history · effects are typical, not guaranteed · Not advice");
+  }
+
+  // ---------- 16. The yield curve ----------
+  async function yieldcurve(c) {
+    let y = header(c, "Bonds explained · beginner's guide", "What is the yield curve?", "", "A line showing what US government bonds pay, **from 3 months out to 30 years**. Its shape shows what investors expect next.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 430, 1, "Two shapes · example yields", "blue");
+    const names = ["3 mo", "2 yr", "5 yr", "10 yr", "30 yr"], nor = [3.5, 3.8, 4.1, 4.5, 4.9], inv = [5.4, 4.9, 4.4, 4.2, 4.3];
+    const pl = plot(c, a, { x0: -0.2, x1: 4.2, xTicks: [0, 1, 2, 3, 4], xFmt: (v) => names[v], y0: 3, y1: 6, yTicks: [3, 4, 5, 6], yFmt: (v) => `${v}%`, xTitle: "how long until the bond pays back",
+      series: [{ pts: nor.map((v, i) => [i, v]), col: C.green }, { pts: inv.map((v, i) => [i, v]), col: C.red }] });
+    tag(c, pl.X(0.15), pl.Y(5.75), "Inverted: short bonds pay more", "red"); tag(c, pl.X(2.45), pl.Y(5.05), "Normal: long bonds pay more", "green");
+    y += 430 + 16;
+    a = sec(c, M, y, W - 2 * M, 215, 2, "What each shape means", "gold");
+    boxes(c, a, [["Steep", "growth and inflation expected; rate rises may follow", "green"], ["Flat", "investors are unsure; growth may be slowing", "gold"], ["Inverted", "investors expect trouble and rate cuts ahead", "red"]], { cols: 3 });
+    y += 215 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = 260;
+    bulletCard(c, M, y, hw, bh, "blue", "WHY LONG BONDS PAY MORE", "", [["Your money is tied up", "for decades"], ["Inflation could return", "and eat the payments"], ["Bigger price swings", "so buyers want extra"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "red", "WHY INVERSION WORRIES PEOPLE", "", [["Recession signal", "it came before each since 1955"], ["One false alarm", "in the mid-1960s"], ["Banks earn less", "they lend long, borrow short"]]);
+    y += bh + 16;
+    keyBand(c, y, "Not a clock", "The gap before a recession has often been 6 to 24 months. The curve inverted in 2022 and stayed that way into 2024, its longest stretch on record, with no recession by the time it ended.");
+    footer(c, "Yields in the chart are examples · San Francisco Fed research on the curve's record · Not advice");
+  }
+
+  // ---------- 17. Market cap and the P/E ratio ----------
+  async function valuation(c) {
+    const P = await H.loadAllPrices(), F = await loadScript(`fundamentals.js?d=${H.D.prices_through}`, "CTC_FUND", { d: {} });
+    let y = header(c, "Investing explained · beginner's guide", "Market cap and the P/E ratio", "", "A share's price alone says nothing about whether a company is big or cheap. **These two numbers do.**", { ts: 56 });
+    let a = sec(c, M, y, W - 2 * M, 225, 1, "Market cap = share price × number of shares", "blue");
+    boxes(c, a, [["Company A", "$500 a share × 10 million shares = **$5 billion**", "blue"], ["Company B", "$20 a share × 1 billion shares = **$20 billion**", "green"], ["So?", "B has the far lower share price, but it is four times the size", "gold"]], { cols: 3 });
+    y += 225 + 16;
+    const rows = ["NVDA", "MSFT", "JPM", "XOM", "KO"].map((tk) => { const x = P.px[tk], li = x ? H.lastIdx(x) : -1, px = li >= 0 ? x[li] : null, eps = ((F && F.d) || {})[tk]?.[1]; return { tk, px, eps, pe: px && eps > 0 ? px / eps : null, cap: H.mcapOf(tk) }; }).filter((r) => r.pe);
+    a = sec(c, M, y, W - 2 * M, 410, 2, "P/E = share price ÷ a year's profit per share · today", "green");
+    const col = { name: a.x, px: a.x + 330, cap: a.x + 450, pe: a.x + 590, bar: a.x + 610 }, rh = Math.min(58, (a.h - 92) / Math.max(1, rows.length)), mx = Math.max(...rows.map((r) => r.pe), 1);
+    [["Company", col.name, "left"], ["Price", col.px, "right"], ["Value", col.cap, "right"], ["P/E", col.pe, "right"]].forEach(([t, xx, al]) => tx(c, t, xx, a.y + 16, { s: 18, w: 800, col: C.muted, a: al }));
+    rows.forEach((r, i) => { const ry = a.y + 28 + i * rh; if (i % 2 === 0) { rr(c, a.x - 8, ry, a.w + 16, rh, 8); fill(c, TINT.green); } const by = ry + rh / 2 + 7;
+      tx(c, co(r.tk), col.name + 4, by, { s: 22, w: 700, max: 240 }); tx(c, fmtPx(r.px), col.px, by, { s: 20, w: 600, f: MONO, a: "right", col: C.ink2 }); tx(c, H.usd(r.cap), col.cap, by, { s: 20, w: 600, f: MONO, a: "right", col: C.ink2 }); tx(c, `${r.pe.toFixed(1)}×`, col.pe, by, { s: 22, w: 800, f: MONO, a: "right" });
+      rr(c, col.bar, ry + rh / 2 - 9, Math.max(4, (a.x + a.w - col.bar - 4) * r.pe / mx), 18, 9); fill(c, C.green); });
+    para(c, "A P/E of 20 means paying $20 for each $1 of yearly profit. High: investors expect fast growth. Low: cheap, or in trouble.", a.x, a.y + 28 + rows.length * rh + 6, a.w, { s: 19 });
+    y += 410 + 16;
+    a = sec(c, M, y, W - 2 * M, 270, 3, "Other price tags", "purple");
+    boxes(c, a, [["Forward P/E", "price ÷ next year's expected profit"], ["PEG", "P/E ÷ profit growth rate"], ["Price ÷ sales", "for firms with no profit yet"], ["Price ÷ book", "price vs what the firm owns, minus debts"], ["EV ÷ EBITDA", "counts debt too, so it compares firms fairly"], ["FCF yield", "free cash flow ÷ market cap"]], { cols: 3, col: "purple" });
+    y += 270 + 16;
+    keyBand(c, y, "Remember", "Compare like with like. A P/E of 30 can be cheap for a fast-growing chipmaker and dear for a slow-growing bank.");
+    footer(c, "Live figures from Yahoo Finance and Nasdaq (P/E on 12-month profit) · other examples made up · Not advice");
+  }
+
+  // ---------- 18. Reading an earnings report ----------
+  async function earnings(c) {
+    let y = header(c, "Earnings explained · beginner's guide", "How to read earnings", "", "Four times a year US public companies report their results. The share price reacts to **how they compare with what was expected**.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 240, 1, "The earnings season", "blue");
+    boxes(c, a, [["Quarter ends", "the books close"], ["Estimates", "analysts forecast the numbers"], ["Results", "out before or after trading hours"], ["The call", "bosses take analysts' questions"], ["Reaction", "shares can jump or drop at once"]], { cols: 5, arrows: true });
+    y += 240 + 16;
+    a = sec(c, M, y, W - 2 * M, 320, 2, "An example scorecard", "green");
+    const rows = [["Sales", "$10.0B", "$10.3B", "Beat", "green"], ["Profit per share (EPS)", "$1.20", "$1.28", "Beat", "green"], ["Profit margin", "24%", "22%", "Miss", "red"], ["Next quarter's sales forecast", "$10.8B", "$10.5B", "Miss", "red"]], cx = [a.x + 8, a.x + 600, a.x + 760, a.x + a.w - 8];
+    [["", cx[0], "left"], ["Expected", cx[1], "right"], ["Reported", cx[2], "right"], ["Result", cx[3], "right"]].forEach(([t, xx, al]) => tx(c, t, xx, a.y + 16, { s: 19, w: 800, col: C.muted, a: al }));
+    const rh = (a.h - 30) / rows.length;
+    rows.forEach(([l, ex, re, res, k], i) => { const ry = a.y + 28 + i * rh, by = ry + rh / 2 + 8; rr(c, a.x, ry + 3, a.w, rh - 6, 10); fill(c, TINT[k]); tx(c, l, cx[0] + 6, by, { s: 23, w: 700, max: 480 }); tx(c, ex, cx[1], by, { s: 22, w: 600, f: MONO, a: "right", col: C.ink2 }); tx(c, re, cx[2], by, { s: 22, w: 800, f: MONO, a: "right" }); tx(c, res, cx[3] - 6, by, { s: 23, w: 800, col: C[k], a: "right" }); });
+    y += 320 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = 350;
+    bulletCard(c, M, y, hw, bh, "red", "WHY A BEAT CAN STILL FALL", "", [["Weak forecast", "this example: the future matters most"], ["Shrinking margins", "sales up, profit squeezed"], ["Already priced in", "shares had run up first"], ["Whispered hopes", "traders wanted even more"]]);
+    a = sec(c, M + hw + 16, y, hw, bh, 3, "The words", "purple");
+    boxes(c, a, [["Top line", "sales"], ["Bottom line", "net profit"], ["YoY", "vs a year ago"], ["Guidance", "its own forecast"], ["GAAP", "official rules"], ["Adjusted", "minus one-offs"]], { cols: 2, col: "purple" });
+    y += bh + 16;
+    keyBand(c, y, "Remember", "Check the same quarter a year ago, not just the last quarter, because many businesses are seasonal. And look at cash flow: adjusted profit can hide real costs.");
+    footer(c, "Worked example with made-up figures · filed with the SEC on forms 10-Q (quarterly) and 10-K (yearly) · Not advice");
+  }
+
+  // ---------- 19. The balance sheet ----------
+  async function balance(c) {
+    let y = header(c, "Company finances explained · beginner's guide", "How to read a balance sheet", "", "A snapshot of **what a company owns and owes** on one date. The two sides always add up to the same number.", { ts: 56 });
+    let a = sec(c, M, y, W - 2 * M, 180, 1, "It works like a house", "blue");
+    boxes(c, a, [["The house", "worth $400,000 (an asset)", "blue"], ["The mortgage", "$300,000 (a liability)", "red"], ["Your share", "$100,000 (your equity)", "green"]], { cols: 3 });
+    y += 180 + 16;
+    a = sec(c, M, y, W - 2 * M, 480, 2, "Assets = liabilities + equity · example, $ millions", "gold");
+    const colW = 300, top = a.y + 34, hh = a.h - 44, sc1 = hh / 1000;
+    const stack = (x, head, items) => { tx(c, head, x + colW / 2, a.y + 20, { s: 21, w: 800, col: C.ink2, a: "center" }); let yy = top; for (const [l, v, k] of items) { const h = v * sc1; rr(c, x, yy, colW, h - 3, 7); fill(c, C[k]); tx(c, `${l} ${v}`, x + colW / 2, yy + h / 2 + 6, { s: 20, w: 700, col: "#fff", a: "center", max: colW - 16 }); yy += h; } };
+    stack(a.x, "WHAT IT OWNS: 1,000", [["Cash", 200, "green"], ["Owed by customers", 150, "teal"], ["Stock of goods", 150, "teal"], ["Property and machines", 400, "blue"], ["Goodwill", 100, "purple"]]);
+    tx(c, "=", a.x + colW + 30, top + hh / 2 + 16, { s: 46, w: 900, col: C.ink2, a: "center" });
+    stack(a.x + colW + 60, "WHO PAID FOR IT: 1,000", [["Owed to suppliers", 150, "gold"], ["Short-term debt", 100, "red"], ["Long-term debt", 350, "red"], ["Shareholders' equity", 400, "green"]]);
+    const nx = a.x + 2 * colW + 76; boxes(c, AREA(nx, a.y + 34, a.x + a.w - nx, a.h - 44), [["Goodwill", "the extra paid when buying other firms; it can be written off"], ["Equity", "what would be left for owners after all debts"]], { cols: 1, col: "purple", bs: 20 });
+    y += 480 + 16;
+    a = sec(c, M, y, W - 2 * M, 210, 3, "Three quick checks on this example", "green");
+    boxes(c, a, [["Net debt: $250M", "debt of 450 minus cash of 200"], ["Debt ÷ equity: 1.1×", "450 ÷ 400: it borrows a bit more than owners put in"], ["Current ratio: 2.0×", "short-term assets 500 ÷ short-term debts 250"]], { cols: 3, col: "green" });
+    y += 210 + 16;
+    keyBand(c, y, "Remember", "It shows a single day, not how the year went. Read it with the income statement (profit) and the cash flow statement (real cash), and watch whether debt grows faster than sales.");
+    footer(c, "Worked example with made-up figures · Not advice");
+  }
+
+  // ---------- 20. IPOs ----------
+  async function ipo(c) {
+    let y = header(c, "Stock market explained · beginner's guide", "How an IPO works", "", "An initial public offering: a private company **sells shares to the public for the first time** and lists on a stock exchange.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 225, 1, "The road to listing", "blue");
+    boxes(c, a, [["Hire banks", "they run the sale and find buyers"], ["File", "publish its finances (form S-1)"], ["Roadshow", "pitch to big investors"], ["Set the price", "based on the orders received"], ["First trade", "the public can buy and sell"]], { cols: 5, arrows: true });
+    y += 225 + 16;
+    const hw = (W - 2 * M - 16) / 2;
+    a = sec(c, M, y, hw, 370, 2, "An example first day", "green");
+    bars(c, AREA(a.x, a.y, a.w, a.h - 6), [["IPO price", 20, C.blue, "$20"], ["First trade", 28, C.gold, "$28"], ["First close", 26, C.green, "$26"]], { fmt: (v) => "$" + v });
+    a = sec(c, M + hw + 16, y, hw, 370, 3, "Who gets what", "green");
+    boxes(c, a, [["The company", "sold 10 million shares at $20 and raised $200M"], ["IPO buyers", "mostly funds, up $6 a share by the close"], ["Late buyers", "paid $28 at the open and are down $2"]], { cols: 1, col: "green" });
+    y += 370 + 16;
+    a = sec(c, M, y, W - 2 * M, 190, 4, "Other routes to market", "purple");
+    boxes(c, a, [["Direct listing", "existing owners sell; no new shares need be issued", "purple"], ["SPAC", "merge with a shell firm already listed for that purpose", "purple"], ["Staying private", "raise money from big investors instead", "purple"]], { cols: 3 });
+    y += 190 + 16;
+    const bh = BOTTOM - y;
+    bulletCard(c, M, y, hw, bh, "blue", "WHY GO PUBLIC", "", [["Raise money", "to grow or repay debt"], ["Let owners cash out", "founders, early funds"], ["Shares as currency", "pay staff, buy rivals"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "red", "WATCH OUT FOR", "", [["Lock-up end", "insiders may sell after ~180 days"], ["First-day hype", "prices can run far ahead"], ["Short history", "few years of public figures"]]);
+    footer(c, "Worked example with a made-up company · SEC filing rules · Not advice");
+  }
+
+  // ---------- 21. Compound growth ----------
+  async function compound(c) {
+    let y = header(c, "Investing explained · beginner's guide", "The power of compounding", "", "Earning returns **on your past returns**, not only on the money you put in. It starts slowly, then takes off.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 430, 1, "$10,000 growing 7% a year", "blue");
+    const f = (n) => 10000 * 1.07 ** n, pts = []; for (let n = 0; n <= 40; n++) pts.push([n, f(n)]);
+    const pl = plot(c, a, { x0: 0, x1: 40, xTicks: [0, 10, 20, 30, 40], xFmt: (v) => `${v} yrs`, y0: 0, y1: 160000, yTicks: [0, 40000, 80000, 120000, 160000], yFmt: (v) => v ? `$${v / 1000}K` : "$0", xTitle: "years invested",
+      series: [{ pts: [[0, 10000], [40, 38000]], col: C.muted, lw: 3.5, dash: [9, 7] }, { pts, col: C.blue }] });
+    tag(c, pl.X(12), pl.Y(112000), "Compounded: $149,745", "blue"); tag(c, pl.X(20), pl.Y(10000), "Interest taken out each year: $38,000", "gold");
+    y += 430 + 16;
+    const hw = (W - 2 * M - 16) / 2;
+    a = sec(c, M, y, hw, 340, 2, "Start early · $200 a month, to 65", "green");
+    bars(c, AREA(a.x, a.y, a.w, a.h - 6), [["Start at 25 (put in $96K)", 525, C.green, "$525K"], ["Start at 35 (put in $72K)", 244, C.gold, "$244K"]], { fmt: (v) => `$${v}K` });
+    a = sec(c, M + hw + 16, y, hw, 340, 3, "The rule of 72", "purple");
+    boxes(c, a, [["72 ÷ yearly return", "gives the years it takes to double"], ["At 7%", "about 10 years"], ["At 20% card debt", "what you owe doubles in about 3.6 years"]], { cols: 1, col: "purple" });
+    y += 340 + 16;
+    a = sec(c, M, y, W - 2 * M, 170, 4, "Small differences add up", "red");
+    boxes(c, a, [["A 1% yearly fee", "turns the $149,745 above into about $102,857", "red"], ["Selling and tax", "each sale can reduce what's left to compound", "red"]], { cols: 2 });
+    y += 170 + 16;
+    keyBand(c, y, "Remember", "Real returns jump around. 7% is a steady example, not a promise.");
+    footer(c, "Worked examples at a steady 7% (monthly for the $200), before tax and fees · Not advice");
+  }
+
   const EX = [
     ["bond", "What is a bond?", "A loan you can resell, and why its price moves", bond],
     ["trade", "How a stock trade happens", "The order book, order types and what happens when you press buy", trade],
@@ -427,6 +643,16 @@
     ["etfs", "ETFs", "How a fund that trades like a stock works, and what it costs", etfs],
     ["ebitda", "EBITDA and other measures", "From sales to profit, and other ways to judge a company", ebitda],
     ["dividends", "Dividends", "The dates, why the price drops, and the downsides", dividends],
+    ["shorting", "Short selling", "Betting on a fall, why the loss has no limit, and short squeezes", shorting],
+    ["margin", "Buying on margin", "Borrowing to buy stock, leverage and the margin call", margin],
+    ["inflation", "Inflation", "Why a dollar buys less, how it's measured, who gains and loses", inflation],
+    ["rates", "Interest rates and the Fed", "Who sets rates, and what cuts and rises do", rates],
+    ["yieldcurve", "The yield curve", "Normal and inverted curves, and the recession signal", yieldcurve],
+    ["valuation", "Market cap and P/E", "How big and how pricey a company is, with live figures", valuation],
+    ["earnings", "Reading earnings", "Beats and misses, and why a beat can still fall", earnings],
+    ["balance", "The balance sheet", "What a company owns and owes, and three quick checks", balance],
+    ["ipo", "IPOs", "How a company lists, who gets what on day one", ipo],
+    ["compound", "Compounding", "Why starting early matters, the rule of 72 and what fees cost", compound],
   ];
 
   // ---------- the tab: pick a guide, see it, download or copy it ----------
