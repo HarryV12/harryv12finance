@@ -44,11 +44,13 @@ WAIT_FOR_CLOSE_MIN = 30  # the data update normally finishes well before 9:45 pm
 # what the page knows, read after it has loaded: the last market close, the index moves, the newest filing
 FACTS_JS = """async () => {
   const H = window.HFSite, P = await H.loadAllPrices(), V = window.__DV;
-  const scope = V.postScope();
+  const scope = V.postScope(), IDX = [["SPY", "S&P 500"], ["QQQ", "Nasdaq 100"], ["DIA", "Dow"]];
   const buys = V.trades.filter((t) => t.st && (V.isSec(t) || t.cls === "option") && scope.test(t) && t.side === "B" && t.ftime && t.T.ep);
   return {
     close: P.dates[P.dates.length - 1],
-    idx: [["SPY", "S&P 500"], ["QQQ", "Nasdaq 100"], ["DIA", "Dow"]].map(([t, n]) => [n, H.moveOf(P, t, 1)]),
+    weekFrom: P.dates[P.dates.length - 5],
+    idx: IDX.map(([t, n]) => [n, H.moveOf(P, t, 1)]),
+    idxWeek: IDX.map(([t, n]) => [n, H.moveOf(P, t, 5)]),
     newestBuyFiled: buys.reduce((m, t) => (t.fd > m ? t.fd : m), ""),
   };
 }"""
@@ -158,11 +160,14 @@ def choose(facts, state, today, weekday):
 
 
 def every_image(facts, today):
-    """--preview-all: one of each, for looking at the images and captions. Never posted."""
+    """One of each: --preview-all makes them all to look at, --post-now posts the one it's asked for."""
     moves = ", ".join(f"{n} {signed_pct(r)}" for n, r in facts["idx"] if r is not None)
+    week = ", ".join(f"{n} {signed_pct(r)}" for n, r in facts["idxWeek"] if r is not None)
     return [
         {"key": "movers", "title": "Today's market movers", "kind": "market", "view": "today",
          "caption": f"Today's market movers, {nice_date(facts['close'])}. {moves}.", "mark": {}},
+        {"key": "week", "title": "This week's market movers", "kind": "market", "view": "week",
+         "caption": f"This week's market movers, {nice_date(facts['weekFrom'])} to {nice_date(facts['close'])}. {week}.", "mark": {}},
         {"key": "disclosures", "title": "What Congress just bought", "kind": "congress", "view": "list",
          "caption": f"What Congress just bought: latest stock disclosures, filed up to {nice_date(facts['newestBuyFiled'])}.", "mark": {}},
         {"key": "leaderboard", "title": "Copy-trading leaderboard", "kind": "congress", "view": "leaders",
@@ -243,7 +248,7 @@ def write_gallery(out, gallery, mode):
                          f'<p class="cap">{escape(e["caption"])}</p><a href="{escape(e["file"])}"><img loading="lazy" src="{escape(e["file"])}" alt="{escape(e["title"])}"></a></article>')
         else:
             cards.append(f'<article class="none"><p class="meta">{escape(e["when"])}</p><p>{escape(e["note"])}</p></article>')
-    what = "Live: these are going out on X." if mode == "live" else "Test mode: nothing here has been posted."
+    what = "Live: the daily posts are going out on X." if mode == "live" else "Test mode: the daily posts aren't going out. Anything marked Posted on X was asked for by hand."
     (out / "index.html").write_text(f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex"><title>X posts: HarryV12 Finance</title>
@@ -268,13 +273,19 @@ article {{ background: var(--card); border: 1px solid var(--line); border-radius
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--preview-all", action="store_true", help="make one of each image for the gallery; never posts or counts as posted")
+    ap.add_argument("--post-now", choices=["movers", "week", "disclosures", "leaderboard"],
+                    help="post this one image to X now, whatever X_POST_MODE says; asked for by hand, so the daily rules and limit don't apply")
     ap.add_argument("--out", default="_x_preview", help="folder for the gallery")
     ap.add_argument("--no-old-gallery", action="store_true", help="don't fetch earlier entries (for trying this on the PC)")
     args = ap.parse_args()
 
-    mode = "test" if args.preview_all else os.environ.get("X_POST_MODE", "test").strip().lower()
-    if mode not in ("test", "live"):
-        raise SystemExit(f"X_POST_MODE must be test or live, not {mode!r}")
+    setting = os.environ.get("X_POST_MODE", "test").strip().lower()
+    if setting not in ("test", "live"):
+        raise SystemExit(f"X_POST_MODE must be test or live, not {setting!r}")
+    if args.preview_all and args.post_now:
+        raise SystemExit("--preview-all never posts, so it can't go with --post-now")
+    mode = "test" if args.preview_all else "live" if args.post_now else setting
+    by_hand = args.preview_all or args.post_now  # not the daily run, so nothing is recorded as the day's post
     uk_now = datetime.now(ZoneInfo("Europe/London"))
     today = {"uk": uk_now.date().isoformat(), "ny": datetime.now(ZoneInfo("America/New_York")).date().isoformat()}
     when = uk_now.strftime("%a %-d %b %Y, %H:%M UK") if os.name != "nt" else uk_now.strftime("%a %d %b %Y, %H:%M UK")
@@ -294,7 +305,7 @@ def main():
 
         # the update is usually done by now; if it's slow, wait, in case today's close is on its way
         waited = 0
-        while not args.preview_all and facts["close"] != today["ny"] and uk_now.weekday() < 5 and waited < WAIT_FOR_CLOSE_MIN:
+        while not by_hand and facts["close"] != today["ny"] and uk_now.weekday() < 5 and waited < WAIT_FOR_CLOSE_MIN:
             print(f"latest close is {facts['close']}, not {today['ny']}: checking again in 3 minutes")
             time.sleep(180)
             waited += 3
@@ -304,6 +315,8 @@ def main():
 
         if args.preview_all:
             posts, skipped = every_image(facts, today), []
+        elif args.post_now:
+            posts, skipped = [p for p in every_image(facts, today) if p["key"] == args.post_now], []
         else:
             posts, skipped = choose(facts, state, today, uk_now.weekday())
         for s in skipped:
@@ -327,7 +340,7 @@ def main():
                     entry["tweet"] = tweet
                 fresh.append(entry)
                 # recorded after each post, in test mode too, so the test week behaves as the live one will
-                if not args.preview_all:
+                if not by_hand:
                     state.update(post["mark"])
                     counts = {today["uk"]: state.get("posted_on", {}).get(today["uk"], 0) + 1}
                     state["posted_on"] = counts
@@ -343,7 +356,7 @@ def main():
     new_files = {e["file"] for e in fresh if e.get("file")}
     older = [e for e in gallery["entries"] if e.get("file") not in new_files]
     gallery["entries"] = (fresh[::-1] + older)[:KEEP_IN_GALLERY]
-    write_gallery(out, gallery, mode)
+    write_gallery(out, gallery, setting)
     print(f"gallery written to {out}")
     if failures:
         sys.exit("failed: " + "; ".join(failures))

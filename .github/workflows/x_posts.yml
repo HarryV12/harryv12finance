@@ -14,6 +14,11 @@ on:
         description: "Make one of each image for the gallery (never posts, even in live mode)"
         type: boolean
         default: false
+      post_now:
+        description: "Post this one image to X now, even in test mode"
+        type: choice
+        default: ""
+        options: ["", movers, week, disclosures, leaderboard]
 
 permissions:
   contents: write
@@ -50,7 +55,7 @@ jobs:
           X_API_SECRET: ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
-        run: python -I -X utf8 _pipeline/x_posts/x_posts.py ${{ inputs.preview_all && '--preview-all' || '' }}
+        run: python -I -X utf8 _pipeline/x_posts/x_posts.py ${{ inputs.preview_all && '--preview-all' || '' }} ${{ inputs.post_now && format('--post-now {0}', inputs.post_now) || '' }}
 
       # always: a post that went out has to be remembered even if the next one failed, or it would go out twice
       - name: Remember what went out
