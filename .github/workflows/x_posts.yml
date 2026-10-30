@@ -1,6 +1,7 @@
-# Makes the day's Data Visualization images and posts them to X (_pipeline/x_posts/x_posts.py). The Cloudflare timer
-# (harryv12finance-timer) starts this at 9:45 pm UK, Monday to Friday, half an hour after the daily update. It has no
-# GitHub schedule of its own, because GitHub's often starts hours late and a late post is worse than none.
+# Makes Data Visualization images and posts them to X (_pipeline/x_posts/x_posts.py). It runs each time the daily update
+# finishes, so today's market movers goes out as soon as the site has the new close (later runs find it already posted),
+# and the Cloudflare timer (harryv12finance-timer) starts it on Fridays at 11 pm UK for this week's market movers. It has
+# no GitHub schedule of its own, because GitHub's often starts hours late.
 #
 # The X_POST_MODE repository variable decides what happens: test, or not set, posts nothing and only updates the gallery
 # at https://x-preview.harryv12finance.pages.dev; live posts to X, using the X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN and
@@ -8,6 +9,9 @@
 name: Post images to X
 
 on:
+  workflow_run:
+    workflows: ["Daily market update"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       preview_all:
@@ -29,8 +33,10 @@ concurrency:
 
 jobs:
   make-and-post:
+    # an update that failed hasn't changed the site, so there's nothing new to post
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 30
     steps:
       # the branch as it is now, so a queued run sees what the run before it posted
       - uses: actions/checkout@v4

@@ -38,14 +38,19 @@ Since 30 Oct 2026 a Cloudflare timer (the Worker `harryv12finance-timer`) starts
 because GitHub's own schedule was starting it 2½–3½ hours late. GitHub's schedule stays as a backup, and a
 second run that day just finds nothing new. The site is published to https://harryv12finance.pages.dev.
 
-### 🖼️ Images on X: weekdays at 9:45 pm UK
+### 🖼️ Images on X (@RealFinancev12)
 
-The same Cloudflare timer starts `.github/workflows/x_posts.yml` (`_pipeline/x_posts/x_posts.py`), which makes images
-from the live Data Visualization page and, in live mode, posts them with a fixed caption and no link. At most 2 a day:
-Today's market movers when there's a new close, What Congress just bought when the weekly build brought new filings,
-and the Copy-trading leaderboard on Fridays (filings wait for the next weekday if Friday is full). The repository
-variable `X_POST_MODE` is `test` (nothing posted; see https://x-preview.harryv12finance.pages.dev) or `live`.
-`_pipeline/x_posts/state.json` remembers what went out, so nothing goes out twice.
+`.github/workflows/x_posts.yml` (`_pipeline/x_posts/x_posts.py`) makes images from the live Data Visualization page and
+posts them with a fixed caption and no link:
+
+- **Today's market movers, every weekday with a new close:** the job runs each time the daily update finishes, so this
+  goes out as soon as the site has the close, normally about 9:25 pm UK.
+- **This week's market movers, Fridays at 11 pm UK:** the Cloudflare timer starts the job.
+
+What Congress just bought and the Copy-trading leaderboard aren't automatic: run the workflow by hand and pick one under
+"post_now". The repository variable `X_POST_MODE` is `live`, or `test` to stop the daily posts at once (nothing posted;
+see https://x-preview.harryv12finance.pages.dev). `_pipeline/x_posts/state.json` remembers what went out, so nothing
+goes out twice.
 
 | Data | File | What it feeds | Script |
 |---|---|---|---|

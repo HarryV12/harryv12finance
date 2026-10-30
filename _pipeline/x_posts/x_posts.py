@@ -1,11 +1,12 @@
 """Makes the day's Data Visualization images from the live site and posts them to X.
 
-Run by .github/workflows/x_posts.yml, which the Cloudflare timer starts at 9:45 pm UK on weekdays, half an hour
-after the daily data update. What goes out, at most MAX_A_DAY posts a day:
+Run by .github/workflows/x_posts.yml. What goes out, at most MAX_A_DAY posts a day:
 
-  - Today's market movers: every day the US market has a new close
-  - What Congress just bought (Latest disclosures): when the PC's weekly build brought new filings
-  - Copy-trading leaderboard: Fridays
+  - Today's market movers: every weekday the US market has a new close, as soon as the daily update has put it on the
+    site (the workflow runs each time that update finishes; once a close has gone out, later runs find nothing to do)
+  - This week's market movers: Fridays at 11 pm UK (the Cloudflare timer starts the workflow)
+
+What Congress just bought and the Copy-trading leaderboard aren't automatic; --post-now posts any image by hand.
 
 The images come from the site's own Data Visualization page, opened in an invisible browser, so they are exactly
 what its Download button gives. The captions are fixed sentences filled in from the data, with no links (X charges
@@ -39,7 +40,8 @@ STATE = Path(__file__).with_name("state.json")
 MAX_A_DAY = 2
 KEEP_IN_GALLERY = 40
 MAX_IMAGE_BYTES = 5 * 1024 * 1024  # X's limit for a post's image
-WAIT_FOR_CLOSE_MIN = 30  # the data update normally finishes well before 9:45 pm; give a slow one this long
+WAIT_FOR_CLOSE_MIN = 6  # this runs just after the site updates; give the new files a moment if they haven't shown up
+WEEK_POST_UK_HOUR = 23  # Fridays, 11 pm UK
 
 # what the page knows, read after it has loaded: the last market close, the index moves, the newest filing
 FACTS_JS = """async () => {
@@ -122,37 +124,21 @@ def read_image(page, save, img, empty):
 
 
 # ---------- what to post today ----------
-def choose(facts, state, today, weekday):
-    """The posts due today, most time-sensitive first, and why anything else isn't going out. Anything held back by the
-    daily limit stays due: filings go out on the next day with room, and the leaderboard waits for next Friday."""
+def choose(facts, state, today, uk_now):
+    """The posts due now, and why anything else isn't going out."""
+    images = {p["key"]: p for p in every_image(facts, today)}
     due, skipped = [], []
 
     if facts["close"] != state.get("market_close") and facts["close"] == today["ny"]:
-        moves = ", ".join(f"{n} {signed_pct(r)}" for n, r in facts["idx"] if r is not None)
-        due.append({"key": "movers", "title": "Today's market movers", "kind": "market", "view": "today",
-                    "caption": f"Today's market movers, {nice_date(facts['close'])}. {moves}.",
-                    "mark": {"market_close": facts["close"]}})
+        due.append({**images["movers"], "mark": {"market_close": facts["close"]}})
     else:
-        skipped.append(f"Market movers: no new close (latest is {facts['close']}; a market holiday, or the data update hadn't finished)")
+        skipped.append(f"Today's market movers: no new close to post (latest is {facts['close']})")
 
-    newest = facts["newestBuyFiled"]
-    if newest and newest != state.get("congress_filed"):
-        due.append({"key": "disclosures", "title": "What Congress just bought", "kind": "congress", "view": "list",
-                    "caption": f"What Congress just bought: latest stock disclosures, filed up to {nice_date(newest)}.",
-                    "mark": {"congress_filed": newest}})
+    if uk_now.weekday() == 4 and uk_now.hour == WEEK_POST_UK_HOUR and facts["close"] != state.get("week_close"):
+        due.append({**images["week"], "mark": {"week_close": facts["close"]}})
     else:
-        skipped.append(f"Latest disclosures: no new filings (newest is {newest})")
+        skipped.append("This week's market movers: Fridays at 11 pm UK, once a week")
 
-    if weekday == 4 and state.get("leaderboard") != today["uk"]:
-        due.append({"key": "leaderboard", "title": "Copy-trading leaderboard", "kind": "congress", "view": "leaders",
-                    "caption": f"Copy-trading leaderboard: members of Congress ranked by score, {nice_date(today['uk'])}.",
-                    "mark": {"leaderboard": today["uk"]}})
-    elif weekday != 4:
-        skipped.append("Leaderboard: Fridays only")
-
-    # Fridays' leaderboard keeps its place over filings, which can wait a day
-    if len(due) > MAX_A_DAY and weekday == 4:
-        due.sort(key=lambda p: p["key"] == "disclosures")
     room = max(0, MAX_A_DAY - state.get("posted_on", {}).get(today["uk"], 0))
     for post in due[room:]:
         skipped.append(f"{post['title']}: held back by the limit of {MAX_A_DAY} posts a day")
@@ -296,13 +282,13 @@ def main():
     mode = "test" if args.preview_all else "live" if args.post_now else setting
     by_hand = args.preview_all or args.post_now  # not the daily run, so nothing is recorded as the day's post
     uk_now = datetime.now(ZoneInfo("Europe/London"))
-    today = {"uk": uk_now.date().isoformat(), "ny": datetime.now(ZoneInfo("America/New_York")).date().isoformat()}
-    when = uk_now.strftime("%a %-d %b %Y, %H:%M UK") if os.name != "nt" else uk_now.strftime("%a %d %b %Y, %H:%M UK")
+    ny_now = datetime.now(ZoneInfo("America/New_York"))
+    today = {"uk": uk_now.date().isoformat(), "ny": ny_now.date().isoformat()}
+    when =uk_now.strftime("%a %-d %b %Y, %H:%M UK") if os.name != "nt" else uk_now.strftime("%a %d %b %Y, %H:%M UK")
     print(f"mode: {mode}{' (preview of every image)' if args.preview_all else ''}; {when}")
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    gallery = {"entries": []} if args.no_old_gallery else fetch_old_gallery(out)
     state = load_state()
 
     failures, fresh = [], []
@@ -312,9 +298,10 @@ def main():
         facts = page.evaluate(FACTS_JS)
         print("facts:", json.dumps(facts))
 
-        # the update is usually done by now; if it's slow, wait, in case today's close is on its way
+        # after the US close a run follows a site update, so today's close should be there; if not, look again shortly
         waited = 0
-        while not by_hand and facts["close"] != today["ny"] and uk_now.weekday() < 5 and waited < WAIT_FOR_CLOSE_MIN:
+        after_close = (ny_now.hour, ny_now.minute) >= (16, 10) and ny_now.weekday() < 5
+        while not by_hand and after_close and facts["close"] != today["ny"] and waited < WAIT_FOR_CLOSE_MIN:
             print(f"latest close is {facts['close']}, not {today['ny']}: checking again in 3 minutes")
             time.sleep(180)
             waited += 3
@@ -327,7 +314,7 @@ def main():
         elif args.post_now:
             posts, skipped = [p for p in every_image(facts, today) if p["key"] == args.post_now], []
         else:
-            posts, skipped = choose(facts, state, today, uk_now.weekday())
+            posts, skipped = choose(facts, state, today, uk_now)
         for s in skipped:
             print("not today:", s)
         session = x_session(state) if mode == "live" and posts else None
@@ -359,14 +346,15 @@ def main():
                 failures.append(f"{post['title']}: {e}")
         browser.close()
 
-    if not posts and not failures:
-        fresh.append({"when": when, "note": "Nothing to post. " + " ".join(skipped)})
-    # an image made again the same day replaces the earlier one (it has the same file name)
-    new_files = {e["file"] for e in fresh if e.get("file")}
-    older = [e for e in gallery["entries"] if e.get("file") not in new_files]
-    gallery["entries"] = (fresh[::-1] + older)[:KEEP_IN_GALLERY]
-    write_gallery(out, gallery, setting)
-    print(f"gallery written to {out}")
+    # this runs after every site update and most find nothing to do; those leave the gallery alone
+    if fresh:
+        gallery = {"entries": []} if args.no_old_gallery else fetch_old_gallery(out)
+        # an image made again the same day replaces the earlier one (it has the same file name)
+        new_files = {e["file"] for e in fresh}
+        older = [e for e in gallery["entries"] if e.get("file") not in new_files]
+        gallery["entries"] = (fresh[::-1] + older)[:KEEP_IN_GALLERY]
+        write_gallery(out, gallery, setting)
+        print(f"gallery written to {out}")
     if failures:
         sys.exit("failed: " + "; ".join(failures))
 
