@@ -34,6 +34,9 @@ The US market closes at 4 pm New York time, which is 9 pm UK time (8 pm for a fe
 October/November, when the US and UK change their clocks on different dates; 9:15 pm is after the close either way).
 GitHub schedules only in UTC, so `daily.yml` has two start times (20:15 and 21:15 UTC) and a check that lets
 through only the one at 9 pm or later in London. The price step accepts a day's close from 4:10 pm New York time.
+Since 30 Oct 2026 a Cloudflare timer (the Worker `harryv12finance-timer`) starts the job at exactly 9:15 pm UK,
+because GitHub's own schedule was starting it 2½–3½ hours late. GitHub's schedule stays as a backup, and a
+second run that day just finds nothing new. The site is published to https://harryv12finance.pages.dev.
 
 | Data | File | What it feeds | Script |
 |---|---|---|---|
@@ -143,6 +146,7 @@ The to-do report lists each dated item 30 days before it's due.
   while prices and markets carry on updating daily.
 - **US market holidays**: the GitHub job still runs, finds no new close and changes nothing; the writer then finds
   nothing to write.
-- **GitHub can start scheduled jobs late** at busy times (usually minutes, occasionally longer).
+- **GitHub can start scheduled jobs late** at busy times (in late Oct 2026, 2½–3½ hours every day), which is why the
+  Cloudflare timer now starts the 9:15 pm run. If the timer's GitHub token expires, the backup schedule still runs, late.
 - **Sources GitHub uses**: Yahoo Finance and Google News. Both were checked from GitHub's servers on 24 Oct 2026
   (`.github/workflows/source_check.yml`; run it by hand any time).
