@@ -13,7 +13,9 @@ $0.20 for a post with a link and $0.015 without; the images already print the si
 
 Modes (the X_POST_MODE repository variable):
   test (the default): makes everything, posts nothing, and shows it all in a gallery at x-preview.harryv12finance.pages.dev
-  live: posts to X; needs the X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN and X_ACCESS_SECRET secrets
+  live: posts to @RealFinancev12; needs the X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN and X_ACCESS_SECRET secrets, which
+        connect_x_account.py sets up. The app belongs to the main developer account; the access token is the posting
+        account's own, so the app's "Access Token" in the developer console (the main account's) must not be used here.
 """
 import argparse
 import base64
@@ -30,6 +32,7 @@ from zoneinfo import ZoneInfo
 
 from playwright.sync_api import sync_playwright
 
+X_ACCOUNT = "RealFinancev12"  # the only account this will post to
 SITE = "https://harryv12finance.pages.dev/#/dataviz"
 GALLERY = "https://x-preview.harryv12finance.pages.dev"
 STATE = Path(__file__).with_name("state.json")
@@ -182,7 +185,16 @@ def x_session():
     missing = [n for n in names if not os.environ.get(n)]
     if missing:
         raise RuntimeError(f"live mode needs these secrets: {', '.join(missing)}")
-    return OAuth1Session(*(os.environ[n] for n in names))
+    session = OAuth1Session(*(os.environ[n] for n in names))
+    # checked before anything is posted: keys for any other account stop the run here
+    me = session.get("https://api.x.com/2/users/me", timeout=60)
+    if not me.ok:
+        raise RuntimeError(f"X refused the keys: {me.status_code} {me.text[:400]}")
+    name = me.json()["data"]["username"]
+    if name.lower() != X_ACCOUNT.lower():
+        raise RuntimeError(f"these keys post as @{name}, not @{X_ACCOUNT}, so nothing was posted")
+    print(f"posting as @{name}")
+    return session
 
 
 def post_to_x(session, image, caption):
@@ -272,7 +284,6 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     gallery = {"entries": []} if args.no_old_gallery else fetch_old_gallery(out)
     state = load_state()
-    session = x_session() if mode == "live" else None
 
     failures, fresh = [], []
     with sync_playwright() as p:
@@ -297,6 +308,7 @@ def main():
             posts, skipped = choose(facts, state, today, uk_now.weekday())
         for s in skipped:
             print("not today:", s)
+        session = x_session() if mode == "live" and posts else None
 
         for post in posts:
             print(f"making: {post['title']}")
