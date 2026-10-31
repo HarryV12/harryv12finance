@@ -63,7 +63,23 @@ jobs:
           CTC_FUND_FORCE: ${{ inputs.refresh_figures && '1' || '' }}
         run: python -I -X utf8 _pipeline/pipeline/daily.py
 
+      # For some hours after midnight UTC Yahoo can answer with a blank row for the latest trading day. prices.js is
+      # rebuilt from scratch on every run, so a run in that gap would put the site a day behind. Such a run keeps and
+      # publishes nothing: the site stays as it is, and the next run catches up, with anything pushed meanwhile.
+      - name: Check this isn't older than what's live
+        id: close
+        run: |
+          through() { grep -oE '"prices_through":"[0-9-]+"' | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' || true; }
+          new=$(head -c 300 data.js | through)
+          live=$(curl -sS --max-time 120 https://harryv12finance.pages.dev/data.js 2>/dev/null | head -c 300 | through)
+          echo "this run's latest close: ${new:-unknown}; the live site's: ${live:-unknown}"
+          if [ -n "$new" ] && [ -n "$live" ] && [[ "$new" < "$live" ]]; then
+            echo "behind=yes" >> "$GITHUB_OUTPUT"
+            echo "::notice::Yahoo gave a close ($new) older than the live site's ($live), so nothing is published this run"
+          fi
+
       - name: Commit the small files that changed
+        if: steps.close.outputs.behind != 'yes'
         run: |
           git config user.name "HarryV12"
           git config user.email "304028176+HarryV12@users.noreply.github.com"
@@ -78,6 +94,7 @@ jobs:
           git stash pop -q
 
       - name: Gather the files the site serves
+        if: steps.close.outputs.behind != 'yes'
         run: |
           mkdir -p _site
           rsync -a --exclude '.git' --exclude '.github' --exclude '_pipeline' --exclude '_site' --exclude 'versions' \
@@ -92,18 +109,22 @@ jobs:
           touch _moved/.nojekyll
 
       - uses: actions/configure-pages@v5
+        if: steps.close.outputs.behind != 'yes'
 
       - uses: actions/upload-pages-artifact@v3
+        if: steps.close.outputs.behind != 'yes'
         with:
           path: _moved
 
       - name: Point the old GitHub Pages address to Cloudflare
+        if: steps.close.outputs.behind != 'yes'
         id: deploy
         uses: actions/deploy-pages@v4
 
       # Cloudflare is skipped (not failed) if the CLOUDFLARE_API_TOKEN secret is missing, so the rest of the run
       # still works. The account ID is the CLOUDFLARE_ACCOUNT_ID repository variable.
       - name: Check for the Cloudflare token
+        if: steps.close.outputs.behind != 'yes'
         id: cloudflare
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

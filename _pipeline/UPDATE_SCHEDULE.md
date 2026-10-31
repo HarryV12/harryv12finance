@@ -164,5 +164,8 @@ The to-do report lists each dated item 30 days before it's due.
   nothing to write.
 - **GitHub can start scheduled jobs late** at busy times (in late Oct 2026, 2½–3½ hours every day), which is why the
   Cloudflare timer now starts the 9:15 pm run. If the timer's GitHub token expires, the backup schedule still runs, late.
+- **Yahoo's gap after midnight UTC**: for some hours after 00:00 UTC Yahoo can answer with a blank row for the latest
+  trading day, so an update then would be a day behind. `daily.yml` checks for this and publishes nothing from such a run;
+  the site stays as it is, and the next update catches up, including anything pushed meanwhile.
 - **Sources GitHub uses**: Yahoo Finance and Google News. Both were checked from GitHub's servers on 24 Oct 2026
   (`.github/workflows/source_check.yml`; run it by hand any time).
