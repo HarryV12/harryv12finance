@@ -1,6 +1,7 @@
 /* HarryV12 Finance · Data Visualization, Explained: beginner's guides to how markets work (bonds, stock trades,
    futures, options, money, derivatives, commodities, fundamental analysis, ETFs, EBITDA, dividends, short selling, margin,
-   inflation, interest rates, the yield curve, market cap and P/E, earnings, the balance sheet, IPOs, compounding), one 1080×1440
+   inflation, interest rates, the yield curve, market cap and P/E, earnings, the balance sheet, IPOs, compounding, and advanced
+   ones such as gamma squeezes, the Greeks, the VIX, dark pools, QE, repo, CDOs, carry trades, contango and the basis trade), one 1080×1440
    image each, in the same design as the Markets & AI images. Worked examples are labelled as such; the live figures
    (bond, gold, ETF, commodity and NVIDIA numbers) come from the site's own data (window.HFSite). */
 (() => {
@@ -631,6 +632,194 @@
     footer(c, "Worked examples at a steady 7% (monthly for the $200), before tax and fees · Not advice");
   }
 
+  // ---------- advanced guides ----------
+  // ---------- 22. Gamma squeeze ----------
+  async function gamma(c) {
+    let y = header(c, "Advanced guide · options", "What is a gamma squeeze?", "", "When heavy call buying **forces option dealers to buy the stock**, and their buying pushes the price up, which forces them to buy more.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 240, 1, "The loop", "blue");
+    boxes(c, a, [["Calls bought", "traders pile into call options"], ["Dealers sell", "and don't want to bet on the stock"], ["They hedge", "by buying some shares"], ["Price rises", "their buying helps push it up"], ["Buy more", "a higher price needs more hedge"]], { cols: 5, arrows: true });
+    y += 240 + 16;
+    a = sec(c, M, y, W - 2 * M, 410, 2, "Shares a dealer holds against 1,000 sold $100 calls", "green");
+    const N = (z) => { const t = 1 / (1 + 0.2316419 * Math.abs(z)), d = 0.3989423 * Math.exp(-z * z / 2), p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; }, pts = []; for (let p = 75; p <= 125; p++) pts.push([p, N((p - 100) / 9.5) * 100000]);
+    const pl = plot(c, a, { x0: 75, x1: 125, xTicks: [75, 85, 95, 100, 105, 115, 125], xFmt: (v) => "$" + v, y0: 0, y1: 100000, yTicks: [0, 25000, 50000, 75000, 100000], yFmt: (v) => v ? `${v / 1000}K` : "0", xTitle: "share price", series: [{ pts, col: C.green }] });
+    tag(c, pl.X(76), pl.Y(82000), "Steepest near $100: that's gamma", "green"); tag(c, pl.X(104), pl.Y(16000), "$95 to $105: buy 40,000 more", "blue");
+    y += 410 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = 220;
+    bulletCard(c, M, y, hw, bh, "green", "GAMMA SQUEEZE", "", [["Who's forced", "option dealers"], ["The trigger", "heavy call buying"], ["Strongest", "near the strike and expiry"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "red", "SHORT SQUEEZE", "", [["Who's forced", "short sellers"], ["The trigger", "a price jump"], ["Strongest", "when many shares are shorted"]]);
+    y += bh + 16;
+    keyBand(c, y, "It reverses", "When the calls expire or lose value, dealers sell their hedge, so the price can drop just as fast. GameStop in January 2021 is widely seen as having had both kinds of squeeze.", "red");
+    footer(c, "Worked example with a made-up stock; real dealer positions vary · Not advice");
+  }
+
+  // ---------- 23. The Greeks ----------
+  async function greeks(c) {
+    let y = header(c, "Advanced guide · options", "The Greeks", "", "Four numbers that say **why an option's price changes**. The example: a $100 stock, a $100 call, 30 days left, costing about $3.50.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 370, 1, "What each one measures", "blue");
+    boxes(c, a, [["Delta: 0.50", "Stock up $1, option up about $0.50. Also a rough guide to the odds of finishing in profit.", "blue"], ["Gamma: 0.05", "How fast delta moves. Stock up $1, delta goes from 0.50 to 0.55.", "green"], ["Theta: −$0.06", "What the option loses each day just from time passing.", "red"], ["Vega: +$0.11", "Expected swings up 1 point, option up $0.11. Swings down, it falls.", "purple"]], { cols: 2 });
+    y += 370 + 16;
+    a = sec(c, M, y, W - 2 * M, 370, 2, "Theta: an at-the-money option's value as time runs out", "red");
+    const v = (d) => 3.44 * Math.sqrt(d / 30), pts = []; for (let d = 90; d >= 0; d -= 1) pts.push([d, v(d)]);
+    const pl = plot(c, a, { x0: 90, x1: 0, xTicks: [90, 60, 30, 14, 0], xFmt: (d) => d ? `${d} days` : "expiry", y0: 0, y1: 7, yTicks: [0, 2, 4, 6], yFmt: (q) => "$" + q, xTitle: "days left", series: [{ pts, col: C.red }] });
+    tag(c, pl.X(52), pl.Y(6.3), "Time decay speeds up near the end", "red");
+    y += 370 + 16;
+    a = sec(c, M, y, W - 2 * M, 200, 3, "Right on the stock, still lost money", "purple");
+    boxes(c, a, [["Stock +$2", "delta and gamma add about $1.10", "green"], ["Swings −15 points", "fear fades after earnings: −$1.65", "red"], ["Result: −$0.55", "the \"volatility crush\" beat the gain", "purple"]], { cols: 3, arrows: true });
+    y += 200 + 16;
+    keyBand(c, y, "Remember", "A call can lose money even when the stock goes up.");
+    footer(c, "Worked example: estimates assuming 30% expected swings; real values change constantly · Not advice");
+  }
+
+  // ---------- 24. The VIX ----------
+  async function vix(c) {
+    let y = header(c, "Advanced guide · volatility", "What does the VIX measure?", "", "The \"fear gauge\". It uses S&P 500 option prices to show **how big a move traders are paying to protect against** over the next 30 days.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 230, 1, "How to read the number", "blue");
+    boxes(c, a, [["VIX 16", "expects about 1% a day, or 4.6% a month"], ["VIX 20", "about 1.25% a day, or 5.8% a month"], ["VIX 40", "about 2.5% a day, or 11.5% a month"]], { cols: 3 });
+    y += 230 + 16;
+    a = sec(c, M, y, W - 2 * M, 390, 2, "How high it has gone (closing levels)", "red");
+    bars(c, AREA(a.x, a.y, a.w, a.h - 12), [["Record low, Nov 2017", 9, C.green, "9"], ["Long-run average", 20, C.blue, "about 20"], ["Yen unwind, Aug 2024", 39, C.gold, "39"], ["Tariffs, Apr 2025", 52, C.gold, "52"], ["Financial crisis, Nov 2008", 81, C.red, "81"], ["Covid, Mar 2020", 83, C.red, "83"]], { fmt: (q) => q });
+    y += 390 + 16;
+    a = sec(c, M, y, W - 2 * M, 190, 3, "The quick maths", "purple");
+    boxes(c, a, [["For a day", "VIX ÷ 16 is about the daily move, because a year has about 252 trading days and √252 ≈ 16", "purple"], ["For a month", "VIX ÷ 3.5 is about the monthly move, because √12 ≈ 3.5", "purple"]], { cols: 2 });
+    y += 190 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = BOTTOM - y;
+    bulletCard(c, M, y, hw, bh, "gold", "WHAT IT ISN'T", "", [["A direction", "it measures size, not up or down"], ["A forecast", "it's a price, often too high"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "red", "BETTING ON IT", "", [["Can't buy the index", "only futures and options"], ["VIX funds", "often lose as futures roll"]]);
+    footer(c, "Cboe VIX history · a move of that size or less happens about two-thirds of the time · Not advice");
+  }
+
+  // ---------- 25. Dark pools ----------
+  async function darkpools(c) {
+    let y = header(c, "Advanced guide · market plumbing", "What are dark pools?", "", "Private trading venues that **don't show their orders before a trade**. They are legal and regulated, and the trades do get reported.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 250, 1, "Why they exist", "blue");
+    boxes(c, a, [["The problem", "A fund wants to sell 1 million shares"], ["On an exchange", "Others see the order and the price falls before it's done"], ["In a dark pool", "The order is hidden until it finds a buyer"], ["The match", "Often at the midpoint of the best buy and sell prices"]], { cols: 4, arrows: true });
+    y += 250 + 16;
+    a = sec(c, M, y, W - 2 * M, 230, 2, "Where US shares traded in 2025", "green");
+    const seg = [["Public exchanges", 49.39, "blue"], ["Dark pools", 17.74, "purple"], ["Other off-exchange", 32.87, "gold"]]; let sx = a.x;
+    seg.forEach(([l, v, k]) => { const sw = a.w * v / 100; rr(c, sx, a.y + 8, sw - 4, 72, 10); fill(c, C[k]); tx(c, v.toFixed(0) + "%", sx + sw / 2, a.y + 56, { s: 34, w: 800, f: MONO, col: "#fff", a: "center" }); tx(c, l, sx + 4, a.y + 112, { s: 21, w: 700, col: C[k], max: sw - 10 }); sx += sw; });
+    note(c, AREA(a.x, a.y + 124, a.w, a.h - 124), "Other off-exchange is mostly **wholesalers**, the firms that fill small orders from apps like Robinhood.", { s: 21 });
+    y += 230 + 16;
+    a = sec(c, M, y, W - 2 * M, 215, 3, "Payment for order flow: the related idea", "gold");
+    boxes(c, a, [["You tap buy", "on a zero-commission app"], ["Broker sells the order", "a wholesaler pays a tiny fee for it"], ["Wholesaler fills it", "and earns the small price gap"]], { cols: 3, col: "gold", arrows: true });
+    y += 215 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = 240;
+    bulletCard(c, M, y, hw, bh, "green", "THE FACTS", "", [["Reported fast", "usually within 10 seconds"], ["Hidden before", "not hidden after"], ["Run by", "banks and independent firms"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "red", "THE CONCERNS", "", [["Less visible", "public prices rely on public orders"], ["Conflicts", "who you trade with may be hidden"], ["Misconduct", "Barclays, Credit Suisse fined in 2016"]]);
+    y += bh + 16;
+    keyBand(c, y, "Remember", "A big \"dark pool print\" shows a trade happened. It doesn't tell you if the buyer or the seller started it.");
+    footer(c, "Rosenblatt market structure data, 2025 · FINRA reporting rules · SEC, NYAG 2016 settlements · Not advice");
+  }
+
+  // ---------- 26. QE and QT ----------
+  async function qe(c) {
+    let y = header(c, "Advanced guide · central banks", "What are QE and QT?", "", "Quantitative easing: the Fed **creates new bank reserves to buy bonds**, pushing long-term rates down. Quantitative tightening is the reverse.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 240, 1, "How QE works", "green");
+    boxes(c, a, [["Fed buys bonds", "from banks and big investors"], ["Pays with reserves", "new money at the Fed, made with a keystroke"], ["Bond prices rise", "so long-term yields fall"], ["Investors move on", "into stocks and riskier loans"]], { cols: 4, col: "green", arrows: true });
+    y += 240 + 16;
+    a = sec(c, M, y, W - 2 * M, 380, 2, "The Fed's balance sheet", "blue");
+    bars(c, AREA(a.x, a.y, a.w, a.h - 8), [["2007", 0.9, C.muted, "$0.9T"], ["2014", 4.5, C.green, "$4.5T"], ["2019", 3.8, C.red, "$3.8T"], ["2022 peak", 8.9, C.green, "$8.9T"], ["2026", 6.7, C.red, "$6.7T"]], { fmt: (v) => "$" + v + "T" });
+    y += 380 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = 290;
+    bulletCard(c, M, y, hw, bh, "green", "QE: EASING", "the Fed buys", [["Used when", "cuts to near 0% aren't enough"], ["2008, 2020", "the biggest rounds"], ["Effect", "lower long-term rates"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "red", "QT: TIGHTENING", "the Fed lets go", [["How", "lets bonds mature, no replacing"], ["2022–2025", "holdings fell $2.2 trillion"], ["Effect", "fewer reserves, more bonds for others"]]);
+    y += bh + 16;
+    keyBand(c, y, "A common myth", "QE doesn't hand cash to the public. Reserves mostly stay inside the banking system, which is why QE after 2008 didn't bring high inflation. Economists still argue about how much QE lifted share prices.");
+    footer(c, "Federal Reserve balance sheet reports, rounded · Not advice");
+  }
+
+  // ---------- 27. The repo market ----------
+  async function repo(c) {
+    let y = header(c, "Advanced guide · market plumbing", "What is the repo market?", "", "Where Wall Street **borrows cash overnight against bonds**. About $12.6 trillion is lent this way at any time, and most people have never heard of it.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 300, 1, "One overnight repo", "blue");
+    boxes(c, a, [["Today", "A dealer sells $102M of Treasuries to a money fund for $100M cash"], ["The deal", "It agrees to buy them back tomorrow for slightly more"], ["Tomorrow", "It pays $100,011,111: 4% a year for one night"]], { cols: 3, arrows: true });
+    y += 300 + 16;
+    const hw = (W - 2 * M - 16) / 2, sh = 300;
+    a = sec(c, M, y, hw, sh, 2, "The terms", "green");
+    boxes(c, a, [["Haircut", "the extra $2M of bonds, in case prices fall"], ["Repo rate", "the interest on the loan"], ["Rolled daily", "lenders can stop any morning"]], { cols: 1, col: "green" });
+    a = sec(c, M + hw + 16, y, hw, sh, 3, "Who's who", "purple");
+    boxes(c, a, [["Lenders", "money market funds with spare cash"], ["Borrowers", "dealers, hedge funds"], ["Benchmark", "SOFR, the rate on many US loans, comes from repo"]], { cols: 1, col: "purple" });
+    y += sh + 16;
+    a = sec(c, M, y, W - 2 * M, 230, 4, "When it has broken", "red");
+    boxes(c, a, [["2008", "Lenders pulled back from Bear Stearns and Lehman, speeding their collapse", "red"], ["September 2019", "Cash ran short and overnight rates jumped to about 10%. The Fed stepped in", "red"], ["March 2020", "Dash for cash. The Fed offered huge repo loans to keep bonds trading", "red"]], { cols: 3 });
+    y += 230 + 16;
+    keyBand(c, y, "Why it matters to you", "Banks and funds rely on this borrowing to hold bonds. If it seizes up, they must sell, and that can hit bonds, stocks and loans within days.");
+    footer(c, "Worked example at 4% on a 360-day year · Office of Financial Research, Q3 2025 size · Fed history · Not advice");
+  }
+
+  // ---------- 28. CDOs ----------
+  async function cdo(c) {
+    let y = header(c, "Advanced guide · 2008 crisis", "What is a CDO?", "", "A collateralized debt obligation **pools many loans and sells slices of the risk**. The top slice gets paid first, and the bottom takes the first losses.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 190, 1, "How one is built", "blue");
+    boxes(c, a, [["Many loans", "thousands of mortgages or company loans"], ["One pool", "the payments all go into it"], ["Slices", "\"tranches\" sold with different risk"]], { cols: 3, arrows: true });
+    y += 190 + 16;
+    a = sec(c, M, y, W - 2 * M, 450, 2, "Who loses what · a $100M pool", "red");
+    const tr = [["Equity", 5, "no rating, pays most", "red"], ["Mezzanine", 15, "BBB, pays more", "gold"], ["Senior", 80, "AAA, pays least", "green"]], sc2 = [[3, "3% of loans lost"], [10, "10% lost"], [25, "25% lost"]], lw = 300;
+    tx(c, "SLICE", a.x + 8, a.y + 18, { s: 18, w: 800, col: C.muted }); sc2.forEach(([, t], j) => tx(c, t, a.x + lw + (a.w - lw) * (j + 0.5) / 3, a.y + 18, { s: 20, w: 800, col: C.ink2, a: "center" }));
+    const rH = (a.h - 34) / 3; tr.forEach(([n, sz, d, k], i) => { const ry = a.y + 30 + i * rH; rr(c, a.x, ry, a.w, rH - 8, 12); fill(c, TINT[k]); tx(c, `${n}: $${sz}M`, a.x + 14, ry + 44, { s: 26, w: 800, col: C[k], max: lw - 20 }); tx(c, d, a.x + 14, ry + 76, { s: 20, w: 600, col: C.ink2, max: lw - 20 });
+      const under = tr.slice(0, i).reduce((q, t) => q + t[1], 0); sc2.forEach(([ls], j) => { const hit = Math.max(0, Math.min(sz, ls - under)), pct = Math.round(hit / sz * 100), cx0 = a.x + lw + (a.w - lw) * (j + 0.5) / 3; tx(c, pct ? `−${pct}%` : "safe", cx0, ry + 66, { s: pct ? 36 : 30, w: 800, f: MONO, col: pct ? C.red : C.green, a: "center" }); }); });
+    y += 450 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = 280;
+    bulletCard(c, M, y, hw, bh, "red", "WHAT WENT WRONG IN 2008", "", [["Bad loans", "many borrowers could never repay"], ["Bad maths", "models said they wouldn't all fail at once"], ["AAA on paper", "agencies rated risky slices as safe"], ["CDO of CDOs", "risk got re-sliced, harder to see"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "blue", "WHERE THEY ARE NOW", "", [["CLOs", "similar, using company loans"], ["Still large", "funds, banks and insurers buy them"], ["Tighter rules", "sellers often keep some risk"], ["The test", "are the loans inside any good?"]]);
+    y += bh + 16;
+    keyBand(c, y, "Remember", "Slicing moves risk around, but it doesn't remove it.");
+    footer(c, "Worked example: a simplified $100M pool · Financial Crisis Inquiry Commission on the 2008 failures · Not advice");
+  }
+
+  // ---------- 29. The carry trade ----------
+  async function carry(c) {
+    let y = header(c, "Advanced guide · currencies", "What is a carry trade?", "", "**Borrow where interest rates are low and invest where they're high**, and keep the gap. It works until the borrowed currency suddenly rises.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 240, 1, "The yen carry trade", "blue");
+    boxes(c, a, [["Borrow yen", "¥150M at 1% a year, with ¥150 to the dollar"], ["Swap to dollars", "that buys $1M"], ["Buy US bonds", "paying 4% a year"], ["Keep the gap", "3%, or about $30,000 a year"]], { cols: 4, arrows: true });
+    y += 240 + 16;
+    a = sec(c, M, y, W - 2 * M, 400, 2, "One year later: profit or loss on the $1M", "green");
+    bars(c, AREA(a.x, a.y, a.w, a.h - 10), [["Yen falls 10%", 131, C.green, "+$131K"], ["Yen flat", 30, C.blue, "+$30K"], ["Yen rises 5%", -21, C.gold, "−$21K"], ["Yen rises 11%", -81, C.red, "−$81K"]], { fmt: (v) => (v > 0 ? "+$" : v < 0 ? "−$" : "$") + Math.abs(v) + "K" });
+    y += 400 + 16;
+    a = sec(c, M, y, W - 2 * M, 250, 3, "The unwind: August 2024", "red");
+    boxes(c, a, [["31 July", "Japan raises rates, and the yen jumps", "red"], ["Trades lose", "the yen debts get more costly", "red"], ["Forced selling", "funds sell stocks to repay yen", "red"], ["5 August", "Japan's Nikkei −12%, the worst day since 1987", "red"]], { cols: 4, arrows: true });
+    y += 250 + 16;
+    keyBand(c, y, "The danger", "Small, steady gains, then a sudden big loss. With borrowed money it's worse, and because so many funds hold the same trade, they all rush for the exit at once. Traders call it picking up pennies in front of a steamroller.", "red");
+    footer(c, "Worked example, before fees and borrowing limits: the yen moves over the year · Nikkei history · Not advice");
+  }
+
+  // ---------- 30. Contango and backwardation ----------
+  async function contango(c) {
+    let y = header(c, "Advanced guide · futures", "Contango and backwardation", "", "Two shapes of the futures curve. **Contango**: later delivery costs more. **Backwardation**: later delivery costs less. One slowly drains oil funds.", { ts: 54 });
+    let a = sec(c, M, y, W - 2 * M, 420, 1, "Oil prices today, by delivery date · example", "blue");
+    const mo = ["Today", "1 mo", "2 mo", "3 mo", "4 mo", "5 mo"], up = [80, 81, 82, 83, 84, 85], dn = [80, 78.5, 77.5, 76.8, 76.3, 76];
+    const pl = plot(c, a, { x0: -0.2, x1: 5.2, xTicks: [0, 1, 2, 3, 4, 5], xFmt: (i) => mo[i], y0: 72, y1: 88, yTicks: [72, 76, 80, 84, 88], yFmt: (v) => "$" + v, xTitle: "delivery date", series: [{ pts: up.map((v, i) => [i, v]), col: C.red }, { pts: dn.map((v, i) => [i, v]), col: C.green }] });
+    tag(c, pl.X(1.8), pl.Y(86.3), "Contango: plenty of supply now", "red"); tag(c, pl.X(1.8), pl.Y(74.4), "Backwardation: shortage now", "green");
+    y += 420 + 16;
+    a = sec(c, M, y, W - 2 * M, 250, 2, "How an oil fund loses when oil doesn't move", "red");
+    boxes(c, a, [["Buy", "next month's oil at $81", "red"], ["Wait", "the contract drifts down to today's $80", "red"], ["Roll", "sell at $80, buy the next one at $81", "red"], ["Result", "oil flat, fund down about 1.2% a month", "red"]], { cols: 4, arrows: true });
+    y += 250 + 16;
+    const hw = (W - 2 * M - 16) / 2, bh = 220;
+    bulletCard(c, M, y, hw, bh, "red", "WHY CONTANGO", "", [["Storage costs", "holding oil isn't free"], ["Too much supply", "no rush to have it now"]]);
+    bulletCard(c, M + hw + 16, y, hw, bh, "green", "WHY BACKWARDATION", "", [["Tight supply", "people pay up for now"], ["Rolling earns", "buy cheaper, it drifts up"]]);
+    y += bh + 16;
+    keyBand(c, y, "April 2020", "With storage nearly full, May oil futures closed at −$37.63 a barrel: sellers paid buyers to take it. Funds that track futures, like USO, can trail the oil price badly in contango. VIX funds suffer the same way.", "red");
+    footer(c, "Worked example with made-up prices · NYMEX WTI, 20 April 2020 · Not advice");
+  }
+
+  // ---------- 31. The Treasury basis trade ----------
+  async function basis(c) {
+    let y = header(c, "Advanced guide · hedge funds", "What is the basis trade?", "", "Hedge funds **buy US government bonds and sell matching futures** to earn a tiny price gap, using huge amounts of borrowed money.", { ts: 60 });
+    let a = sec(c, M, y, W - 2 * M, 250, 1, "The trade", "blue");
+    boxes(c, a, [["The gap", "Futures trade slightly above the bond, because investors pay up for them"], ["Buy the bond", "$100M of Treasuries, borrowed via repo"], ["Sell the future", "so the price moves cancel out"], ["At delivery", "The two meet. The fund keeps the gap"]], { cols: 4, arrows: true });
+    y += 250 + 16;
+    const hw = (W - 2 * M - 16) / 2, sh = 400;
+    a = sec(c, M, y, hw, sh, 2, "Why borrow so much?", "green");
+    bars(c, AREA(a.x, a.y, a.w, a.h - 12), [["No borrowing", 0.1, C.muted, "0.1%"], ["With 50× leverage", 5, C.green, "about 5%"]], { fmt: (v) => v + "%" });
+    a = sec(c, M + hw + 16, y, hw, sh, 3, "What can go wrong", "red");
+    boxes(c, a, [["Lenders pull back", "repo costs jump or the loan stops"], ["Margin calls", "futures exchanges ask for more cash"], ["The gap widens", "a paper loss, on huge borrowing"]], { cols: 1, col: "red" });
+    y += sh + 16;
+    a = sec(c, M, y, W - 2 * M, 200, 4, "How big, and why regulators watch", "gold");
+    boxes(c, a, [["About $900B", "a Morgan Stanley estimate for 2026; the Fed had $830B in Sep 2025", "gold"], ["March 2020", "funds were forced to sell, and the Fed bought bonds to restore order", "red"], ["Why it matters", "these funds are big buyers of US debt", "blue"]], { cols: 3 });
+    y += 200 + 16;
+    keyBand(c, y, "Remember", "On paper it's almost risk free. The risk is in the borrowing: if many funds must sell at once, that can shake the bond market behind every other rate.");
+    footer(c, "Worked example with rounded figures, before costs · Federal Reserve, Bloomberg via Morgan Stanley · Not advice");
+  }
+
   const EX = [
     ["bond", "What is a bond?", "A loan you can resell, and why its price moves", bond],
     ["trade", "How a stock trade happens", "The order book, order types and what happens when you press buy", trade],
@@ -655,19 +844,33 @@
     ["compound", "Compounding", "Why starting early matters, the rule of 72 and what fees cost", compound],
   ];
 
+  // harder ideas, listed under their own heading in the tab
+  const ADV = [
+    ["gamma", "Gamma squeeze", "How option dealers can be forced to chase a stock higher", gamma],
+    ["greeks", "The Greeks", "Delta, gamma, theta and vega, and how to be right and still lose", greeks],
+    ["vix", "The VIX", "What the fear gauge really measures and how to read it", vix],
+    ["darkpools", "Dark pools", "Hidden trading venues and payment for order flow", darkpools],
+    ["qe", "QE and QT", "How the Fed buys and sheds bonds, and the money printing myth", qe],
+    ["repo", "The repo market", "Overnight lending that keeps Wall Street funded", repo],
+    ["cdo", "CDOs", "How slicing loans into tranches works, and what happened in 2008", cdo],
+    ["carry", "The carry trade", "Borrowing yen to earn more elsewhere, and the 2024 unwind", carry],
+    ["contango", "Contango and backwardation", "Why oil funds can lose when oil stays flat", contango],
+    ["basis", "The basis trade", "The hedge fund bet behind worries about the bond market", basis],
+  ];
   // ---------- the tab: pick a guide, see it, download or copy it ----------
   let cur = "bond", blob = null, url = null, seq = 0;
   try { cur = localStorage.getItem("hf-ex") || "bond"; } catch (e) { /* storage blocked */ }
-  if (!EX.some((e) => e[0] === cur)) cur = "bond";
+  const ALL = [...EX, ...ADV];
+  if (!ALL.some((e) => e[0] === cur)) cur = "bond";
   const esc = (s) => String(s).replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
-  const markup = () => `<div class="post-grid"><div class="post-controls"><div class="field"><span class="label">Guides</span><div class="styles ex-styles">${EX.map(([v, t, s]) => `<button type="button" data-ex="${v}"><b>${esc(t)}</b><span>${esc(s)}</span></button>`).join("")}</div></div></div>
+  const markup = () => `<div class="post-grid"><div class="post-controls">${[["Guides", EX], ["Advanced guides", ADV]].map(([lab, list]) => `<div class="field"><span class="label">${lab}</span><div class="styles ex-styles">${list.map(([v, t, s]) => `<button type="button" data-ex="${v}"><b>${esc(t)}</b><span>${esc(s)}</span></button>`).join("")}</div></div>`).join("")}</div>
     <div class="post-preview"><img id="exImg" alt="Explainer image" tabindex="0" role="button" title="Click to see it full size"><p class="empty" id="exEmpty" hidden></p>
     <div class="post-actions"><button type="button" class="btn primary" id="exSave" disabled>Download image</button><button type="button" class="btn" id="exCopy" disabled>Copy image</button><span id="exHint">Click the image to view it full size.</span></div></div></div>
     <div class="img-view" id="exView" role="dialog" aria-modal="true" aria-label="Image, full size" hidden><button type="button" class="img-view-close" aria-label="Close">×</button><img alt="Explainer, full size"></div>`;
   async function draw(view) {
     const cv = document.createElement("canvas"); cv.width = W; cv.height = HT; const c = cv.getContext("2d");
     try { await Promise.all([`900 20px ${UI}`, `800 20px ${UI}`, `700 20px ${UI}`, `600 20px ${UI}`, `500 20px ${UI}`, `800 20px ${MONO}`, `700 20px ${MONO}`, `600 20px ${MONO}`].map((f) => document.fonts.load(f))); } catch (e) { /* fonts optional */ }
-    await EX.find((e) => e[0] === view)[3](c);
+    await ALL.find((e) => e[0] === view)[3](c);
     return await new Promise((r) => cv.toBlob(r, "image/png"));
   }
   async function render() {
@@ -690,5 +893,5 @@
     document.getElementById("exImg").addEventListener("click", open); view.addEventListener("click", close); document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !view.hidden) close(); });
     render();
   }
-  window.HFExplained = { markup, mount, draw, EX };
+  window.HFExplained = { markup, mount, draw, EX, ADV };
 })();
