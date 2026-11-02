@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap");
+/* Bento style: the viewer's choice from the Style button (html[data-style="bento"]). Classic (style.css) is untouched.
+   Only colours, fonts, corners and tile backgrounds change, plus the home page's tile layout. */
+
+/* ---------- colours ---------- */
+:root[data-style="bento"] {
+  --bg: #f3f0ea; --surface: #fbfaf7; --ink: #222b38; --ink-2: #3e4756; --muted: #5d6672; --line: #222b381c; --line-strong: #222b3833;
+  --accent: #3d3a8c; --accent-soft: #dcdbec; --chip: #ffffff9e; --good: #1d7048; --good-soft: #d6e9dd; --bad: #a8322d; --bad-soft: #f1dcda;
+  --chart: #4b44b8; --chart-area: rgba(75, 68, 184, 0.13); --f-bought: #4b44b8; --f-sold: #a8322d; --f-up: #1d7048;
+  --t1: #e6d2c8; --t2: #d5d4e2; --t3: #e8dfc6; --t4: #d0dfd5; --t5: #cfdde7; --t6: #e6d8da; --tchip: #ffffff8c; --tline: #222b381f;
+  --font-ui: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Sans", system-ui, sans-serif;
+  --font-head: "Bricolage Grotesque", "DM Sans", sans-serif;
+}
+:root[data-style="bento"][data-theme="dark"] {
+  --bg: #15131b; --surface: #221f2c; --ink: #f4eff8; --ink-2: #d6d0de; --muted: #a9a2b5; --line: #ffffff1c; --line-strong: #ffffff30;
+  --accent: #c9bdff; --accent-soft: #2f2850; --chip: #ffffff12; --good: #5fdca8; --good-soft: #15322a; --bad: #ff8a96; --bad-soft: #3a1c22;
+  --chart: #b3a4ff; --chart-area: rgba(179, 164, 255, 0.14); --f-bought: #b3a4ff; --f-sold: #ff8a96; --f-up: #5fdca8;
+  --t1: #3b211f; --t2: #292344; --t3: #352c14; --t4: #15322a; --t5: #162e45; --t6: #3a1c2d; --tchip: #ffffff12; --tline: #ffffff1c;
+}
+
+/* ---------- type ---------- */
+[data-style="bento"] body { font-family: var(--font-ui); }
+[data-style="bento"] .num, [data-style="bento"] .mono, [data-style="bento"] .tbl td.r, [data-style="bento"] .tbl td.num { font-variant-numeric: tabular-nums; }
+[data-style="bento"] h1, [data-style="bento"] h2, [data-style="bento"] .brand, [data-style="bento"] .t-title, [data-style="bento"] .tw-l { font-family: var(--font-head); letter-spacing: -0.015em; }
+[data-style="bento"] h1 { font-weight: 800; font-size: 42px; line-height: 1.04; letter-spacing: -0.025em; }
+[data-style="bento"] h2 { font-weight: 800; font-size: 22px; }
+[data-style="bento"] .card h2 { flex-wrap: wrap; row-gap: 2px; }
+[data-style="bento"] .stat .big, [data-style="bento"] .price-head .px, [data-style="bento"] .idx b { font-family: var(--font-head); font-weight: 800; letter-spacing: -0.02em; }
+[data-style="bento"] .stat .lbl, [data-style="bento"] .tbl th, [data-style="bento"] .th-sub { letter-spacing: 0.02em; text-transform: none; font-size: 13px; }
+
+/* ---------- header ---------- */
+[data-style="bento"] .top { background: var(--bg); border-bottom: 0; }
+[data-style="bento"] .brand { font-size: 21px; color: var(--ink); }
+[data-style="bento"] .nav a { color: var(--ink); font-weight: 500; border-radius: 8px; }
+[data-style="bento"] .nav a.on { background: var(--ink); color: var(--bg); }
+[data-style="bento"] .search input { border: 0; background-color: var(--surface); border-radius: 8px; }
+[data-style="bento"] .icon-btn, [data-style="bento"] .btn { border: 0; background: var(--surface); border-radius: 8px; }
+[data-style="bento"] .navmenu, [data-style="bento"] .search ul { border: 0; border-radius: 10px; }
+.style-btn { width: auto !important; padding: 0 12px; font: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; }
+
+/* ---------- tiles: no borders, small corners, a calm tint per tile ---------- */
+[data-style="bento"] .card, [data-style="bento"] .idx, [data-style="bento"] .ind { border: 0; border-radius: 12px; }
+[data-style="bento"] .card { padding: 22px 24px; }
+[data-style="bento"] .seg, [data-style="bento"] .tag, [data-style="bento"] .pill, [data-style="bento"] .tk { border-radius: 6px; }
+[data-style="bento"] .seg { border: 0; background: var(--surface); }
+[data-style="bento"] .seg button { border-right: 0; }
+[data-style="bento"] .seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+[data-style="bento"] .breadth, [data-style="bento"] .bar-row .track, [data-style="bento"] .bar-row .fill { border-radius: 3px; }
+[data-style="bento"] .ai-tile { border: 0; border-radius: 7px; }
+
+/* tiles inside a grid take turns through six tints; anything inside uses the tint as its surface */
+[data-style="bento"] .grid > .card:nth-child(6n+1), [data-style="bento"] .idx:nth-child(6n+1) { --surface: var(--t1); }
+[data-style="bento"] .grid > .card:nth-child(6n+2), [data-style="bento"] .idx:nth-child(6n+2) { --surface: var(--t2); }
+[data-style="bento"] .grid > .card:nth-child(6n+3), [data-style="bento"] .idx:nth-child(6n+3) { --surface: var(--t3); }
+[data-style="bento"] .grid > .card:nth-child(6n+4), [data-style="bento"] .idx:nth-child(6n+4) { --surface: var(--t4); }
+[data-style="bento"] .grid > .card:nth-child(6n+5), [data-style="bento"] .idx:nth-child(6n+5) { --surface: var(--t5); }
+[data-style="bento"] .grid > .card:nth-child(6n+6), [data-style="bento"] .idx:nth-child(6n+6) { --surface: var(--t6); }
+[data-style="bento"] .grid > .card, [data-style="bento"] .idx { --chip: var(--tchip); --line: var(--tline); background: var(--surface); }
+[data-style="bento"] .ind { background: var(--chip); }
+
+/* ---------- home: the bento layout ---------- */
+[data-style="bento"] main:has(> .mk-head) { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; align-items: start; }
+[data-style="bento"] main:has(> .mk-head) > * { grid-column: span 12; margin-top: 0; }
+[data-style="bento"] .mk-head { margin-bottom: 0; }
+[data-style="bento"] .idx-row { gap: 16px; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); }
+[data-style="bento"] .idx { padding: 16px 18px; }
+[data-style="bento"] .idx-n { color: var(--ink-2); font-size: 13px; }
+[data-style="bento"] .idx b { font-size: 30px; }
+[data-style="bento"] .today-why { --surface: var(--t1); background: var(--surface); border-left: 0; padding: 26px 28px; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 20px; }
+[data-style="bento"] .today-why .tw-l { grid-column: 1 / -1; font-size: 15px; font-weight: 700; opacity: .75; font-family: var(--font-ui); letter-spacing: 0; }
+[data-style="bento"] .today-why > span:nth-child(2) { font: 700 26px/1.25 var(--font-head); letter-spacing: -0.01em; }
+[data-style="bento"] .home-grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; }
+[data-style="bento"] .home-grid > .card:nth-child(1) { --surface: var(--t6); }
+[data-style="bento"] .home-grid > .card:nth-child(2) { --surface: var(--t4); }
+[data-style="bento"] main:has(> .mk-head) > .card:has(.inds) { --surface: var(--t5); --chip: var(--tchip); --line: var(--tline); background: var(--surface); }
+[data-style="bento"] main:has(> .mk-head) > .cols-2 { display: contents; }
+[data-style="bento"] main:has(> .mk-head) > .cols-2 > .card, [data-style="bento"] main:has(> .mk-head) > .congress-link { grid-column: span 4; height: 100%; }
+[data-style="bento"] main:has(> .mk-head) > .cols-2 > .card:nth-child(1) { --surface: var(--t2); }
+[data-style="bento"] main:has(> .mk-head) > .cols-2 > .card:nth-child(2) { --surface: var(--t3); }
+[data-style="bento"] .t-title { font-size: 24px; line-height: 1.15; font-weight: 800; margin: 2px 0 8px; }
+[data-style="bento"] .congress-link { color: var(--ink); }
+
+/* ---------- phones ---------- */
+@media (max-width: 860px) {
+  [data-style="bento"] h1 { font-size: 32px; }
+  [data-style="bento"] main:has(> .mk-head) { gap: 10px; }
+  [data-style="bento"] main:has(> .mk-head) > .cols-2 > .card, [data-style="bento"] main:has(> .mk-head) > .congress-link { grid-column: span 12; }
+  [data-style="bento"] .idx-row { gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  [data-style="bento"] .idx:last-child:nth-child(odd) { grid-column: span 2; }
+  [data-style="bento"] .home-grid { gap: 10px; grid-template-columns: minmax(0, 1fr); }
+  [data-style="bento"] .today-why { grid-template-columns: minmax(0, 1fr); padding: 20px; }
+  [data-style="bento"] .today-why > span:nth-child(2) { font-size: 21px; }
+  [data-style="bento"] .card { padding: 18px; }
+}
+@media (max-width: 520px) {
+  [data-style="bento"] .card { padding: 16px; }
+  [data-style="bento"] .idx b { font-size: 25px; }
+}
