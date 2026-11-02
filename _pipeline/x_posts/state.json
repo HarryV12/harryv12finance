@@ -1,8 +1,11 @@
 {
-  "market_close": "2026-10-30",
+  "market_close": "2026-11-02",
   "week_close": "2026-10-30",
   "posted_on": {
-    "2026-10-30": 2
+    "2026-11-02": 2
   },
-  "leaderboard": "2026-10-30"
+  "leaderboard": "2026-10-30",
+  "x_account_id": "2111931829980688385",
+  "congress_filed": "2026-10-29",
+  "congress_week": "2026-W45"
 }
