@@ -164,5 +164,17 @@
  "today|oil|2026-10-30": "Oil stocks rose 1.9% while the S&P 500 fell 1.8%, led by Phillips 66, Marathon Petroleum and ConocoPhillips, as oil rose.",
  "now|oil|2026-10-30": "Oil stocks rose 1.0% on the week and 12.7% on the month, led by Halliburton and Exxon, while Marathon Petroleum fell 2.7%.",
  "today|health|2026-10-30": "Healthcare rose 0.8% while the S&P 500 fell 1.8%, with Eli Lilly, Merck and Pfizer gaining and Thermo Fisher falling.",
- "now|health|2026-10-30": "Healthcare rose 3.2% on the week and 10.7% on the month, led by Eli Lilly (+11.3%), while the S&P 500 fell 0.6%."
+ "now|health|2026-10-30": "Healthcare rose 3.2% on the week and 10.7% on the month, led by Eli Lilly (+11.3%), while the S&P 500 fell 0.6%.",
+ "today|all|2026-11-02": "The S&P 500 slipped 0.5% as AI-linked stocks kept falling, with Lumentum, Marvell and Astera Labs down most while oil fell on US-Iran hopes.",
+ "now|all|2026-11-02": "The S&P 500 fell 1.7% over the week and 2.3% over the month, with huge moves underneath: Intel −33.7%, ServiceNow −33.0% and Fortinet −31.2%, while Carvana rose 27.2%.",
+ "today|ai|2026-11-02": "AI and chip stocks fell 5.1% (S&P 500 −0.5%), led down by Marvell, Oracle, Super Micro and AMD, as the AI selloff continued.",
+ "now|ai|2026-11-02": "AI stocks are down 7.8% on the week (S&P 500 −1.7%) and 23.5% on the month, with Marvell (−26.7%), AMD (−12.1%), Arm (−11.9%) and Palantir (−10.3%) lowest.",
+ "today|defense|2026-11-02": "Defense stocks were flat (−0.0%) while the S&P 500 fell 0.5%, with AeroVironment down 2.4% and RTX up 1.5%.",
+ "now|defense|2026-11-02": "Defense is up 3.6% on the week and 15.5% on the month, led by Huntington Ingalls and L3Harris, while the S&P 500 fell 1.7%.",
+ "today|banks|2026-11-02": "Banks rose 1.1% while the S&P 500 fell 0.5%, led by Wells Fargo, regional banks (KRE) and U.S. Bancorp.",
+ "now|banks|2026-11-02": "Banks rose 1.2% on the week, ahead of the market (−1.7%), led by Wells Fargo, PNC and JPMorgan, while Bank of America fell.",
+ "today|oil|2026-11-02": "Oil stocks fell 3.9% while the S&P 500 fell 0.5%, led down by Occidental, ConocoPhillips and EOG, as oil dropped on US-Iran hopes.",
+ "now|oil|2026-11-02": "Oil stocks fell 3.6% on the week but are up 8.2% on the month, with Marathon Petroleum, Occidental and Phillips 66 down most.",
+ "today|health|2026-11-02": "Healthcare fell 0.4%, about in line with the S&P 500 (−0.5%), with Abbott up 3.7% while Thermo Fisher, AbbVie and UnitedHealth fell.",
+ "now|health|2026-11-02": "Healthcare rose 2.9% on the week and 10.0% on the month, led by Eli Lilly (+10.3%), while the S&P 500 fell 1.7%."
 }
