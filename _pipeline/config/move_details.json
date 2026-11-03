@@ -559,5 +559,53 @@
  "now|health|2026-11-02": [
   "Lilly +10.4%, Merck +5.5% and Abbott +5.0% this week; Bloomberg (27 Oct) described healthcare as an anti-AI bet as investors turned defensive.",
   "The S&P 500 fell 1.7% over the same week."
+ ],
+ "today|all|2026-11-03": [
+  "Bloom Energy +9.1%, AppLovin +7.3% and Eaton +7.0% led; Shopify −8.7% (the news we have doesn't name a cause for these moves).",
+  "The S&P 500 is still down 2.6% over the month."
+ ],
+ "now|all|2026-11-03": [
+  "Intel −35.4%, Fortinet −30.8%, ServiceNow −29.5% and Marvell −29.4% this week (the news we have doesn't name a single cause).",
+  "The S&P 500 is down 2.6% over the month."
+ ],
+ "today|ai|2026-11-03": [
+  "Oracle +5.9%, AMD +3.7%, Super Micro +3.1% and Broadcom +3.1% (the news we have doesn't name a cause for the bounce).",
+  "The basket is still down 22.0% over the month; Reuters (2 Nov) described October as a dive for AI-related shares."
+ ],
+ "now|ai|2026-11-03": [
+  "Marvell −29.4%, AMD −13.6%, Palantir −11.7% and Arm −10.6% this week.",
+  "The basket is down 22.0% over the month; Reuters (2 Nov) said October's dive in AI-related shares was testing the broader market."
+ ],
+ "today|defense|2026-11-03": [
+  "Leidos −6.6%, Booz Allen −1.1% and Northrop Grumman −0.9%; Huntington Ingalls +1.0% (the news we have doesn't say why).",
+  "The basket is still up 14.3% over the month."
+ ],
+ "now|defense|2026-11-03": [
+  "Huntington Ingalls +12.7%, L3Harris +7.0%, General Dynamics +5.5% and RTX +4.7% this week (the news we have doesn't name a single cause).",
+  "The basket is up 14.3% over the month."
+ ],
+ "today|banks|2026-11-03": [
+  "Regional-bank ETF KRE −1.2%, U.S. Bancorp −1.0%, PNC −1.0% and JPMorgan −0.8% (the news we have doesn't name a bank-specific cause).",
+  "The basket is down 0.2% over the month."
+ ],
+ "now|banks|2026-11-03": [
+  "Wells Fargo +3.5% and PNC +0.8% this week; Bank of America −2.0% and Goldman Sachs −1.7%.",
+  "The basket is down 0.2% over the month."
+ ],
+ "today|oil|2026-11-03": [
+  "EOG −1.7%, ConocoPhillips −1.7%, Halliburton −1.6% and Exxon −1.2%, after oil tumbled on 2 Nov (WSJ, Bloomberg).",
+  "The basket is still up 5.5% over the month."
+ ],
+ "now|oil|2026-11-03": [
+  "Halliburton −4.4%, EOG −3.7%, Occidental −3.7% and Schlumberger −3.6% this week; oil fell on Iran comments (Bloomberg, 27 Oct) and tumbled again on 2 Nov (WSJ).",
+  "The basket is up 5.5% over the month."
+ ],
+ "today|health|2026-11-03": [
+  "Merck −2.5%, Pfizer −2.2% and Johnson & Johnson −1.6%; Thermo Fisher +2.3% (the news we have doesn't say why).",
+  "The basket is still up 8.9% over the month."
+ ],
+ "now|health|2026-11-03": [
+  "Lilly +10.0%, Abbott +6.1% and Merck +2.0% this week; Bloomberg (27 Oct) described healthcare as an anti-AI bet as investors turned defensive.",
+  "The basket is up 8.9% over the month."
  ]
 }

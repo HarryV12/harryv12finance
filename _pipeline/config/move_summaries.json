@@ -176,5 +176,17 @@
  "today|oil|2026-11-02": "Oil stocks fell 3.9% while the S&P 500 fell 0.5%, led down by Occidental, ConocoPhillips and EOG, as oil dropped on US-Iran hopes.",
  "now|oil|2026-11-02": "Oil stocks fell 3.6% on the week but are up 8.2% on the month, with Marathon Petroleum, Occidental and Phillips 66 down most.",
  "today|health|2026-11-02": "Healthcare fell 0.4%, about in line with the S&P 500 (−0.5%), with Abbott up 3.7% while Thermo Fisher, AbbVie and UnitedHealth fell.",
- "now|health|2026-11-02": "Healthcare rose 2.9% on the week and 10.0% on the month, led by Eli Lilly (+10.3%), while the S&P 500 fell 1.7%."
+ "now|health|2026-11-02": "Healthcare rose 2.9% on the week and 10.0% on the month, led by Eli Lilly (+10.3%), while the S&P 500 fell 1.7%.",
+ "today|all|2026-11-03": "The S&P 500 edged up 0.3%, with Bloom Energy (+9.1%), AppLovin (+7.3%) and Eaton (+7.0%) up most while Shopify fell 8.7%.",
+ "now|all|2026-11-03": "The S&P 500 fell 2.0% on the week, with Intel (−35.4%), Fortinet (−30.8%), ServiceNow (−29.5%) and Marvell (−29.4%) falling most.",
+ "today|ai|2026-11-03": "AI and chip stocks rose 2.2% while the S&P 500 rose 0.3%, led by Oracle, AMD, Super Micro and Broadcom.",
+ "now|ai|2026-11-03": "AI and chip stocks fell 8.5% on the week against 2.0% for the S&P 500, with Marvell, AMD, Palantir and Arm down most.",
+ "today|defense|2026-11-03": "Defense stocks fell 0.8% while the S&P 500 rose 0.3%, with Leidos down 6.6%.",
+ "now|defense|2026-11-03": "Defense stocks rose 3.4% on the week while the S&P 500 fell 2.0%, led by Huntington Ingalls (+12.7%), L3Harris and General Dynamics.",
+ "today|banks|2026-11-03": "Banks fell 0.4% while the S&P 500 rose 0.3%, with regional banks (KRE), U.S. Bancorp, PNC and JPMorgan down most.",
+ "now|banks|2026-11-03": "Banks rose 0.3% on the week while the S&P 500 fell 2.0%, led by Wells Fargo, while Bank of America and Goldman Sachs fell.",
+ "today|oil|2026-11-03": "Oil stocks fell 1.1% while the S&P 500 rose 0.3%, led down by EOG, ConocoPhillips and Halliburton.",
+ "now|oil|2026-11-03": "Oil stocks fell 2.3% on the week, a bit more than the S&P 500 (−2.0%), with Halliburton, EOG, Occidental and Schlumberger down most.",
+ "today|health|2026-11-03": "Healthcare fell 0.6% while the S&P 500 rose 0.3%, with Merck, Pfizer and Johnson & Johnson down while Thermo Fisher rose 2.3%.",
+ "now|health|2026-11-03": "Healthcare rose 2.2% on the week while the S&P 500 fell 2.0%, led by Eli Lilly (+10.0%) and Abbott (+6.1%)."
 }
