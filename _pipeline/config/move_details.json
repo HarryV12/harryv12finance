@@ -607,5 +607,61 @@
  "now|health|2026-11-03": [
   "Lilly +10.0%, Abbott +6.1% and Merck +2.0% this week; Bloomberg (27 Oct) described healthcare as an anti-AI bet as investors turned defensive.",
   "The basket is up 8.9% over the month."
+ ],
+ "ai|2026-10-29": [
+  "Alphabet's results weighed on AI optimism (WSJ, FT, 29 Oct) → chip stocks fell: Marvell −36.5%, Micron −19.1%, Arm −18.7% and Super Micro −17.3%.",
+  "On 4 Nov, Yahoo Finance reported tech and AI stocks splitting after the Democratic midterm sweep, and Barron's said the result is more complicated for AI stocks."
+ ],
+ "health|2026-10-29": [
+  "Democrats won the midterms sweepingly (Reuters, 4 Nov) → health insurers and hospitals rallied, while MarketWatch said drugmakers brace for scrutiny.",
+  "Abbott +12.5%, Eli Lilly +10.0% and Merck +6.7% led over the period."
+ ],
+ "today|all|2026-11-04": [
+  "Biggest moves: Moderna +13.1%, Datadog −14.4%, Vertiv −12.9% and CVS −12.5% (the news we have doesn't name a cause for these).",
+  "The S&P 500 is down 1.6% over the month."
+ ],
+ "now|all|2026-11-04": [
+  "Intel −39.0%, Marvell −36.5%, Datadog −32.2% and Lumentum −31.4% over the period; the FT (29 Oct) reported US tech stocks falling as earnings fuelled AI spending concerns.",
+  "The S&P 500 is down 1.6% over the month."
+ ],
+ "today|ai|2026-11-04": [
+  "Marvell −7.1%, Micron −7.0%, Super Micro −5.7% and Arm −5.3%; Yahoo Finance (4 Nov) said tech and AI stocks split after the Democratic sweep, with Nvidia down.",
+  "The basket is down 25.0% over the month."
+ ],
+ "now|ai|2026-11-04": [
+  "Marvell −36.5%, Micron −19.1%, Arm −18.7% and Super Micro −17.3% over the period; the FT (29 Oct) said US tech stocks fell after earnings fuelled AI spending concerns.",
+  "The basket is down 25.0% over the month."
+ ],
+ "today|defense|2026-11-04": [
+  "AeroVironment −8.3%, Lockheed Martin −6.9%, L3Harris −6.5% and Northrop Grumman −4.5%; CNBC (4 Nov) reported defense stocks sliding on fear Democrats will curb spending.",
+  "The basket is still up 9.9% over the month."
+ ],
+ "now|defense|2026-11-04": [
+  "AeroVironment −10.1% and Lockheed Martin −5.5%; Huntington Ingalls +8.9% and Booz Allen +5.8% (the news we have doesn't name a single cause).",
+  "The basket is up 9.9% over the month."
+ ],
+ "today|banks|2026-11-04": [
+  "Schwab +4.6%, Morgan Stanley +4.3%, JPMorgan +4.2% and Bank of America +4.0% (the news we have doesn't name a bank-specific cause).",
+  "The basket is up 2.8% over the month."
+ ],
+ "now|banks|2026-11-04": [
+  "Schwab +5.2%, Wells Fargo +4.5%, JPMorgan +3.8% and the regional-bank ETF KRE +2.8% (the news we have doesn't name a single cause).",
+  "The basket is up 2.8% over the month."
+ ],
+ "today|oil|2026-11-04": [
+  "Marathon Petroleum −8.1%, EOG −5.2%, ConocoPhillips −5.2% and Occidental −5.1%, after oil fell on 2 Nov on US-Iran hopes (Bloomberg) (the news we have doesn't name a cause for 4 Nov).",
+  "The basket is still up 0.6% over the month."
+ ],
+ "now|oil|2026-11-04": [
+  "Marathon Petroleum −10.9%, Occidental −8.8%, EOG −8.6% and ConocoPhillips −8.1% over the period; Bloomberg (2 Nov) reported oil tumbling on US-Iran hopes.",
+  "The basket is up 0.6% over the month."
+ ],
+ "today|health|2026-11-04": [
+  "Abbott +5.6%, Merck +3.9%, Johnson & Johnson +3.8% and AbbVie +3.1%; Reuters (4 Nov) reported health insurers and hospitals rallying after the Democratic midterm win.",
+  "The basket is up 12.1% over the month."
+ ],
+ "now|health|2026-11-04": [
+  "Abbott +12.5%, Lilly +10.0%, Merck +6.7% and the sector ETF XLV +5.5% over the period; Reuters (4 Nov) reported insurers and hospitals rallying after the Democrats' midterm win.",
+  "The basket is up 12.1% over the month."
  ]
 }

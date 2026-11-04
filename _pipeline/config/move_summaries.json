@@ -188,5 +188,19 @@
  "today|oil|2026-11-03": "Oil stocks fell 1.1% while the S&P 500 rose 0.3%, led down by EOG, ConocoPhillips and Halliburton.",
  "now|oil|2026-11-03": "Oil stocks fell 2.3% on the week, a bit more than the S&P 500 (−2.0%), with Halliburton, EOG, Occidental and Schlumberger down most.",
  "today|health|2026-11-03": "Healthcare fell 0.6% while the S&P 500 rose 0.3%, with Merck, Pfizer and Johnson & Johnson down while Thermo Fisher rose 2.3%.",
- "now|health|2026-11-03": "Healthcare rose 2.2% on the week while the S&P 500 fell 2.0%, led by Eli Lilly (+10.0%) and Abbott (+6.1%)."
+ "now|health|2026-11-03": "Healthcare rose 2.2% on the week while the S&P 500 fell 2.0%, led by Eli Lilly (+10.0%) and Abbott (+6.1%).",
+ "ai|2026-10-29": "AI and chip stocks fell 14.7% from 29 October to 4 November while the S&P 500 fell 0.7%, with Marvell, Micron, Arm and Super Micro down most.",
+ "health|2026-10-29": "Healthcare rose 5.0% from 29 October to 4 November while the S&P 500 fell 0.7%, as health insurers and hospitals rallied after the Democrats' midterm win.",
+ "today|all|2026-11-04": "The S&P 500 rose 1.7% as results of the midterm elections came in, while Datadog fell 14.4% and Vertiv 12.9%.",
+ "now|all|2026-11-04": "The S&P 500 fell 0.7% from 29 October to 4 November, with Intel (−39.0%), Marvell, Datadog and Lumentum falling most.",
+ "today|ai|2026-11-04": "AI and chip stocks fell 3.6% while the S&P 500 rose 1.7%, with Marvell, Micron, Super Micro and Arm down most.",
+ "now|ai|2026-11-04": "AI and chip stocks fell 14.7% from 29 October to 4 November against 0.7% for the S&P 500, with Marvell, Micron, Arm and Super Micro down most.",
+ "today|defense|2026-11-04": "Defense stocks fell 3.7% while the S&P 500 rose 1.7%, on fears that Democrats will curb spending, with AeroVironment, Lockheed Martin and L3Harris down most.",
+ "now|defense|2026-11-04": "Defense stocks fell 0.5% from 29 October to 4 November, a little less than the S&P 500 (−0.7%), with AeroVironment down 10.1% and Huntington Ingalls up 8.9%.",
+ "today|banks|2026-11-04": "Banks rose 3.0% while the S&P 500 rose 1.7%, led by Charles Schwab, Morgan Stanley, JPMorgan and Bank of America.",
+ "now|banks|2026-11-04": "Banks rose 2.7% from 29 October to 4 November while the S&P 500 fell 0.7%, led by Charles Schwab, Wells Fargo and JPMorgan.",
+ "today|oil|2026-11-04": "Oil stocks fell 4.5% while the S&P 500 rose 1.7%, led down by Marathon Petroleum, EOG, ConocoPhillips and Occidental.",
+ "now|oil|2026-11-04": "Oil stocks fell 7.3% from 29 October to 4 November against 0.7% for the S&P 500, with Marathon Petroleum, Occidental, EOG and ConocoPhillips down most.",
+ "today|health|2026-11-04": "Healthcare rose 2.8% while the S&P 500 rose 1.7%, led by Abbott, Merck, Johnson & Johnson and AbbVie, after the Democrats' midterm win.",
+ "now|health|2026-11-04": "Healthcare rose 5.0% from 29 October to 4 November while the S&P 500 fell 0.7%, led by Abbott (+12.5%) and Eli Lilly (+10.0%)."
 }
