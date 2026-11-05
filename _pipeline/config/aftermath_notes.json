@@ -414,5 +414,89 @@
    }
   ],
   "why": "With no company-specific bad news in the headlines, the slide looks like investors taking profits after a high, together with weakness across industrial stocks. A Hold rating with a price target near the share price suggests analysts saw little room for further gains."
+ },
+ "WMB": {
+  "cause": "No single cause: shares slid from a May high with no reported bad news",
+  "clear": false,
+  "summary": "Williams peaked at $78.25 on 19 May and has fallen about 18% since, while the S&P 500 is roughly flat and its sector is about level. The headlines we have name no company-specific bad news; it filed a $4.22 billion equity shelf and new credit lines around then, and analysts raised price targets in late May.",
+  "events": [
+   {
+    "date": "2026-05-19",
+    "kind": "peak",
+    "text": "Shares at their high, $78.25"
+   },
+   {
+    "date": "2026-05-21",
+    "kind": "neutral",
+    "text": "New $4.22 billion equity shelf in the headlines (Yahoo Finance)"
+   },
+   {
+    "date": "2026-05-29",
+    "kind": "good",
+    "text": "Morgan Stanley raises its price target (Yahoo Finance)"
+   },
+   {
+    "date": "2026-06-01",
+    "kind": "neutral",
+    "text": "Expands funding options with new credit lines and an equity shelf (Yahoo Finance)"
+   },
+   {
+    "date": "2026-06-03",
+    "kind": "bad",
+    "text": "Shares down 6.3% since the last earnings report (Yahoo Finance); no cause given"
+   }
+  ],
+  "why": "With no company-specific bad news in the headlines, the slide looks like investors taking profits after a rally of about 37% in a year. An equity shelf lets a company sell new shares, which can weigh on the price by adding to supply."
+ },
+ "SRE": {
+  "cause": "No single cause: shares slid from a July high with no news in our headlines",
+  "clear": false,
+  "summary": "Sempra peaked at $94.54 on 8 July and has fallen about 16% since, against a 1% fall for the S&P 500 and 2% for its sector. The headlines we have contain no news about the company, so we cannot name a cause.",
+  "events": [
+   {
+    "date": "2026-07-08",
+    "kind": "peak",
+    "text": "Shares at their high, $94.54"
+   }
+  ],
+  "why": "With no reported news, the slide cannot be tied to one event; it looks like a gradual decline after a high, with utilities also weaker over the same days."
+ },
+ "HBAN": {
+  "cause": "Lower earnings outlook in September, after mixed credit signals in July",
+  "clear": true,
+  "summary": "Huntington peaked at $18.38 on 16 July and has fallen about 15% since, against a 2% fall for the S&P 500 and 2% for its sector. Shares dropped after its second-quarter results showed mixed credit signals, then fell again when the bank cut its 2026 net interest income and 2027 earnings outlook.",
+  "events": [
+   {
+    "date": "2026-07-16",
+    "kind": "peak",
+    "text": "Shares at their high, $18.38"
+   },
+   {
+    "date": "2026-07-30",
+    "kind": "bad",
+    "text": "Shares down 7.8% after second-quarter results reveal mixed credit signals (Yahoo Finance)"
+   },
+   {
+    "date": "2026-09-16",
+    "kind": "bad",
+    "text": "Shares fall 3% after the bank lowers its earnings guidance"
+   },
+   {
+    "date": "2026-09-17",
+    "kind": "bad",
+    "text": "Shares tumble 5.6% on the cut to its 2026 net interest income and 2027 EPS outlook"
+   },
+   {
+    "date": "2026-09-21",
+    "kind": "good",
+    "text": "Announces a higher 2027 buyback plan (Yahoo Finance)"
+   },
+   {
+    "date": "2026-10-05",
+    "kind": "neutral",
+    "text": "Goldman Sachs cuts its price target to $19 from $21 but keeps a Buy rating"
+   }
+  ],
+  "why": "A bank earns the gap between what it charges on loans and pays on deposits (net interest income), so a lower forecast for it means lower expected profits, and shares are priced on those profits. Mixed signals on loan quality add worry that more borrowers may not repay. The higher buyback was a partial offset."
  }
 }

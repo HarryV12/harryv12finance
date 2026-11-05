@@ -202,5 +202,19 @@
  "today|oil|2026-11-04": "Oil stocks fell 4.5% while the S&P 500 rose 1.7%, led down by Marathon Petroleum, EOG, ConocoPhillips and Occidental.",
  "now|oil|2026-11-04": "Oil stocks fell 7.3% from 29 October to 4 November against 0.7% for the S&P 500, with Marathon Petroleum, Occidental, EOG and ConocoPhillips down most.",
  "today|health|2026-11-04": "Healthcare rose 2.8% while the S&P 500 rose 1.7%, led by Abbott, Merck, Johnson & Johnson and AbbVie, after the Democrats' midterm win.",
- "now|health|2026-11-04": "Healthcare rose 5.0% from 29 October to 4 November while the S&P 500 fell 0.7%, led by Abbott (+12.5%) and Eli Lilly (+10.0%)."
+ "now|health|2026-11-04": "Healthcare rose 5.0% from 29 October to 4 November while the S&P 500 fell 0.7%, led by Abbott (+12.5%) and Eli Lilly (+10.0%).",
+ "defense|2026-10-30": "Defense stocks fell 7.1% (S&P 500 −4.7%) after Democrats won Congress and headlines said the $1.5 trillion defense budget looked doomed, with AeroVironment down hardest.",
+ "oil|2026-10-30": "Oil stocks fell 10.0% (S&P 500 −4.7%) as oil prices dropped on US–Iran hopes and the wider market sold off.",
+ "today|all|2026-11-05": "The S&P 500 fell 4.4% as an AI-stock selloff spread across the market, with SanDisk (−22.3%), ASE Technology and Astera Labs down most while AppLovin rose 31.0%.",
+ "now|all|2026-11-05": "The S&P 500 fell 4.7% from 30 October to 5 November as tech and AI stocks sold off, with Lumentum (−44.6%), Intel and SanDisk down most.",
+ "today|ai|2026-11-05": "AI and chip stocks fell 12.6% while the S&P 500 fell 4.4%, led down by Micron, AMD, Marvell and Lam Research.",
+ "now|ai|2026-11-05": "AI and chip stocks fell 23.8% from 30 October to 5 November against 4.7% for the S&P 500, with Marvell, Micron, AMD and Lam Research down most.",
+ "today|defense|2026-11-05": "Defense stocks fell 2.5% while the S&P 500 fell 4.4%, led down by AeroVironment (−9.9%), Huntington Ingalls, RTX and Lockheed Martin.",
+ "now|defense|2026-11-05": "Defense stocks fell 7.1% from 30 October to 5 November (S&P 500 −4.7%), with AeroVironment down 24.3% and Lockheed Martin down 10.5%.",
+ "today|banks|2026-11-05": "Banks fell 3.6% while the S&P 500 fell 4.4%, led down by Goldman Sachs, Morgan Stanley, Citi and JPMorgan.",
+ "now|banks|2026-11-05": "Banks fell 2.1% from 30 October to 5 November, less than the S&P 500 (−4.7%), with Goldman Sachs and Citi down most while Charles Schwab rose.",
+ "today|oil|2026-11-05": "Oil stocks fell 2.7% while the S&P 500 fell 4.4%, led down by Phillips 66, Marathon Petroleum, Schlumberger and Halliburton.",
+ "now|oil|2026-11-05": "Oil stocks fell 10.0% from 30 October to 5 November against 4.7% for the S&P 500, with Marathon Petroleum, Halliburton, EOG and Occidental down most.",
+ "today|health|2026-11-05": "Healthcare fell 2.7% while the S&P 500 fell 4.4%, led down by Thermo Fisher, Eli Lilly, UnitedHealth and Pfizer.",
+ "now|health|2026-11-05": "Healthcare was roughly flat (−0.2%) from 30 October to 5 November while the S&P 500 fell 4.7%, as Abbott (+8.6%) offset losses at Thermo Fisher and UnitedHealth."
 }

@@ -663,5 +663,61 @@
  "now|health|2026-11-04": [
   "Abbott +12.5%, Lilly +10.0%, Merck +6.7% and the sector ETF XLV +5.5% over the period; Reuters (4 Nov) reported insurers and hospitals rallying after the Democrats' midterm win.",
   "The basket is up 12.1% over the month."
+ ],
+ "defense|2026-10-30": [
+  "Democrats won Congress (Reuters, Yahoo Finance, 4–5 Nov) → fears of a tighter Pentagon budget; Yahoo Finance said the $1.5 trillion budget looked doomed.",
+  "AeroVironment −24.3%, Lockheed Martin −10.5%, Huntington Ingalls −8.5% and L3Harris −7.3%, against the S&P 500 −4.7%."
+ ],
+ "oil|2026-10-30": [
+  "Oil tumbled on US–Iran hopes (Bloomberg, 2 Nov) and lower oil prices took energy stocks down with them (Barron's, 2 Nov).",
+  "Marathon Petroleum −12.8%, Halliburton −11.1%, EOG −10.7% and Occidental −10.6%; oil bounced back on 5 Nov as AI stocks fell (Yahoo Finance)."
+ ],
+ "today|all|2026-11-05": [
+  "Chips selloff worsened on fears about the AI trade (Bloomberg, 5 Nov); AP described a wipeout for AI stocks → SanDisk −22.3%, ASE Technology −20.8%, Astera Labs −19.6%.",
+  "AppLovin rose 31.0% (the news we have doesn't say why); the S&P 500 is −5.7% over the month."
+ ],
+ "now|all|2026-11-05": [
+  "Amazon and Intel results fed worries about AI spending (CNBC, BBC, 30 Oct) → Lumentum −44.6%, Intel −43.3%, SanDisk −39.4% over the period.",
+  "AppLovin rose 39.7% (the news we have doesn't say why); the S&P 500 is −5.7% over the month."
+ ],
+ "today|ai|2026-11-05": [
+  "Business Insider reported investors panicking over a possible data-center slowdown (5 Nov) after Democrats' midterm win; CNBC (4 Nov) said Democrats may go after data centers.",
+  "Micron −17.5%, AMD −17.3%, Marvell −16.4% and Lam Research −16.4%; the basket is −34.3% over the month."
+ ],
+ "now|ai|2026-11-05": [
+  "Intel's Q4 warning sent chip stocks lower (Investor's Business Daily, 30 Oct) and AI spending nearing $1 trillion worried investors (BBC, 30 Oct).",
+  "Marvell −38.8%, Micron −29.7%, AMD −28.6% and Lam Research −27.2%; the basket is −34.3% over the month."
+ ],
+ "today|defense|2026-11-05": [
+  "Defense stocks slid on fears Democrats will curb Pentagon spending after their midterm win (Reuters, CNBC, 4 Nov).",
+  "AeroVironment −9.9%, Huntington Ingalls −4.8%, RTX −3.3% and Lockheed Martin −3.2%; the basket is still +9.0% over the month."
+ ],
+ "now|defense|2026-11-05": [
+  "Defense stocks dropped as the Democratic victory stoked fears of a tighter Pentagon budget (Reuters, Bloomberg, 4 Nov).",
+  "AeroVironment −24.3%, Lockheed Martin −10.5%, Huntington Ingalls −8.5% and L3Harris −7.3%; the basket is +9.0% over the month."
+ ],
+ "today|banks|2026-11-05": [
+  "The market selloff hit financial stocks (CNBC, Barron's, 5 Nov).",
+  "Goldman Sachs −6.4%, Morgan Stanley −5.9%, Citi −5.0% and JPMorgan −4.2%."
+ ],
+ "now|banks|2026-11-05": [
+  "Goldman Sachs −6.3%, Citi −5.3% and Morgan Stanley −3.4%; Charles Schwab rose 3.5%.",
+  "The market selloff hit financial stocks on 5 Nov (CNBC, Barron's); the basket is +0.3% over the month."
+ ],
+ "today|oil|2026-11-05": [
+  "Oil bounced back as AI stocks fell (Yahoo Finance, 5 Nov), yet energy stocks still slipped in the wider selloff.",
+  "Phillips 66 −4.9%, Marathon Petroleum −3.9%, Schlumberger −3.7% and Halliburton −3.3%."
+ ],
+ "now|oil|2026-11-05": [
+  "Oil fell on US–Iran hopes (Bloomberg, 2 Nov) and lower oil prices took energy stocks down with them (Barron's, 2 Nov).",
+  "Marathon Petroleum −12.8%, Halliburton −11.1%, EOG −10.7% and Occidental −10.6%."
+ ],
+ "today|health|2026-11-05": [
+  "Thermo Fisher −4.1%, Eli Lilly −3.6%, UnitedHealth −3.3% and Pfizer −3.0% (the news we have doesn't say why).",
+  "Healthcare fell less than the market and is +7.8% over the month, after rallying on the Democrats' midterm win (Barron's, 4 Nov)."
+ ],
+ "now|health|2026-11-05": [
+  "Abbott +8.6%, while Thermo Fisher −4.6%, UnitedHealth −3.7% and Johnson & Johnson −1.1% (the news we have doesn't say why).",
+  "The basket is +7.8% over the month, helped by the rally after Democrats' midterm win (Reuters, 4 Nov)."
  ]
 }
