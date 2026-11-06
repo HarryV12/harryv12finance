@@ -2,7 +2,7 @@
    Written from official announcements and news reports (sources on each). Share counts and prices are as announced;
    today's values and moves are worked out on the page from the daily closes. "status" says whether a deal is final. */
 window.CTC_INVEST = {
-  updated: "2026-10-24",
+  updated: "2026-11-06",
   // Holdings behind the headline: a news story, the listed companies it could move, and who in government holds them.
   // Holdings and returns are worked out on the page from the filings; only the story itself is written here.
   stories: [

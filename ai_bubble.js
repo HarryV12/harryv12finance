@@ -2,9 +2,13 @@
    prices (one-year share moves, company values). To update: add a dated line to the top of `updates`, change the
    facts below (each has its own date and source), and set `updated`. See UPDATING.md. */
 window.CTC_AIB = {
-  updated: "2026-10-24",
+  updated: "2026-11-06",
   // newest first; shown as "What's new"
   updates: [
+    { date: "2026-11-06", text: "CoreWeave's 9.625% bond due 2032 now yields above 16%, and its five-year credit default swaps spiked above 1,289 basis points on 5 Nov, wider than the October peak (Deutsche Bank data). Goldman Sachs counts five AI bond deals worth $67B since 29 Oct.", src: "cnbc_cw1106" },
+    { date: "2026-11-02", text: "Anthropic's amended IPO filing shows third-quarter revenue of about $17B, a net loss of $23.29B and about $895.4B of purchase and lease commitments, almost all for computing. It gives no price range yet; CNBC says the roadshow is about to start.", src: "cnbc_s1_q3" },
+    { date: "2026-10-31", text: "OpenAI is now seeking up to $20B, down from a target of up to $30B, at a $1.25T post-money value, the Financial Times reported. Investors from the UAE are leading the round with Coatue, and it has not closed.", src: "cnbc_openai20" },
+    { date: "2026-10-26", text: "Anthropic filed its IPO prospectus (Form S-1) publicly, for a Nasdaq listing under the ticker \"ANT\". It shows first-half 2026 revenue of $16.29B, a net loss of $80.7B (about $72B of it from convertible-note accounting) and about $417B of obligations to computing providers.", src: "cnbc_s1_live" },
     { date: "2026-10-23", text: "Anthropic's IPO is expected on Nasdaq as soon as November; talk of its value has slipped to about $1.5T after third-quarter results, below the $2T it had sought. OpenAI is raising money at a reported $1.25T, down from $1.4T, and has ruled out listing in 2026.", src: "beincrypto", src2: "futuresearch" },
     { date: "2026-10-19", text: "CoreWeave's bonds still yield about 14.9% even as AI shares bounced; its credit default swaps sit near 1,082 basis points, a level treated as distress.", src: "cnbc_cw19" },
     { date: "2026-10-15", text: "CoreWeave's five-year credit default swaps hit a record of about 1,194 basis points, which markets read as a more than 60% chance of default within five years.", src: "benzinga_cds" },
@@ -19,11 +23,11 @@ window.CTC_AIB = {
   ],
   // CoreWeave: the AI company whose debt markets are most worried about
   coreweave: {
-    asOf: "2026-10-19",
+    asOf: "2026-11-06",
     stats: [
       { label: "Debt", value: "$35.6B", note: "principal, 30 Jun 2026; about $52B with leases", src: "register_cw" },
       { label: "2026 revenue (company forecast)", value: "$12.4–13.2B", note: "revenue doubled in the second quarter", src: "cnbc_cw_q2" },
-      { label: "Bond yield", value: "14.9%", note: "9.625% bond due 2032, 19 Oct; record 15.76% on its 2031 bond", src: "cnbc_cw19" }
+      { label: "Bond yield", value: "16%+", note: "9.625% bond due 2032, above 16% on 6 Nov (14.9% on 19 Oct)", src: "cnbc_cw1106" }
     ],
     // implied five-year default probability from credit default swaps
     defaultOdds: { value: 0.6, label: "more than 60%", note: "chance of default within 5 years implied by its credit default swaps at the 15 Oct record", src: "benzinga_cds" }
@@ -32,7 +36,8 @@ window.CTC_AIB = {
   squeeze: {
     up: [
       { text: "Big Tech's AI building budgets: about <b>$695B</b> in 2026, heading for <b>$870B</b> in 2027, more of it borrowed", src: "business_standard_wood" },
-      { text: "Broadcom's CEO: <b>capital</b> may become AI's biggest constraint, more than chips or power", src: "cnbc_tan" }
+      { text: "Broadcom's CEO: <b>capital</b> may become AI's biggest constraint, more than chips or power", src: "cnbc_tan" },
+      { text: "Five AI bond deals worth <b>$67B</b> since 29 Oct; Goldman Sachs expects about <b>$440B</b> of hyperscaler debt next year", src: "cnbc_cw1106" }
     ],
     down: [
       { text: "OpenAI cut its cheapest model's price by <b>80%</b> (30 Jul 2026) as Chinese open-weight models undercut it", src: "forbes_cut" },
@@ -50,18 +55,22 @@ window.CTC_AIB = {
   chipmakers: [["Nvidia", "NVDA"], ["Broadcom", "AVGO"], ["Micron", "MU"], ["AMD", "AMD"]],
   // the private AI labs, placed among the biggest US-listed companies (whose values are live)
   labs: [
-    { name: "Anthropic", value: 1.5e12, label: "~$1.5T", status: "IPO expected as soon as November; value discussed after Q3 (it sought $2T; last private round $965B)", asOf: "2026-10-23", src: "beincrypto", src2: "futuresearch" },
-    { name: "OpenAI", value: 1.25e12, label: "~$1.25T", status: "private fundraise target (down from $1.4T); no IPO in 2026", asOf: "2026-10-23", src: "newscord", src2: "futuresearch" }
+    { name: "Anthropic", value: 1.5e12, label: "~$1.5T", status: "Public S-1 filed 26 Oct, amended 2 Nov; Nasdaq \"ANT\"; no price range yet; value reported at $1.5T–$2T (last private round $965B)", asOf: "2026-11-02", src: "cnbc_s1_q3", src2: "cnbc_s1_live" },
+    { name: "OpenAI", value: 1.25e12, label: "~$1.25T", status: "raising up to $20B (cut from $30B) at $1.25T post-money, not closed; no IPO in 2026", asOf: "2026-10-31", src: "cnbc_openai20", src2: "futuresearch" }
   ],
   // what decides it next; edit as events happen
   next: [
-    { kind: "", title: "Anthropic files publicly", text: "The full S-1 shows its losses, training costs and the $600B of computing it has committed to." },
+    { kind: "", title: "Price range set", text: "Anthropic's 2 Nov amended filing has no price range yet; the range is the first public value put on the company." },
     { kind: "", title: "IPO priced", text: "Wall Street sets a price on profits and growth, not on private-round hopes." },
     { kind: "bad", title: "Priced lower", text: "A value well under $1.5T would mark the private-market bubble down.", fork: true },
     { kind: "warn", title: "Delayed", text: "Pulling or postponing the listing would say the same thing, more quietly.", fork: true }
   ],
   watch: ["Anthropic's IPO price and first-day trading", "CoreWeave's bond yields and default swaps", "OpenAI's fundraise value", "AI model price cuts", "Big Tech's 2027 spending plans at January results"],
   sources: {
+    cnbc_cw1106: { name: "CNBC, 6 Nov 2026: The AI \"credit card\" is getting costlier as CoreWeave bond yield tops 16%", url: "https://www.cnbc.com/2026/11/06/coreweave-bond-yield-tops-16percent-as-ai-credit-stress-rises.html" },
+    cnbc_s1_q3: { name: "CNBC, 2 Nov 2026: Anthropic reports $17 billion in Q3 revenue, purchase commitments of $895.4 billion in revised S-1", url: "https://www.cnbc.com/2026/11/02/anthropic-ant-s-1-quarter-financials.html" },
+    cnbc_openai20: { name: "CNBC, 31 Oct 2026: OpenAI pares fundraising goal, now seeking up to $20 billion", url: "https://www.cnbc.com/2026/10/31/openai-fundraising-20-billion-valuation.html" },
+    cnbc_s1_live: { name: "CNBC, 26 Oct 2026: Anthropic IPO live updates, AI lab's S-1 filing", url: "https://www.cnbc.com/2026/10/26/anthropic-ipo-live-updates-ai-s-1-filing.html" },
     beincrypto: { name: "BeInCrypto: Anthropic IPO filing and OpenAI's fundraise", url: "https://beincrypto.com/openai-fundraise-anthropic-ipo-valuation/" },
     futuresearch: { name: "FutureSearch: Anthropic and OpenAI IPO dates and valuations", url: "https://futuresearch.ai/anthropic-openai-ipo-dates-valuations/" },
     newscord: { name: "Newscord: Anthropic prepares 2026 IPO (6 outlets compared)", url: "https://newscord.org/article/anthropic-prepares-2026-ipo-as-investors-await-filing-on-600-billion-infrastruct--Story_20261023_WhatsomeofAnthropicseba9c3b5" },
