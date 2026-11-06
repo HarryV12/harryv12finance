@@ -216,5 +216,17 @@
  "today|oil|2026-11-05": "Oil stocks fell 2.7% while the S&P 500 fell 4.4%, led down by Phillips 66, Marathon Petroleum, Schlumberger and Halliburton.",
  "now|oil|2026-11-05": "Oil stocks fell 10.0% from 30 October to 5 November against 4.7% for the S&P 500, with Marathon Petroleum, Halliburton, EOG and Occidental down most.",
  "today|health|2026-11-05": "Healthcare fell 2.7% while the S&P 500 fell 4.4%, led down by Thermo Fisher, Eli Lilly, UnitedHealth and Pfizer.",
- "now|health|2026-11-05": "Healthcare was roughly flat (−0.2%) from 30 October to 5 November while the S&P 500 fell 4.7%, as Abbott (+8.6%) offset losses at Thermo Fisher and UnitedHealth."
+ "now|health|2026-11-05": "Healthcare was roughly flat (−0.2%) from 30 October to 5 November while the S&P 500 fell 4.7%, as Abbott (+8.6%) offset losses at Thermo Fisher and UnitedHealth.",
+ "today|all|2026-11-06": "The S&P 500 edged up 0.3% after the earlier selloff, with Atlassian (−16.2%) and Natera (−14.6%) falling hardest while Airbnb (+11.7%) and AMD (+11.0%) rose.",
+ "now|all|2026-11-06": "The S&P 500 fell 2.7% over the week (−5.0% over the month), with Applovin up 71% while Lumentum, Seagate and Marvell fell 28–36%.",
+ "today|ai|2026-11-06": "AI and chip stocks rebounded 5.1% while the S&P 500 rose 0.3%, led by AMD, Lam Research, KLA and TSMC, though the basket is still down 28.7% over the month.",
+ "now|ai|2026-11-06": "AI and chip stocks fell 14.1% over the week against 2.7% for the S&P 500, with Marvell, Micron, Lam Research and Arm down most amid headlines of a $5 trillion loss in three weeks.",
+ "today|defense|2026-11-06": "Defense stocks were flat (+0.1%) while the S&P 500 rose 0.3%, with AeroVironment up 10.5% and Booz Allen down 4.4%.",
+ "now|defense|2026-11-06": "Defense stocks fell 6.9% over the week against 2.7% for the S&P 500, led down by Lockheed Martin, AeroVironment and Huntington Ingalls after Democrats' midterm win raised fears of a tighter Pentagon budget.",
+ "today|banks|2026-11-06": "Banks slipped 0.5% while the S&P 500 rose 0.3%, with Charles Schwab, Wells Fargo, JPMorgan and Bank of America each down 0.7–1.2%.",
+ "now|banks|2026-11-06": "Banks were roughly flat (−0.5%) over the week against 2.7% for the S&P 500, as Charles Schwab rose 3.9% while Goldman Sachs and Citi fell.",
+ "today|oil|2026-11-06": "Oil stocks were flat (+0.1%) while the S&P 500 rose 0.3%, with EOG up 1.6% and Marathon Petroleum down 1.2%.",
+ "now|oil|2026-11-06": "Oil stocks fell 11.6% over the week against 2.7% for the S&P 500, led down by Marathon Petroleum, Phillips 66 and Halliburton as oil prices dropped after the Democrats' midterm win.",
+ "today|health|2026-11-06": "Healthcare was flat (−0.1%) while the S&P 500 rose 0.3%, with Abbott down 3.2% and Thermo Fisher up 2.6%.",
+ "now|health|2026-11-06": "Healthcare fell 1.1% over the week, less than the S&P 500 (−2.7%), with Eli Lilly, Pfizer and UnitedHealth down while Abbott rose 3.5%."
 }

@@ -498,5 +498,33 @@
    }
   ],
   "why": "A bank earns the gap between what it charges on loans and pays on deposits (net interest income), so a lower forecast for it means lower expected profits, and shares are priced on those profits. Mixed signals on loan quality add worry that more borrowers may not repay. The higher buyback was a partial offset."
+ },
+ "RTX": {
+  "cause": "No single cause: shares slid from an August high; the headlines tie defense stocks' November fall to the midterms",
+  "clear": false,
+  "summary": "RTX peaked at $225.49 on 18 August and has fallen about 16% since, against a 4% fall for the S&P 500 and 3% for its sector. Headlines through September name no company-specific bad news (one noted it had just raised guidance and held a $289 billion backlog); on 4 November defense stocks fell after Democrats won the midterms, with Barron's saying RTX had a 'midterm headache'.",
+  "events": [
+   {
+    "date": "2026-08-18",
+    "kind": "peak",
+    "text": "Shares at their high, $225.49"
+   },
+   {
+    "date": "2026-08-31",
+    "kind": "bad",
+    "text": "Shares fall more than the broader market (Yahoo Finance); no cause given"
+   },
+   {
+    "date": "2026-09-24",
+    "kind": "neutral",
+    "text": "Yahoo Finance asks why the stock is down 15% from its high despite a $289 billion backlog and raised guidance"
+   },
+   {
+    "date": "2026-11-04",
+    "kind": "bad",
+    "text": "Defense stocks fall after Democrats win the midterms on fears of a tighter Pentagon budget (Reuters); Barron's: 'RTX and Other Defense Stocks Have a Midterm Headache'"
+   }
+  ],
+  "why": "With no company-specific bad news in the headlines, the slide looks like investors selling after a high, together with weakness across defense and industrial stocks. In November, fears that a Democratic Congress would curb Pentagon spending added pressure on defense contractors as a group."
  }
 }

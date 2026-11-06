@@ -719,5 +719,53 @@
  "now|health|2026-11-05": [
   "Abbott +8.6%, while Thermo Fisher −4.6%, UnitedHealth −3.7% and Johnson & Johnson −1.1% (the news we have doesn't say why).",
   "The basket is +7.8% over the month, helped by the rally after Democrats' midterm win (Reuters, 4 Nov)."
+ ],
+ "today|all|2026-11-06": [
+  "Atlassian −16.2% and Natera −14.6% fell hardest; Airbnb rose 11.7% and AMD 11.0% (the news we have doesn't say why).",
+  "The S&P 500 rose 0.3% a day after its 5 Nov fall of 4.4% (AP News); it is −5.0% over the month."
+ ],
+ "now|all|2026-11-06": [
+  "Applovin +71.2%, while Lumentum −35.9%, Seagate −28.5% and Marvell −28.1% (the news we have doesn't say why).",
+  "The week opened with headlines on AI stocks' October dive (Reuters, 2 Nov) and the 4 Nov midterm result; the S&P 500 is −5.0% over the month."
+ ],
+ "today|ai|2026-11-06": [
+  "AMD +11.0%, Lam Research +8.2%, KLA +6.7% and TSMC +6.3% (the news we have doesn't say why).",
+  "The basket rose 5.1% against +0.3% for the S&P 500 but is still −28.7% over the month, after the 5 Nov AI selloff (AP News)."
+ ],
+ "now|ai|2026-11-06": [
+  "Hedge funds went underweight AI for the first time as AI stocks lost $5 trillion in three weeks (Yahoo Finance, 3 Nov); Morgan Stanley issued a fresh warning on AI stocks (3 Nov).",
+  "Marvell −28.1%, Micron −22.0%, Lam Research −16.2% and Arm −15.2%; the 5 Nov selloff took the S&P 500 down 4.4% (AP News)."
+ ],
+ "today|defense|2026-11-06": [
+  "AeroVironment +10.5%, while Booz Allen −4.4%, Leidos −2.3% and Lockheed Martin −1.6% (the news we have doesn't say why).",
+  "Defense is +6.7% over the month despite the post-midterm fall earlier in the week."
+ ],
+ "now|defense|2026-11-06": [
+  "Democrats' midterm win stoked fears of a tighter Pentagon budget (Reuters, CNBC, Bloomberg, 4 Nov).",
+  "Lockheed Martin −11.0%, AeroVironment −10.6%, Huntington Ingalls −8.9% and Leidos −7.2%, against the S&P 500 −2.7%."
+ ],
+ "today|banks|2026-11-06": [
+  "Charles Schwab −1.2%, Wells Fargo −1.0%, JPMorgan −0.8% and Bank of America −0.7% (the news we have doesn't say why).",
+  "Banks lagged the S&P 500 (+0.3%) and are −0.9% over the month, after the 5 Nov selloff hit financials (Barron's, CNBC)."
+ ],
+ "now|banks|2026-11-06": [
+  "Charles Schwab +3.9%, while Goldman Sachs −3.2%, Citi −2.4% and Morgan Stanley −1.6% (the news we have doesn't say why).",
+  "The 5 Nov market selloff hit financial stocks (Barron's, CNBC); banks fell much less than the S&P 500 over the week."
+ ],
+ "today|oil|2026-11-06": [
+  "EOG +1.6%, ConocoPhillips +0.6% and Schlumberger +0.6%, while Marathon Petroleum −1.2% (the news we have doesn't say why).",
+  "The basket is −4.5% over the month, after oil's plunge on the Democratic midterm win (WSJ, Reuters, 4 Nov)."
+ ],
+ "now|oil|2026-11-06": [
+  "Oil prices sank after Democrats' midterm win, taking energy stocks down (WSJ, Reuters, Fortune, 4 Nov).",
+  "Marathon Petroleum −16.2%, Phillips 66 −13.1%, XLE −12.0% and Halliburton −12.0%, against the S&P 500 −2.7%."
+ ],
+ "today|health|2026-11-06": [
+  "Abbott −3.2% and Pfizer −1.6%, while Thermo Fisher +2.6% and Johnson & Johnson +1.4% (the news we have doesn't say why).",
+  "Healthcare is +8.5% over the month, after rallying on the Democrats' midterm win (Reuters, 4 Nov)."
+ ],
+ "now|health|2026-11-06": [
+  "Eli Lilly −4.5%, Pfizer −3.7% and UnitedHealth −3.2%, while Abbott +3.5% (the news we have doesn't say why).",
+  "CVS announced it will split off its drugstore business and its shares fell 10% (CNBC, 4 Nov); the basket is +8.5% over the month after the midterm rally."
  ]
 }
