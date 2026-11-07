@@ -735,6 +735,10 @@ details.mth[open] > summary::after { content: "−"; }
 .hm-ind { position: absolute; box-sizing: border-box; border: 1px solid rgba(0, 0, 0, .35); }
 .hm-iname { position: absolute; left: 3px; top: 0; font-size: clamp(6px, .9cqw, 9px); font-weight: 700; color: rgba(255, 255, 255, .92); text-shadow: 0 1px 1px rgba(0, 0, 0, .5); white-space: nowrap; overflow: hidden; max-width: calc(100% - 6px); z-index: 1; pointer-events: none; }
 .hm-tile .hm-nm { font-size: clamp(6px, 1cqw, 10px); opacity: .9; max-width: 94%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; font-family: inherit; }
+.hm-tile .hm-nm { text-overflow: clip; }
+.hm-iname b { font-weight: inherit; }
+.hm-short { display: none; } .fit-short .hm-full { display: none; } .fit-short .hm-short { display: inline; }
+.fit-nopct b { display: none; } .fit-none { visibility: hidden; }
 .hm-tile .hm-px { font-size: clamp(6px, 1cqw, 10px); opacity: .85; font-family: var(--font-mono); }
 
 /* every dropdown is a search box (app.js searchable()): type to narrow, arrows and Enter to pick */

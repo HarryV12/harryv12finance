@@ -1728,6 +1728,47 @@
     }
     return out;
   }
+  // shorter sector names, used only when the full one doesn't fit its block
+  const SECTOR_SHORT = { "Technology": "Tech", "Consumer Discretionary": "Discretionary", "Consumer Staples": "Staples", "Health Care": "Health", "Industrials": "Industry",
+    "Telecommunications": "Telecom", "Real Estate": "Property", "Basic Materials": "Materials", "Utilities": "Utility" };
+  const INDUSTRY_SHORT = { "Application Software": "Software", "Systems Software": "Software", "Semiconductors": "Chips", "Semiconductor Materials & Equipment": "Chip tools",
+    "Consumer Staples Merchandise Retail": "Big-box retail", "Transaction & Payment Processing Services": "Payments", "Automobile Manufacturers": "Autos",
+    "Investment Banking & Brokerage": "Brokers", "Asset Management & Custody Banks": "Asset mgmt", "Integrated Oil & Gas": "Big oil", "Pharmaceuticals": "Pharma",
+    "Biotechnology": "Biotech", "Interactive Media & Services": "Internet", "Technology Hardware, Storage & Peripherals": "Hardware", "Broadline Retail": "Retail",
+    "Diversified Banks": "Banks", "Regional Banks": "Banks", "Aerospace & Defense": "Defense", "Electric Utilities": "Power", "Multi-Utilities": "Utilities",
+    "Health Care Equipment": "Med devices", "Managed Health Care": "Insurers", "Communications Equipment": "Networking", "Oil & Gas Exploration & Production": "Drillers",
+    "Movies & Entertainment": "Media", "Soft Drinks & Non-alcoholic Beverages": "Drinks", "Multi-Sector Holdings": "Holdings", "Property & Casualty Insurance": "Insurance",
+    "Electronic Components": "Components", "IT Consulting & Other Services": "IT services", "Household Products": "Household", "Home Improvement Retail": "Home retail",
+    "Hotels, Resorts & Cruise Lines": "Travel", "Financial Exchanges & Data": "Exchanges", "Life Sciences Tools & Services": "Lab tools", "Rail Transportation": "Rail",
+    "Industrial Machinery & Supplies & Components": "Machinery", "Construction Machinery & Heavy Transportation Equipment": "Machinery", "Consumer Finance": "Lending",
+    "Wireless Telecommunication Services": "Wireless", "Integrated Telecommunication Services": "Telecom", "Specialty Chemicals": "Chemicals", "Industrial Gases": "Gases",
+    "Packaged Foods & Meats": "Food", "Apparel, Accessories & Luxury Goods": "Apparel", "Electrical Components & Equipment": "Electrical", "Building Products": "Building",
+    "Air Freight & Logistics": "Logistics", "Passenger Airlines": "Airlines", "Oil & Gas Equipment & Services": "Oil services", "Oil & Gas Storage & Transportation": "Pipelines",
+    "Oil & Gas Refining & Marketing": "Refiners", "Health Care Services": "Health services", "Health Care Facilities": "Hospitals", "Data Center REITs": "Data centers",
+    "Telecom Tower REITs": "Towers", "Electronic Equipment & Instruments": "Instruments", "Internet Services & Infrastructure": "Infrastructure", "Casinos & Gaming": "Casinos" };
+  // an industry's short name: from the list, else the part before the first "&" or "," when that still says something
+  const shortIndustry = (s) => { if (INDUSTRY_SHORT[s]) return INDUSTRY_SHORT[s]; const a = s.split(/ & |, /)[0]; return a !== s && a.length >= 5 ? a : ""; };
+  // map labels never get cut off: a label that doesn't fit uses its short name, then drops its %, then hides
+  // (the tiles' hover text still names everything). Re-run whenever a map changes size or the fonts change.
+  function fitHeatLabels(map) {
+    for (const el of map.querySelectorAll(".hm-sname, .hm-iname, .hm-nm")) {
+      el.classList.remove("fit-short", "fit-nopct", "fit-none");
+      const over = () => el.scrollWidth > el.clientWidth + 1;
+      if (!over()) continue;
+      if (el.querySelector(".hm-short")) { el.classList.add("fit-short"); if (!over()) continue; }
+      if (el.querySelector("b")) { el.classList.add("fit-nopct"); if (!over()) continue; }
+      el.classList.add("fit-none");
+    }
+  }
+  const heatRO = typeof ResizeObserver === "function" ? new ResizeObserver((es) => { for (const e of es) fitHeatLabels(e.target); }) : null;
+  const fitAllHeat = () => document.querySelectorAll(".heatmap").forEach(fitHeatLabels);
+  new MutationObserver((muts) => { for (const m of muts) for (const nd of m.addedNodes) if (nd.nodeType === 1) {
+    const maps = nd.classList.contains("heatmap") ? [nd] : nd.querySelectorAll(".heatmap");
+    for (const mp of maps) { fitHeatLabels(mp); if (heatRO) heatRO.observe(mp); } } }).observe(document.getElementById("app"), { childList: true, subtree: true });
+  let fitT = 0; const fitSoon = () => { clearTimeout(fitT); fitT = setTimeout(fitAllHeat, 30); };
+  addEventListener("resize", fitSoon);
+  new MutationObserver(fitSoon).observe(document.documentElement, { attributes: true, attributeFilter: ["data-style", "data-theme"] });
+  if (document.fonts) { document.fonts.ready.then(fitAllHeat); document.fonts.addEventListener("loadingdone", fitAllHeat); }
   // a heatmap of stocks: sectors as blocks (or sub-industries, for an industry list), then the sub-industries
   // inside each sector, then each company sized by value and coloured by its move. Each block shows its
   // value-weighted move; tiles show more (name, price) the more room they have.
@@ -1748,13 +1789,14 @@
     let html = "";
     for (const sb of squarify(groups(rows, "s"), 0, 0, W, H)) {
       const head = sb.h > 30 && sb.w > 44;
-      html += `<div class="hm-sec" style="${pos(sb)}">${head ? `<span class="hm-sname">${esc(sb.s)} <b class="${cls(sb.r)}">${pct(sb.r)}</b></span>` : ""}</div>`;
+      const short = SECTOR_SHORT[sb.s] || shortIndustry(sb.s);
+      html += `<div class="hm-sec" style="${pos(sb)}">${head ? `<span class="hm-sname"><span class="hm-full">${esc(sb.s)}</span>${short ? `<span class="hm-short">${esc(short)}</span>` : ""} <b class="${cls(sb.r)}">${pct(sb.r)}</b></span>` : ""}</div>`;
       const ix = sb.x + 1, iy = sb.y + (head ? 17 : 1), iw = sb.w - 2, ih = sb.h - (head ? 18 : 2), subs = by === "sector" && !narrow ? groups(sb.l, "i") : [];
       if (subs.length > 1 && iw > 120 && ih > 80) {
         // sub-industries inside the sector, each labelled when there's room
         for (const ib of squarify(subs, ix, iy, iw, ih)) {
           const lab = ib.w > 70 && ib.h > 46;
-          html += `<div class="hm-ind" style="${pos(ib)}">${lab ? `<span class="hm-iname">${esc(ib.s)} ${pct(ib.r)}</span>` : ""}</div>`;
+          html += `<div class="hm-ind" style="${pos(ib)}">${lab ? `<span class="hm-iname"><span class="hm-full">${esc(ib.s)}</span>${shortIndustry(ib.s) ? `<span class="hm-short">${esc(shortIndustry(ib.s))}</span>` : ""} <b>${pct(ib.r)}</b></span>` : ""}</div>`;
           for (const t of squarify(ib.l, ib.x + 1, ib.y + (lab ? 13 : 1), ib.w - 2, ib.h - (lab ? 14 : 2))) html += tile(t);
         }
       } else for (const t of squarify(sb.l, ix, iy, iw, ih)) html += tile(t);
