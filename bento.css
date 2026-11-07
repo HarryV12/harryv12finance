@@ -102,4 +102,4 @@
   [data-style="bento"] .card { padding: 16px; }
   [data-style="bento"] .idx b { font-size: 25px; }
 }
-@media (min-width: 1000px) { [data-style="bento"] .idx-row { grid-template-columns: repeat(7, minmax(0, 1fr)); } [data-style="bento"] .idx { padding: 14px 14px; } [data-style="bento"] .idx b { font-size: clamp(22px, 2.1vw, 30px); } }
+@media (min-width: 861px) { [data-style="bento"] .idx-row { grid-template-columns: repeat(7, minmax(0, 1fr)); } [data-style="bento"] .idx { padding: 14px 14px; } [data-style="bento"] .idx b { font-size: clamp(22px, 2.1vw, 30px); } }
