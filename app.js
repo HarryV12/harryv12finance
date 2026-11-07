@@ -1794,17 +1794,33 @@
   async function pageMarkets() {
     setNav("home");
     app.innerHTML = `<h1>Markets today</h1><p class="loading">Loading prices…</p>`;
-    const [P, M, A, I] = await Promise.all([loadAllPrices(), loadMoves(), loadAfter(), loadInvest()]);
+    const loadEx = () => window.HFExplained ? Promise.resolve(true) : loadScript("explained_viz.js?v=5");
+    const [P, M, A, I] = await Promise.all([loadAllPrices(), loadMoves(), loadAfter(), loadInvest(), loadEx()]);
     if (!(location.hash === "" || location.hash === "#/" || location.hash === "#")) return;
     const L = P.dates.length - 1, from = Math.max(0, L - 21), mt = M && M.market && M.market.today;
+    // the headline: how the day went, from the S&P 500 (and the Nasdaq when tech moved apart from the rest)
+    const dayName = new Date(`${P.dates[L]}T12:00:00Z`).toLocaleDateString("en-GB", { weekday: "long", timeZone: "UTC" });
+    const spD = moveOf(P, "SPY", 1), nqD = moveOf(P, "QQQ", 1);
+    const mood = (r) => r == null ? "quiet" : r <= -0.01 ? "rough" : r <= -0.003 ? "soft" : r < 0.003 ? "quiet" : r < 0.01 ? "good" : "strong";
+    const techApart = spD != null && nqD != null && Math.abs(nqD - spD) >= 0.008 && Math.abs(nqD) >= 0.01;
+    const headline = techApart ? `A ${mood(nqD)} ${dayName} for tech.` : `A ${mood(spD)} ${dayName} for stocks.`;
+    // the Explained card: one guide a day, in turn
+    const EXL = window.HFExplained ? [...window.HFExplained.EX, ...window.HFExplained.ADV] : [];
+    const exK = EXL.length ? Math.floor(Date.parse(`${P.dates[L]}T12:00:00Z`) / 864e5) % EXL.length : 0;
+    const exPick = EXL.length ? [EXL[exK], ...[1, 2, 3, 4, 5].map((j) => EXL[(exK + j * 5) % EXL.length])] : [];
+    const afName = (s) => s.name.replace(/ Common Stock$| Corporation.*$| Inc\..*$| Incorporated$| Company$/, "");
+    const themes = M && M.themes ? Object.values(M.themes) : [];
+    const spx = (P.px.SPY || []).slice(0, (P.px.SPY || []).reduce((k, v, i) => v != null ? i + 1 : k, 0)); // up to the newest close
     const sp = listTks(P, "sp").map((t) => [t, moveOf(P, t, 1)]).filter((x) => x[1] != null).sort((a, b) => b[1] - a[1]);
     const up = sp.filter((x) => x[1] > 0).length, mx = Math.max(...sp.slice(0, 5).concat(sp.slice(-5)).map((x) => Math.abs(x[1])));
     const ai = AI_STOCKS.filter((t) => P.px[t]);
     const aiAvg = ai.map((t) => moveOf(P, t, 1)).filter((r) => r != null), aiDay = aiAvg.reduce((a, r) => a + r, 0) / (aiAvg.length || 1);
-    app.innerHTML = `<div class="mk-head"><h1>Markets today</h1><div class="muted">Closing prices for ${fmtDate(P.dates[L], { weekday: "long", day: "numeric", month: "long", year: "numeric" })} ${marketPill()}</div></div>
+    app.innerHTML = `<section class="card home-hero mk-head"><div class="hh-date">Closing prices for ${fmtDate(P.dates[L], { weekday: "long", day: "numeric", month: "long", year: "numeric" })} ${marketPill()}</div>
+        <h1>${esc(headline)}</h1>${mt && mt.summary && mt.end === P.dates[L] ? `<p class="hh-sum">${esc(mt.summary)}</p><a class="more-link" href="#/drops">Why markets moved →</a>` : ""}
+        <div class="hh-chart" aria-hidden="true">${spx.length > 1 ? spark(spx, Math.max(0, spx.length - 64), 800, 150, spD != null && spD < 0 ? "var(--bad)" : "var(--good)") : ""}</div>
+        <div class="hh-cap muted small">S&amp;P 500, past three months</div></section>
       <div class="idx-row">${INDEXES.map(([tk, nm]) => { const x = P.px[tk], d = moveOf(P, tk, 1), w = moveOf(P, tk, 5);
         return x ? `<div class="idx"><span class="idx-n">${esc(nm)}</span><b class="mono ${cls(d)}">${pct(d, 2)}</b><span class="muted small">week ${pct(w)}</span>${spark(x, from)}</div>` : ""; }).join("")}</div>
-      ${mt && mt.summary ? `<a class="today-why card" href="#/drops"><span class="tw-l">Why markets moved</span><span>${esc(mt.summary)}</span><span class="tw-more">Full story →</span></a>` : ""}
       <div class="grid home-grid section">
         <div class="card"><h2>AI stocks today <span class="muted">average ${pct(aiDay)} · tap one for its page</span></h2>
           <div class="ai-grid">${ai.slice(0, 20).map((t) => { const d = moveOf(P, t, 1); return `<a class="ai-tile" href="#/stock/${encodeURIComponent(t)}" style="--h:${heat(d, 0.04)}">
@@ -1816,14 +1832,21 @@
           <a class="more-link" href="#/movers">All market movers →</a></div>
       </div>
       <div class="card section"><h2>The S&amp;P 500 at a glance <span class="muted">each square a company, sized by value, coloured by today's move</span></h2>${heatmapHtml(P, sp.map((x) => x[0]), 1, { H: 440 })}<a class="more-link" href="#/movers">Open the full heatmap →</a></div>
-      ${M && M.themes ? `<div class="card section"><h2>Industries this week</h2><div class="inds">${Object.entries(M.themes).map(([k, t]) => `<a class="ind" href="#/drops"><b>${esc(t.name)}</b>
-        <span class="ind-row"><span>Today</span><b class="${cls(t.today && t.today.move)}">${pct(t.today && t.today.move)}</b></span><span class="ind-row"><span>This week</span><b class="${cls(t.now && t.now.move)}">${pct(t.now && t.now.move)}</b></span>
-        <span class="ind-row"><span>Past month</span><b class="${cls(t.now && t.now.month)}">${pct(t.now && t.now.month)}</b></span></a>`).join("")}</div></div>` : ""}
-      <div class="grid cols-2 section">
-        ${I && I.deals[0] ? `<a class="card teaser" href="#/investments"><h2>Latest big investment</h2><b class="t-title">${esc(I.deals[0].title)}</b><p class="small muted">${esc(I.deals[0].summary.slice(0, 220))}…</p><span class="more-link">See who put money in →</span></a>` : ""}
-        ${A && A.stocks.length ? `<a class="card teaser" href="#/aftermath"><h2>Aftermath <span class="muted">steady stocks that kept falling</span></h2>${A.stocks.slice(0, 4).map((s) => `<div class="mini-row"><b>${esc(s.name.split(" ")[0])}</b><span class="ell small muted">${esc(s.cause || "")}</span><b class="mono down">${pct(s.drop, 0)}</b></div>`).join("")}<span class="more-link">Why they fell →</span></a>` : ""}
+      <div class="grid home-trio section">
+        ${themes.length ? `<div class="card home-ind"><h2>Industries this week</h2>
+          <div class="it-row it-head"><span></span><span>Today</span><span>Week</span><span>Month</span></div>
+          ${themes.map((t) => { const v = [t.today && t.today.move, t.now && t.now.move, t.now && t.now.month]; return `<a class="it-row" href="#/drops"><b>${esc(t.name)}</b>${v.map((r) => `<b class="mono ${cls(r)}">${pct(r, 1)}</b>`).join("")}</a>`; }).join("")}</div>` : ""}
+        ${A && A.stocks.length ? `<a class="card teaser home-af" href="#/aftermath"><span class="hc-lab">Aftermath</span><b class="t-title">Steady stocks that kept falling</b>
+          ${A.stocks.slice(0, 5).map((s) => `<div class="af-line"><span>${esc(afName(s))}</span><b class="mono down">${pct(s.drop, 0)}</b></div>`).join("")}<span class="more-link">Why they fell →</span></a>` : ""}
+        ${exPick.length ? `<div class="card home-ex"><span class="hc-lab">Explained</span><a class="t-title" href="#/dataviz" data-ex-go="${exPick[0][0]}">${esc(exPick[0][1])}</a><p class="small muted">${esc(exPick[0][2])}</p>
+          <div class="ex-pills">${exPick.slice(1).map((e) => `<a href="#/dataviz" data-ex-go="${e[0]}">${esc(e[1])}</a>`).join("")}<a href="#/dataviz" data-ex-go="${exPick[0][0]}">+${EXL.length - exPick.length} more</a></div></div>` : ""}
       </div>
-      <a class="card section congress-link" href="#/congress"><h2>Insider trading</h2><p class="small muted">What members of Congress and senior officials are buying and selling, from their disclosure reports.</p><span class="more-link">Open Insider Trading →</span></a>`;
+      <div class="grid cols-2 section">
+        ${I && I.deals[0] ? `<a class="card teaser" href="#/investments"><span class="hc-lab">Latest big investment</span><b class="t-title">${esc(I.deals[0].title)}</b><p class="small muted">${esc(I.deals[0].summary.slice(0, 220))}…</p><span class="more-link">See who put money in →</span></a>` : ""}
+        <a class="card teaser congress-link" href="#/congress"><span class="hc-lab">Insider trading</span><b class="t-title">What Congress is buying and selling</b><p class="small muted">Trades by members of Congress and senior officials, from their disclosure reports.</p><span class="more-link">Open Insider Trading →</span></a>
+      </div>`;
+    // an Explained link opens that guide on the Data Visualization page
+    $$("[data-ex-go]", app).forEach((a) => a.addEventListener("click", () => { dvTab = "explained"; try { localStorage.setItem("hf-dv-tab", "explained"); localStorage.setItem("hf-ex", a.dataset.exGo); } catch (e) { /* storage blocked */ } }));
   }
 
   // ---------- Market movers: the day's (or week's, month's) biggest moves, as pictures ----------
@@ -2368,7 +2391,7 @@
       const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
     }
     // markets_phone.js and dataviz_phone.js: the images in the phone design (each falls back to the older drawing)
-    return Promise.all([loadScript("dataviz.js?v=5"), loadScript("markets_viz.js?v=50"), loadScript("markets_phone.js?v=3"), loadScript("dataviz_phone.js?v=3"), loadScript("explained_viz.js?v=4")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz, ex: window.HFExplained } : null);
+    return Promise.all([loadScript("dataviz.js?v=5"), loadScript("markets_viz.js?v=50"), loadScript("markets_phone.js?v=3"), loadScript("dataviz_phone.js?v=3"), loadScript("explained_viz.js?v=5")]).then(() => window.HFDataViz && window.HFMarketsViz ? { cg: window.HFDataViz, mv: window.HFMarketsViz, ex: window.HFExplained } : null);
   })());
   let dvTab = "markets";
   try { dvTab = localStorage.getItem("hf-dv-tab") || "markets"; } catch (e) { /* storage blocked */ }

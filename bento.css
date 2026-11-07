@@ -67,30 +67,35 @@
 [data-style="bento"] .idx { padding: 16px 18px; }
 [data-style="bento"] .idx-n { color: var(--ink-2); font-size: 13px; }
 [data-style="bento"] .idx b { font-size: 30px; }
-[data-style="bento"] .today-why { --surface: var(--t1); background: var(--surface); border-left: 0; padding: 26px 28px; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 20px; }
-[data-style="bento"] .today-why .tw-l { grid-column: 1 / -1; font-size: 15px; font-weight: 700; opacity: .75; font-family: var(--font-ui); letter-spacing: 0; }
-[data-style="bento"] .today-why > span:nth-child(2) { font: 700 26px/1.25 var(--font-head); letter-spacing: -0.01em; }
+[data-style="bento"] .home-hero { --surface: var(--t1); background: var(--surface); padding: 28px 30px 0; }
+[data-style="bento"] .home-hero h1 { font-size: 64px; margin: 10px 0 12px; }
+[data-style="bento"] .hh-date { color: var(--ink-2); opacity: .85; }
+[data-style="bento"] .hh-chart { margin: 16px -30px 0; }
 [data-style="bento"] .home-grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; }
 [data-style="bento"] .home-grid > .card:nth-child(1) { --surface: var(--t6); }
 [data-style="bento"] .home-grid > .card:nth-child(2) { --surface: var(--t4); }
-[data-style="bento"] main:has(> .mk-head) > .card:has(.inds) { --surface: var(--t5); --chip: var(--tchip); --line: var(--tline); background: var(--surface); }
-[data-style="bento"] main:has(> .mk-head) > .cols-2 { display: contents; }
-[data-style="bento"] main:has(> .mk-head) > .cols-2 > .card, [data-style="bento"] main:has(> .mk-head) > .congress-link { grid-column: span 4; height: 100%; }
-[data-style="bento"] main:has(> .mk-head) > .cols-2 > .card:nth-child(1) { --surface: var(--t2); }
-[data-style="bento"] main:has(> .mk-head) > .cols-2 > .card:nth-child(2) { --surface: var(--t3); }
-[data-style="bento"] .t-title { font-size: 24px; line-height: 1.15; font-weight: 800; margin: 2px 0 8px; }
-[data-style="bento"] .congress-link { color: var(--ink); }
+[data-style="bento"] .home-trio, [data-style="bento"] main:has(> .mk-head) > .cols-2 { gap: 16px; }
+[data-style="bento"] .grid.home-trio > .card.home-ind { --surface: var(--t5); }
+[data-style="bento"] .grid.home-trio > .card.home-af { --surface: var(--t2); }
+[data-style="bento"] .grid.home-trio > .card.home-ex { --surface: var(--t3); }
+[data-style="bento"] main:has(> .mk-head) > .cols-2 > .card:nth-child(1) { --surface: var(--t4); }
+[data-style="bento"] main:has(> .mk-head) > .cols-2 > .card:nth-child(2) { --surface: var(--t6); }
+[data-style="bento"] .hc-lab { text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--ink-2); opacity: .8; }
+[data-style="bento"] .t-title { display: block; font-family: var(--font-head); font-size: 28px; line-height: 1.1; font-weight: 800; letter-spacing: -0.015em; margin: 2px 0 10px; }
+[data-style="bento"] .it-row { border-radius: 7px; font-size: 15px; }
+[data-style="bento"] .it-head { font-size: 13px; }
+[data-style="bento"] .ex-pills a { border-radius: 7px; }
+[data-style="bento"] .teaser, [data-style="bento"] .congress-link { color: var(--ink); }
 
 /* ---------- phones ---------- */
 @media (max-width: 860px) {
   [data-style="bento"] h1 { font-size: 32px; }
   [data-style="bento"] main:has(> .mk-head) { gap: 10px; }
-  [data-style="bento"] main:has(> .mk-head) > .cols-2 > .card, [data-style="bento"] main:has(> .mk-head) > .congress-link { grid-column: span 12; }
   [data-style="bento"] .idx-row { gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   [data-style="bento"] .idx:last-child:nth-child(odd) { grid-column: span 2; }
   [data-style="bento"] .home-grid { gap: 10px; grid-template-columns: minmax(0, 1fr); }
-  [data-style="bento"] .today-why { grid-template-columns: minmax(0, 1fr); padding: 20px; }
-  [data-style="bento"] .today-why > span:nth-child(2) { font-size: 21px; }
+  [data-style="bento"] .home-hero { padding: 20px 20px 0; } [data-style="bento"] .home-hero h1 { font-size: 40px; } [data-style="bento"] .hh-chart { margin: 12px -20px 0; }
+  [data-style="bento"] .home-trio, [data-style="bento"] main:has(> .mk-head) > .cols-2 { gap: 10px; }
   [data-style="bento"] .card { padding: 18px; }
 }
 @media (max-width: 520px) {

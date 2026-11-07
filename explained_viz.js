@@ -884,6 +884,8 @@
     document.getElementById("exSave").disabled = false; document.getElementById("exCopy").disabled = false;
   }
   function mount() {
+    // the home page's Explained card may have picked a guide since this file loaded
+    try { const s = localStorage.getItem("hf-ex"); if (ALL.some((e) => e[0] === s)) cur = s; } catch (e) { /* storage blocked */ }
     document.querySelectorAll("[data-ex]").forEach((b) => b.addEventListener("click", () => { cur = b.dataset.ex; try { localStorage.setItem("hf-ex", cur); } catch (e) { /* storage blocked */ } render(); }));
     document.getElementById("exSave").addEventListener("click", () => { if (!url) return; const a = document.createElement("a"); a.href = url; a.download = `harryv12-explained-${cur}.png`; document.body.appendChild(a); a.click(); a.remove(); });
     document.getElementById("exCopy").addEventListener("click", async () => { const hint = document.getElementById("exHint"); if (!blob) return;
