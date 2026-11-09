@@ -228,5 +228,17 @@
  "today|oil|2026-11-06": "Oil stocks were flat (+0.1%) while the S&P 500 rose 0.3%, with EOG up 1.6% and Marathon Petroleum down 1.2%.",
  "now|oil|2026-11-06": "Oil stocks fell 11.6% over the week against 2.7% for the S&P 500, led down by Marathon Petroleum, Phillips 66 and Halliburton as oil prices dropped after the Democrats' midterm win.",
  "today|health|2026-11-06": "Healthcare was flat (−0.1%) while the S&P 500 rose 0.3%, with Abbott down 3.2% and Thermo Fisher up 2.6%.",
- "now|health|2026-11-06": "Healthcare fell 1.1% over the week, less than the S&P 500 (−2.7%), with Eli Lilly, Pfizer and UnitedHealth down while Abbott rose 3.5%."
+ "now|health|2026-11-06": "Healthcare fell 1.1% over the week, less than the S&P 500 (−2.7%), with Eli Lilly, Pfizer and UnitedHealth down while Abbott rose 3.5%.",
+ "today|all|2026-11-09": "The S&P 500 rose 2.4% as the Dow added 1,104 points, with gains led by Monolithic Power (+16.6%), Astera Labs (+13.7%), AMD (+13.3%) and Bloom Energy (+11.9%).",
+ "now|all|2026-11-09": "The S&P 500 was flat (+0.1%) since 3 Nov and is −3.3% over the month, with AppLovin up 79.2%, Moderna and Wheaton Precious Metals up about 21% and SanDisk down 17.5%.",
+ "today|ai|2026-11-09": "AI and chip stocks rebounded 6.4% while the S&P 500 rose 2.4%, led by AMD, Applied Materials, Lam Research and Marvell, though the basket is still down 24.1% over the month.",
+ "now|ai|2026-11-09": "AI and chip stocks fell 3.7% since 3 Nov against +0.1% for the S&P 500, with Micron, Nvidia and Marvell down 10–12% while AMD rose 8.9%.",
+ "today|defense|2026-11-09": "Defense stocks rose 4.3% while the S&P 500 rose 2.4%, led by AeroVironment (+12.6%), Huntington Ingalls, L3Harris and Lockheed Martin.",
+ "now|defense|2026-11-09": "Defense stocks fell 2.9% since 3 Nov against +0.1% for the S&P 500, with Lockheed Martin, Leidos and RTX down while AeroVironment rose 3.2%, though the basket is +10.7% over the month.",
+ "today|banks|2026-11-09": "Banks rose 2.5%, in line with the S&P 500 (+2.4%), led by Goldman Sachs (+4.7%), Morgan Stanley, PNC and U.S. Bancorp.",
+ "now|banks|2026-11-09": "Banks gained 0.8% since 3 Nov against +0.1% for the S&P 500, with Charles Schwab up 4.5% and Bank of America up 2.0% while Citi slipped 0.9%.",
+ "today|oil|2026-11-09": "Oil stocks rose 0.6% while the S&P 500 rose 2.4%, with Marathon Petroleum up 4.6% and Phillips 66 up 3.0% while ConocoPhillips and Occidental slipped about 1%.",
+ "now|oil|2026-11-09": "Oil stocks fell 7.5% since 3 Nov against +0.1% for the S&P 500, led down by Marathon Petroleum, ConocoPhillips, Exxon and Occidental (each down 8–9%).",
+ "today|health|2026-11-09": "Healthcare rose 1.7% while the S&P 500 rose 2.4%, led by Eli Lilly (+4.3%), Thermo Fisher (+3.9%) and Johnson & Johnson (+2.1%).",
+ "now|health|2026-11-09": "Healthcare rose 1.1% since 3 Nov against +0.1% for the S&P 500, with Thermo Fisher up 5.7% and Johnson & Johnson up 4.3% while Pfizer fell 3.3%."
 }
