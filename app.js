@@ -1783,7 +1783,39 @@
       g.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
     }
   }
-  const fitAll = () => { fitAllHeat(); balanceGrids(); };
+  // the bar under the top bar stays one line: when its buttons don't fit, the widest groups become dropdowns, widest first
+  function fitBar() {
+    const tb = $("#subbar .toolbar"); if (!tb) return;
+    const segs = $$(".seg", tb).filter((s) => $$("button", s).length > 2);
+    for (const s of segs) {
+      s.classList.remove("as-sel");
+      if (!(s.nextElementSibling && s.nextElementSibling.matches("select.seg-sel"))) {
+        const bs = $$("button", s), sel = document.createElement("select");
+        sel.className = "seg-sel"; sel.dataset.gs = "1"; sel.setAttribute("aria-label", s.getAttribute("aria-label") || "Choose");
+        bs.forEach((b, i) => { const o = document.createElement("option"); o.value = i; o.textContent = b.textContent; if (b.getAttribute("aria-pressed") === "true") o.selected = true; sel.appendChild(o); });
+        sel.addEventListener("change", () => bs[+sel.value].click());
+        s.after(sel);
+      }
+    }
+    // put back anything an earlier, narrower fit moved out
+    const more = $(".fmore-btn", tb), panel = $("#subbar .fmore-panel");
+    let moved = panel && $(".fmoved", panel);
+    if (moved && more) more.before(...moved.children);
+    const cnt = $(".count", tb); if (cnt) cnt.classList.remove("fit-hide");
+    tb.classList.add("one-line");
+    const over = () => tb.scrollWidth > tb.clientWidth + 1;
+    // 1) the widest button groups become dropdowns
+    for (const s of [...segs].sort((a, b) => b.offsetWidth - a.offsetWidth)) { if (!over()) break; s.classList.add("as-sel"); }
+    // 2) quick filter chips move into "More filters", last one first
+    if (over() && more && panel) {
+      if (!moved) { moved = document.createElement("div"); moved.className = "field fmoved"; panel.prepend(moved); }
+      for (const c of $$(".fchip:not(.fmore-btn)", tb).reverse()) { if (!over()) break; moved.prepend(c); }
+    }
+    // 3) the result count is a nicety; drop it before wrapping
+    if (over() && cnt) cnt.classList.add("fit-hide");
+    if (over() && innerWidth > 860) tb.classList.remove("one-line"); // still too wide: let it wrap
+  }
+  const fitAll = () => { fitAllHeat(); balanceGrids(); fitBar(); };
   let fitT = 0; const fitSoon = () => { clearTimeout(fitT); fitT = setTimeout(fitAll, 30); };
   addEventListener("resize", fitSoon);
   new MutationObserver(fitSoon).observe(document.documentElement, { attributes: true, attributeFilter: ["data-style", "data-theme"] });
@@ -2512,7 +2544,7 @@
     const sb = $("#subbar"), row = $(".sub-row", sb), tb = $(".toolbar.pin-top", app), h1t = $("h1", app);
     row.innerHTML = ""; $$(".fmore-panel", sb).forEach((x) => x.remove());
     if (tb) { row.insertAdjacentHTML("beforeend", `<span class="sb-title">${esc(h1t ? h1t.textContent : "")}</span>`); row.appendChild(tb); const pn = $(".fmore-panel", app); if (pn) sb.appendChild(pn); }
-    sb.hidden = !tb; fitSubbar();
+    sb.hidden = !tb; fitBar(); fitSubbar();
   }
   // the bar sits right under the top bar where that stays put (wide screens); on phones it sticks to the top itself
   function fitSubbar() { const top = $("header.top"); document.documentElement.style.setProperty("--toph", getComputedStyle(top).position === "sticky" ? `${top.offsetHeight}px` : "0px"); }

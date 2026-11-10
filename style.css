@@ -804,3 +804,14 @@ main:has(> .home-hero) { --home-gap: 16px; }
 :root:not([data-style="bento"]) main:has(> .home-hero) > .section, :root:not([data-style="bento"]) main:has(> .home-hero) > .home-hero + .idx-row { margin-top: var(--home-gap); }
 main:has(> .home-hero) > .idx-row, main:has(> .home-hero) > .grid { gap: var(--home-gap); }
 @media (max-width: 860px) { main:has(> .home-hero) { --home-gap: 10px; } }
+
+/* the bar under the top bar: one line; a button group that doesn't fit becomes a dropdown (app.js fitBar) */
+select.seg-sel { display: none; }
+.seg.as-sel { display: none !important; }
+.seg.as-sel + select.seg-sel { display: inline-block; flex: none; max-width: none; align-self: stretch; font-weight: 600; cursor: pointer; }
+.sub-row .toolbar.one-line { flex-wrap: nowrap; }
+.sub-row .gsel { width: 13.5em; min-width: 0; max-width: 13.5em; }
+.sub-row .count.fit-hide { display: none; }
+.fmoved { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fmoved:empty { display: none; }
+@media (max-width: 860px) { .seg.as-sel + select.seg-sel { flex: 1 1 0; min-width: 6.5em; } }
