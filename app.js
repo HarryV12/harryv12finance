@@ -8,6 +8,10 @@
   const D = window.CTC_DATA, SERIES = window.CTC_SERIES || {}, HOLD0 = window.CTC_HOLDINGS || {};
   const $ = (s, el = document) => el.querySelector(s), $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  // news headlines arrive cut short by the feed ("… Strategic Growth ..."); drop the dangling dots
+  // whole sentences from the start of a text, as many as fit in about max characters (always at least one), so nothing ends mid-word
+  const sentences = (t, max) => { const ss = String(t ?? "").match(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g) || []; let out = ""; for (const s of ss) { if (out && (out + s).length > max) break; out += s; } return out.trim(); };
+  const headline = (t) => String(t ?? "").replace(/\s*(\.\.\.|…)\s*$/, "");
   const DAY = 86400000, today = Date.parse(D.prices_through + "T00:00:00Z"), YEAR = new Date(today).getUTCFullYear();
   const F = Object.fromEntries(D.fields.map((f, i) => [f, i]));
   const members = D.members.map((m, i) => ({ ...m, i }));
@@ -1328,7 +1332,7 @@
     app.innerHTML = `<h1>Why did the market drop?</h1><p class="loading">Loading…</p>`;
     const [M, P] = await Promise.all([loadMoves(), loadPrices()]); if (location.hash !== "#/drops") return;
     const eps = (M && M.episodes) || [], TH = M && M.themes;
-    const hl = (it) => `<li><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a> <span class="muted small">${esc(it.source)} · ${fmtDate(it.date, { day: "numeric", month: "short" })}</span></li>`;
+    const hl = (it) => `<li><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(headline(it.title))}</a> <span class="muted small">${esc(it.source)} · ${fmtDate(it.date, { day: "numeric", month: "short" })}</span></li>`;
     // the S&P 500 day by day, and how long each drop took to win back
     const dates = P ? P.dates : [], spy = P ? P.px.SPY : [], di = new Map(dates.map((d, i) => [d, i]));
     for (const e of eps) {
@@ -1764,8 +1768,23 @@
   const fitAllHeat = () => document.querySelectorAll(".heatmap").forEach(fitHeatLabels);
   new MutationObserver((muts) => { for (const m of muts) for (const nd of m.addedNodes) if (nd.nodeType === 1) {
     const maps = nd.classList.contains("heatmap") ? [nd] : nd.querySelectorAll(".heatmap");
-    for (const mp of maps) { fitHeatLabels(mp); if (heatRO) heatRO.observe(mp); } } }).observe(document.getElementById("app"), { childList: true, subtree: true });
-  let fitT = 0; const fitSoon = () => { clearTimeout(fitT); fitT = setTimeout(fitAllHeat, 30); };
+    for (const mp of maps) { fitHeatLabels(mp); if (heatRO) heatRO.observe(mp); } } fitSoon(); }).observe(document.getElementById("app"), { childList: true, subtree: true });
+  // small grids of boxes never leave one box alone on the last row: as many columns as fit (each at least its
+  // minimum width), then evened out across the rows, so 4 boxes go 2+2 rather than 3+1
+  const BALANCE = { ".drop-grid": 240, ".inds": 190, ".inv-tiles": 200, ".af-tl": 180 };
+  function balanceGrids() {
+    for (const [sel, min] of Object.entries(BALANCE)) for (const g of document.querySelectorAll(`#app ${sel}`)) {
+      g.style.gridTemplateColumns = "";
+      const n = [...g.children].filter((k) => k.offsetParent !== null || getComputedStyle(k).display !== "none").length, w = g.clientWidth;
+      if (!w || n < 2) continue;
+      const gap = parseFloat(getComputedStyle(g).columnGap) || 0, fit = Math.max(1, Math.floor((w + gap) / (min + gap)));
+      if (fit < 2) continue;
+      const rows = Math.ceil(n / fit), cols = Math.min(fit, Math.ceil(n / rows));
+      g.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+    }
+  }
+  const fitAll = () => { fitAllHeat(); balanceGrids(); };
+  let fitT = 0; const fitSoon = () => { clearTimeout(fitT); fitT = setTimeout(fitAll, 30); };
   addEventListener("resize", fitSoon);
   new MutationObserver(fitSoon).observe(document.documentElement, { attributes: true, attributeFilter: ["data-style", "data-theme"] });
   if (document.fonts) { document.fonts.ready.then(fitAllHeat); document.fonts.addEventListener("loadingdone", fitAllHeat); }
@@ -1884,7 +1903,7 @@
           <div class="ex-pills">${exPick.slice(1).map((e) => `<a href="#/dataviz" data-ex-go="${e[0]}">${esc(e[1])}</a>`).join("")}<a href="#/dataviz" data-ex-go="${exPick[0][0]}">+${EXL.length - exPick.length} more</a></div></div>` : ""}
       </div>
       <div class="grid cols-2 section">
-        ${I && I.deals[0] ? `<a class="card teaser" href="#/investments"><span class="hc-lab">Latest big investment</span><b class="t-title">${esc(I.deals[0].title)}</b><p class="small muted">${esc(I.deals[0].summary.slice(0, 220))}…</p><span class="more-link">See who put money in →</span></a>` : ""}
+        ${I && I.deals[0] ? `<a class="card teaser" href="#/investments"><span class="hc-lab">Latest big investment</span><b class="t-title">${esc(I.deals[0].title)}</b><p class="small muted">${esc(sentences(I.deals[0].summary, 240))}</p><span class="more-link">See who put money in →</span></a>` : ""}
         <a class="card teaser congress-link" href="#/congress"><span class="hc-lab">Insider trading</span><b class="t-title">What Congress is buying and selling</b><p class="small muted">Trades by members of Congress and senior officials, from their disclosure reports.</p><span class="more-link">Open Insider Trading →</span></a>
       </div>`;
     // an Explained link opens that guide on the Data Visualization page
@@ -1972,7 +1991,7 @@
         <div class="chart">${chart(s)}</div>
         <div class="af-tl">${(s.events || []).map((e, j) => { const [g, c] = KIND[e.kind] || KIND.bad; return `<div class="af-ev"><span class="af-num" style="background:${c}">${j + 1}</span><span class="muted small">${fmtDate(e.date, { day: "numeric", month: "short" })}</span><span>${esc(e.text)}</span></div>`; }).join("")}</div>
         ${s.summary || s.why ? `<div class="why-sum af-why">${s.summary ? `<p><b>What led to it:</b> ${esc(s.summary)}</p>` : ""}${s.why ? `<p><b>Why:</b> ${esc(s.why)}</p>` : ""}</div>` : ""}
-        ${s.news && s.news.length ? `<details class="srcs"><summary>Sources: ${s.news.length} news articles</summary><ul>${s.news.map((it) => `<li><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a> <span class="muted small">${esc(it.source)} · ${fmtDate(it.date, { day: "numeric", month: "short" })}</span></li>`).join("")}</ul></details>` : ""}
+        ${s.news && s.news.length ? `<details class="srcs"><summary>Sources: ${s.news.length} news articles</summary><ul>${s.news.map((it) => `<li><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(headline(it.title))}</a> <span class="muted small">${esc(it.source)} · ${fmtDate(it.date, { day: "numeric", month: "short" })}</span></li>`).join("")}</ul></details>` : ""}
       </div>`).join("")}
       <p class="small muted">Prices are daily closes (Rolls-Royce in pence, Novo Nordisk in Danish kroner). "Steady" compares each stock's daily swings in the year before its peak with the rest of the S&amp;P 500. The timelines are written from news reports; where no single report explains a fall, the card says so.</p>`;
     pinBar();
@@ -2008,7 +2027,7 @@
   const storyHtml = (st, P) => {
     const R = storyHoldings(st, P), dot = (m) => `<i class="pdot ${esc(m.party || "I")}"></i>`;
     return `<div class="card hl-story section" id="hl-${esc(st.id)}">
-      <div class="inv-top"><span class="muted small">${fmtDate(st.date)} · in the news</span><h2>${esc(st.title)}</h2></div>
+      <div class="inv-top"><span class="muted small">${fmtDate(st.date)} · in the news</span><h2>${esc(headline(st.title))}</h2></div>
       <p class="hl-news">${esc(st.news)}</p>${st.angle ? `<p class="small muted">${esc(st.angle)}</p>` : ""}
       <div class="hl-kpis">
         <div><span class="lbl">Trump still holds</span><b class="mono">${R.trump ? "≈" + usd(R.trump) : "–"}</b><span class="muted small">across these ${R.rows.length} stocks</span></div>
@@ -2046,7 +2065,7 @@
       for (const x of d.tiles || []) if (x.stake && last(x.stake.tk)) { const now = last(x.stake.tk), r = now / x.stake.price - 1; tiles.push([x.label, usd(x.stake.shares * now), `${pct(r)} since ${fmtDate(x.stake.date, { day: "numeric", month: "short" })} buy`, cls(r)]); }
       if (d.center.value) tiles.push([`${d.center.name} value`, d.center.value.split(" (")[0], d.center.value.includes("(") ? d.center.value.split("(")[1].replace(")", "") : "", ""]);
       return `<div class="card inv section" id="inv-${k}">
-        <div class="inv-top"><span class="muted small">${fmtDate(d.date)} · <span class="pill-soft">${esc(d.status)}</span></span><h2>${esc(d.title)}</h2></div>
+        <div class="inv-top"><span class="muted small">${fmtDate(d.date)} · <span class="pill-soft">${esc(d.status)}</span></span><h2>${esc(headline(d.title))}</h2></div>
         ${tiles.length ? `<div class="inv-tiles">${tiles.map(([l, b, s2, c]) => `<div><span class="lbl">${esc(l)}</span><b class="${c}">${b}</b><span class="muted small">${esc(s2)}</span></div>`).join("")}</div>` : ""}
         <div class="flow" data-flow="${k}">
           <div class="fcol fin"><h4>Money in</h4>${d.inflows.map((f, j) => `<div class="fbox ${KC[f.kind] || "company"}" data-in="${j}"><b>${esc(f.name)}</b><span>${esc(f.amount)}</span><small>${esc(f.note)}</small></div>`).join("")}</div>
