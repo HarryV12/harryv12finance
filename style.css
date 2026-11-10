@@ -798,3 +798,9 @@ details.mth[open] > summary::after { content: "−"; }
 /* two columns on phones: an odd last box takes the full row instead of sitting alone */
 @media (max-width: 860px) { .af-stats > :last-child:nth-child(odd) { grid-column: span 2; } }
 @media (max-width: 470px) { .pr-cards > :last-child:nth-child(odd) { grid-column: span 2; } }
+
+/* home page: one spacing step everywhere - the same 16px between stacked sections, between cards side by side and between the index tiles */
+main:has(> .home-hero) { --home-gap: 16px; }
+:root:not([data-style="bento"]) main:has(> .home-hero) > .section, :root:not([data-style="bento"]) main:has(> .home-hero) > .home-hero + .idx-row { margin-top: var(--home-gap); }
+main:has(> .home-hero) > .idx-row, main:has(> .home-hero) > .grid { gap: var(--home-gap); }
+@media (max-width: 860px) { main:has(> .home-hero) { --home-gap: 10px; } }
