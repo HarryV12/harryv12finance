@@ -526,5 +526,38 @@
    }
   ],
   "why": "With no company-specific bad news in the headlines, the slide looks like investors selling after a high, together with weakness across defense and industrial stocks. In November, fears that a Democratic Congress would curb Pentagon spending added pressure on defense contractors as a group."
+ },
+ "T": {
+  "cause": "SpaceX's deal for spectrum and Starlink network plans hit US wireless stocks",
+  "clear": true,
+  "summary": "AT&T fell about 10% in a day on 9 Oct 2026 after SpaceX said it would acquire a spectrum license and expand Starlink into US mobile service, the same news that gave Verizon its worst day since 2002; it has since drifted lower, with two more sharp falls in late October that the news we have doesn't explain.",
+  "events": [
+   {
+    "date": "2026-09-15",
+    "kind": "peak",
+    "text": "Shares close at $26.42, their high before the fall"
+   },
+   {
+    "date": "2026-10-08",
+    "kind": "bad",
+    "text": "SpaceX deal to acquire a spectrum license hammers AT&T, Verizon and T-Mobile shares (CNBC)"
+   },
+   {
+    "date": "2026-10-09",
+    "kind": "bad",
+    "text": "Shares fall about 10% ($24.59 to $22.18) as SpaceX announces its Starlink expansion; Verizon has its worst day since 2002"
+   },
+   {
+    "date": "2026-10-21",
+    "kind": "bad",
+    "text": "Shares fall about 6% in a day; no cause appears in the news we have"
+   },
+   {
+    "date": "2026-10-23",
+    "kind": "bad",
+    "text": "Shares fall about 8% in a day ($22.74 to $20.93); no cause appears in the news we have"
+   }
+  ],
+  "why": "A phone company's value rests on the steady monthly bills of its customers. If SpaceX builds its own US mobile network using Starlink and newly acquired spectrum, investors expect AT&T, Verizon and T-Mobile to face a new competitor for those customers, which lowers the growth and pricing power they were paying for. Telecom stocks as a group fell far more than the S&P 500 over the same period, so most of the fall was specific to the industry."
  }
 }
