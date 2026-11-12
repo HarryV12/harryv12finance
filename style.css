@@ -815,3 +815,12 @@ select.seg-sel { display: none; }
 .fmoved { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .fmoved:empty { display: none; }
 @media (max-width: 860px) { .seg.as-sel + select.seg-sel { flex: 1 1 0; min-width: 6.5em; } }
+
+/* whole site: one spacing step between boxes - the same gap between stacked sections and between cards side by side (16px; 10px on phones) */
+:root { --gap: 16px; }
+@media (max-width: 860px) { :root { --gap: 10px; } }
+.section:not(h2):not(h3):not(p), .drops { margin-top: var(--gap); }
+.grid, .spikes, .drops, .af-mult, #recentCards { gap: var(--gap); }
+details.mth { margin-top: var(--gap); }
+main:has(> .home-hero) { --home-gap: var(--gap); }
+.card.th-top { margin-bottom: var(--gap); }
