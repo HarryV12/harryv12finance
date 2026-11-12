@@ -911,5 +911,57 @@
  "now|health|2026-11-11": [
   "Healthcare stocks fell as the market rout spread (headline, 6 Nov).",
   "Abbott −5.4%, Pfizer −3.0% and Merck −2.1%, while Thermo Fisher +1.6%; the basket is +9.7% over the month."
+ ],
+ "ai|2026-11-06": [
+  "Wall Street rallied after the heavy AI-related selloff (Reuters, 7 Nov); CNBC said chip stocks rallied even as Nvidia fell after an investigation into its CEO (CNN, CNBC, 9–10 Nov).",
+  "CoreWeave's results eased AI bubble fears and lifted Nvidia and other AI cloud stocks (Reuters, Forbes, 11 Nov) → AMD +36.7%, Lam Research +27.4%, Marvell +26.4% and KLA +24.0%, against +3.7% for the S&P 500."
+ ],
+ "today|all|2026-11-12": [
+  "Alibaba −7.1%, Moderna −7.0% and Strategy −6.5%, while AMD +5.9% (the news we have doesn't say why).",
+  "The index slipped 0.4% and is −1.6% over the month."
+ ],
+ "now|all|2026-11-12": [
+  "The period began after the tech sell-off that wiped $2.5 trillion off the market (CNN, 5 Nov); Wall Street then rallied after the AI-related selloff (Reuters, 7 Nov).",
+  "AMD +44.7%, Cloudflare +30.3%, Arista +29.8% and Monolithic Power +27.9% (the news we have doesn't say why); the S&P 500 is −1.6% over the month."
+ ],
+ "today|ai|2026-11-12": [
+  "Supermicro −11.3% and Nvidia −4.3%, while AMD +5.9% and Broadcom +5.5% (the news we have doesn't say why).",
+  "The basket fell 1.6% against −0.4% for the S&P 500 and is −13.2% over the month, after the rebound earlier in the week (AP News, 11 Nov)."
+ ],
+ "now|ai|2026-11-12": [
+  "AI stocks rebounded after the heavy selloff (Reuters, 7 Nov) and CoreWeave's results eased AI debt fears (Reuters, Forbes, 11 Nov).",
+  "AMD +44.7%, Lam Research +26.2%, Broadcom +25.0% and Marvell +23.1%; the basket is still −13.2% over the month."
+ ],
+ "today|defense|2026-11-12": [
+  "AeroVironment −2.9%, Leidos −2.1%, Huntington Ingalls −1.8% and L3Harris −1.7% (the news we have doesn't say why).",
+  "The basket fell 1.4% against −0.4% for the S&P 500 and is +11.7% over the month."
+ ],
+ "now|defense|2026-11-12": [
+  "Defense stocks had sunk after the Democrats took Congress and the $1.5 trillion budget looked doomed (Yahoo Finance, 5 Nov).",
+  "AeroVironment +18.4%, Huntington Ingalls +6.5%, L3Harris +5.3% and Lockheed Martin +4.9%; the basket is +11.7% over the month."
+ ],
+ "today|banks|2026-11-12": [
+  "Goldman Sachs −1.4%, Charles Schwab −1.1%, Morgan Stanley −0.8% and the regional-bank ETF KRE −0.6% (the news we have doesn't say why).",
+  "The basket slipped 0.5% against −0.4% for the S&P 500 and is +3.3% over the month."
+ ],
+ "now|banks|2026-11-12": [
+  "Goldman Sachs +5.1%, Citigroup +4.7%, Morgan Stanley +3.7% and PNC +1.9% (the news we have doesn't say why).",
+  "The basket trailed the S&P 500 (+3.3%) after the 5 Nov selloff that hit financial stocks (CNBC, Barron's, 5 Nov) and is +3.3% over the month."
+ ],
+ "today|oil|2026-11-12": [
+  "Marathon Petroleum +2.5%, Occidental +2.0%, Exxon +1.8% and Phillips 66 +1.6% (the news we have doesn't say why).",
+  "The basket rose 1.3% against −0.4% for the S&P 500 and is −3.8% over the month."
+ ],
+ "now|oil|2026-11-12": [
+  "Lower oil prices had boosted European shares (Reuters, 10 Nov); the news we have doesn't name a single cause for this week's moves.",
+  "Marathon Petroleum +9.4%, EOG +7.4% and Phillips 66 +6.4%; the basket is −3.8% over the month."
+ ],
+ "today|health|2026-11-12": [
+  "Thermo Fisher −2.5%, Pfizer −2.1% and Abbott −1.9%, while Johnson & Johnson +1.1% (the news we have doesn't say why).",
+  "The basket slipped 0.7% against −0.4% for the S&P 500 and is +6.0% over the month."
+ ],
+ "now|health|2026-11-12": [
+  "Healthcare stocks fell as the market rout spread (WSJ, 6 Nov).",
+  "Eli Lilly +4.6%, Johnson & Johnson +4.1% and Thermo Fisher +3.3%, while Abbott −5.6% (the news we have doesn't say why); the basket is +6.0% over the month."
  ]
 }

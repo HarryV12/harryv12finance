@@ -559,5 +559,28 @@
    }
   ],
   "why": "A phone company's value rests on the steady monthly bills of its customers. If SpaceX builds its own US mobile network using Starlink and newly acquired spectrum, investors expect AT&T, Verizon and T-Mobile to face a new competitor for those customers, which lowers the growth and pricing power they were paying for. Telecom stocks as a group fell far more than the S&P 500 over the same period, so most of the fall was specific to the industry."
+ },
+ "ADM": {
+  "cause": "No single reported cause; a slow slide with one sharp one-day fall",
+  "clear": false,
+  "summary": "Archer-Daniels-Midland shares slid about 19% from a high of $88.09 on 17 September 2026 to about $71, mostly in small daily falls, with one 6.8% drop on 3 November ($75.77 to $70.60) that the news we have doesn't explain; the market (S&P 500) fell only about 0.5% over the same period.",
+  "events": [
+   {
+    "date": "2026-09-17",
+    "kind": "peak",
+    "text": "Shares close at $88.09, their high before the fall"
+   },
+   {
+    "date": "2026-10-09",
+    "kind": "bad",
+    "text": "Shares fall 3.1% in a day ($82.45 to $79.89); no cause appears in the news we have"
+   },
+   {
+    "date": "2026-11-03",
+    "kind": "bad",
+    "text": "Shares fall 6.8% in a day ($75.77 to $70.60); no cause appears in the news we have"
+   }
+  ],
+  "why": "No single announcement explains this fall, so what follows is general rather than a reported cause. A crop processor's value depends on its profit margins, which swing with crop prices and demand, so when investors expect weaker earnings the share price falls even without a headline. ADM fell while the market was roughly flat, which suggests the cause was specific to the company or its industry rather than the market as a whole."
  }
 }
