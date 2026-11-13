@@ -2,10 +2,23 @@
    Written from official announcements and news reports (sources on each). Share counts and prices are as announced;
    today's values and moves are worked out on the page from the daily closes. "status" says whether a deal is final. */
 window.CTC_INVEST = {
-  updated: "2026-11-06",
+  updated: "2026-11-13",
   // Holdings behind the headline: a news story, the listed companies it could move, and who in government holds them.
   // Holdings and returns are worked out on the page from the filings; only the story itself is written here.
   stories: [
+    {
+      id: "gov-stakes-oversight", date: "2026-11-11",
+      title: "Democrats could scrutinise the government's company stakes",
+      news: "CNBC reports that once Democrats take control of Congress in January, the administration's equity stakes in private companies could become a target for investigation. CATO Institute's tracker counts stakes in 14 companies by January 2026 and 41 by November 2026, and the government has not revealed a new one since the 3 November midterm election. The White House says it has made \"voluntary equity investments in willing companies\".",
+      angle: "Intel (10% government stake) and MP Materials ($400M Pentagon deal) are two of the stakes the report names, so tougher oversight could matter for their shares.",
+      tickers: ["INTC", "MP"],
+      committees: [
+        { tk: "INTC", m: "K000389", role: "Oversight and Government Reform Committee", why: "Investigates how the executive branch, which holds the stakes, operates", short: "executive oversight" }
+      ],
+      sources: [
+        { name: "CNBC, 11 Nov 2026: How Democrats could snarl Trump administration stakes in private sector companies", url: "https://www.cnbc.com/2026/11/11/trump-company-equity-takes.html" }
+      ]
+    },
     {
       id: "f35-deal", date: "2026-10-22",
       title: "Lockheed agrees a 10-year F-35 deal with the Pentagon",
