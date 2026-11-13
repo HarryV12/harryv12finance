@@ -582,5 +582,23 @@
    }
   ],
   "why": "No single announcement explains this fall, so what follows is general rather than a reported cause. A crop processor's value depends on its profit margins, which swing with crop prices and demand, so when investors expect weaker earnings the share price falls even without a headline. ADM fell while the market was roughly flat, which suggests the cause was specific to the company or its industry rather than the market as a whole."
+ },
+ "TT": {
+  "cause": "No single cause: shares slid from a June high with no bad news in our headlines",
+  "clear": false,
+  "summary": "Trane peaked at $502.27 on 25 June and has fallen about 17% since, while the S&P 500 is up about 3% and its sector about 4%. The headlines we have are mostly positive (HVAC and AI data-centre cooling demand; second-quarter results on 30 July that raised full-year revenue and earnings guidance), so we cannot name a cause.",
+  "events": [
+   {
+    "date": "2026-06-25",
+    "kind": "peak",
+    "text": "Shares at their high, $502.27"
+   },
+   {
+    "date": "2026-07-30",
+    "kind": "neutral",
+    "text": "Reports second-quarter results and raises full-year revenue and earnings guidance"
+   }
+  ],
+  "why": "With no reported bad news, the slide cannot be tied to one event; it looks like a gradual decline after a high, even as headlines kept pointing to strong demand."
  }
 }
