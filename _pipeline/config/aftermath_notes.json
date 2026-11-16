@@ -600,5 +600,28 @@
    }
   ],
   "why": "With no reported bad news, the slide cannot be tied to one event; it looks like a gradual decline after a high, even as headlines kept pointing to strong demand."
+ },
+ "TJX": {
+  "cause": "No single cause: shares slid from a June high with no clear bad news in our headlines",
+  "clear": false,
+  "summary": "TJX peaked at $167.29 on 12 June and has fallen about 22% since, while the S&P 500 is roughly flat and its sector is up about 7%. The headlines we have are mostly positive (market share gains, margin expansion, HomeGoods as a profit driver) or say the stock looks expensive; one on 19 August only reports that the shares dropped that day, so we cannot name a cause.",
+  "events": [
+   {
+    "date": "2026-06-12",
+    "kind": "peak",
+    "text": "Shares at their high, $167.29"
+   },
+   {
+    "date": "2026-06-22",
+    "kind": "neutral",
+    "text": "Seeking Alpha calls it an attractive growth story but expensive"
+   },
+   {
+    "date": "2026-08-19",
+    "kind": "bad",
+    "text": "Yahoo Finance runs \"Why TJX Stock Dropped Today\"; the headline gives no cause"
+   }
+  ],
+  "why": "With no reported bad news, the slide cannot be tied to one event; analysts' comments that the stock looked expensive suggest it may have lost ground as expectations eased, but the headlines do not confirm that."
  }
 }

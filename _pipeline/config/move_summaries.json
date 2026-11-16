@@ -289,5 +289,18 @@
  "today|oil|2026-11-13": "Oil stocks rose 1.3% while the S&P 500 slipped 0.4%, led by Halliburton (+3.1%), EOG (+1.7%) and Chevron (+1.6%).",
  "now|oil|2026-11-13": "Oil stocks rose 5.7% since 6 Nov against +2.6% for the S&P 500, led by Marathon Petroleum (+11.2%), Phillips 66 (+7.8%) and EOG (+7.6%).",
  "today|health|2026-11-13": "Healthcare rose 0.6% while the S&P 500 slipped 0.4%, led by Abbott (+1.2%), Eli Lilly (+1.1%) and Johnson & Johnson (+0.8%).",
- "now|health|2026-11-13": "Healthcare rose 1.7% since 6 Nov against +2.6% for the S&P 500, with Eli Lilly up 6.6%, Johnson & Johnson up 3.5% and UnitedHealth up 3.4%."
+ "now|health|2026-11-13": "Healthcare rose 1.7% since 6 Nov against +2.6% for the S&P 500, with Eli Lilly up 6.6%, Johnson & Johnson up 3.5% and UnitedHealth up 3.4%.",
+ "drop|2026-11-16": "Stocks fell as AI jitters ahead of Nvidia's results and the Anthropic IPO weighed on the market, with the S&P 500 down 1.9% and the Nasdaq 100 down 2.7% (Reuters, Bloomberg, 16 Nov).",
+ "today|all|2026-11-16": "The S&P 500 fell 1.9% as AI jitters ahead of Nvidia's results and the Anthropic IPO weighed on stocks, with Natera down 9.6%, Astera Labs down 8.8%, SanDisk down 8.6% and Lumentum down 8.5%.",
+ "now|all|2026-11-16": "The S&P 500 fell 1.7% since 10 Nov and is −3.1% over the month, with Moderna down 20.0%, Strategy down 18.0%, Alibaba down 14.0% and B down 13.7%.",
+ "today|ai|2026-11-16": "AI and chip stocks fell 5.9% while the S&P 500 fell 1.9%, with Arm down 8.1%, Micron down 7.6%, Marvell down 7.3% and Super Micro down 6.9%; the basket is down 15.8% over the month.",
+ "now|ai|2026-11-16": "AI and chip stocks fell 4.6% since 10 Nov against −1.7% for the S&P 500, with Nvidia down 12.6%, Super Micro down 12.5%, Arm down 6.0% and Marvell down 6.0%.",
+ "today|defense|2026-11-16": "Defense stocks fell 2.0%, about in line with the S&P 500 (−1.9%), with AeroVironment down 6.8%, L3Harris down 3.9%, RTX down 1.9% and Lockheed Martin down 1.8%.",
+ "now|defense|2026-11-16": "Defense stocks fell 2.6% since 10 Nov against −1.7% for the S&P 500, with AeroVironment down 13.8%, Leidos down 4.2% and L3Harris down 3.6% while Northrop Grumman rose 1.2%.",
+ "today|banks|2026-11-16": "Banks fell 1.6% while the S&P 500 fell 1.9%, led lower by Goldman Sachs (−2.7%), Morgan Stanley (−2.7%), JPMorgan (−2.3%) and Citigroup (−2.2%).",
+ "now|banks|2026-11-16": "Banks fell 0.8% since 10 Nov against −1.7% for the S&P 500, with the regional bank fund KRE down 1.7%, Goldman Sachs down 1.6%, JPMorgan down 1.1% and Bank of America down 0.9%.",
+ "today|oil|2026-11-16": "Oil stocks fell 2.2% while the S&P 500 fell 1.9%, led lower by Halliburton (−3.8%), Schlumberger (−3.1%), Marathon Petroleum (−3.0%) and Occidental (−2.4%).",
+ "now|oil|2026-11-16": "Oil stocks rose 2.7% since 10 Nov while the S&P 500 fell 1.7%, led by EOG (+4.7%), ConocoPhillips (+4.5%), Marathon Petroleum (+3.2%) and Chevron (+3.0%).",
+ "today|health|2026-11-16": "Healthcare slipped 0.6% while the S&P 500 fell 1.9%, with Merck down 2.2%, Thermo Fisher down 1.3% and Johnson & Johnson down 1.1% while UnitedHealth rose 1.1%.",
+ "now|health|2026-11-16": "Healthcare slipped 0.6% since 10 Nov against −1.7% for the S&P 500, with Thermo Fisher down 4.2%, Merck down 2.9% and Abbott down 2.7% while UnitedHealth rose 3.6%."
 }
