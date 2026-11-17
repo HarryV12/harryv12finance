@@ -1064,5 +1064,53 @@
  "now|health|2026-11-16": [
   "The news we have doesn't name a single cause for this week's moves.",
   "Thermo Fisher −4.2%, Merck −2.9% and Abbott −2.7%, while UnitedHealth +3.6%; the basket held up better than the S&P 500 and is +4.2% over the month."
+ ],
+ "today|all|2026-11-17": [
+  "Salesforce −9.5%, Intuit −7.2%, ServiceNow −6.5% and MicroStrategy −6.3% fell hardest (the news we have doesn't say why).",
+  "Bloomberg and Reuters said stocks were falling ahead of Nvidia's results and the Anthropic IPO amid AI jitters (16 Nov); the S&P 500 is −4.4% over the month."
+ ],
+ "now|all|2026-11-17": [
+  "Nvidia fell sharply on 12 Nov (The New York Times) and AI stocks resumed their slide on 16 Nov (WSJ), with the market falling on AI jitters ahead of Nvidia's results and the Anthropic IPO (Reuters, 16 Nov).",
+  "Biggest movers: MicroStrategy −20.3%, Moderna −17.6%, Alibaba −15.6% and Robinhood −14.9% (the news we have doesn't say why); the S&P 500 is −4.4% over the month."
+ ],
+ "today|ai|2026-11-17": [
+  "WSJ said AI stocks resumed their slide and Reuters said Wall Street fell on AI jitters ahead of Nvidia's results and the Anthropic IPO (16 Nov); the news we have doesn't name a single cause for the day's moves.",
+  "TSMC −3.7%, Super Micro −3.6% and Oracle −3.4%, while Arm +4.8%; the basket held up better than the S&P 500 but is −17.7% over the month."
+ ],
+ "now|ai|2026-11-17": [
+  "AI stocks rebounded after the early-November selloff (AP, 11 Nov), then Nvidia tumbled on 12 Nov (The New York Times) and AI stocks resumed their slide on 16 Nov (WSJ), ahead of Nvidia's results and the Anthropic IPO (Reuters, 16 Nov).",
+  "Super Micro −13.1%, TSMC −9.3%, Nvidia −8.0% and Palantir −7.3%; the basket fell more than the S&P 500 and is −17.7% over the month."
+ ],
+ "today|defense|2026-11-17": [
+  "AeroVironment −4.6% and Huntington Ingalls −1.5%, while RTX +1.6% and Northrop Grumman +1.4% (the news we have doesn't say why).",
+  "The basket held up better than the S&P 500 and is +5.5% over the month."
+ ],
+ "now|defense|2026-11-17": [
+  "The news we have doesn't name a single cause for this week's fall; Barron's asked what a possible impeachment of Pete Hegseth would mean for defense stocks (10 Nov).",
+  "AeroVironment −15.5%, Leidos −6.6%, L3Harris −5.5% and Huntington Ingalls −5.1%; the basket fell more than the S&P 500 but is +5.5% over the month."
+ ],
+ "today|banks|2026-11-17": [
+  "Yahoo Finance said rolling outages rocked U.S. bank stocks, and that Wells Fargo and JPMorgan face tougher rules (16 Nov); the news we have doesn't name a single cause for today's fall.",
+  "Wells Fargo −2.5%, JPMorgan −2.4%, PNC −2.3% and U.S. Bancorp −2.1%; the basket fell more than the S&P 500 and is +1.3% over the month."
+ ],
+ "now|banks|2026-11-17": [
+  "The news we have doesn't name a single cause for this week's moves; WSJ said Capitol Hill's bark was worse than its bite for bank stocks (10 Nov).",
+  "Goldman Sachs −3.6%, Wells Fargo −3.6%, JPMorgan −3.5% and KRE −3.1%; the basket fell slightly more than the S&P 500 and is +1.3% over the month."
+ ],
+ "today|oil|2026-11-17": [
+  "Seeking Alpha said an AI infrastructure sell-off had erased $4.2 trillion from industrial and energy stocks (15 Nov); the news we have doesn't name a single cause for today's fall.",
+  "Schlumberger −2.3%, Marathon Petroleum −1.6%, Halliburton −1.6% and Occidental −1.5%; the basket fell about as much as the S&P 500 and is −6.2% over the month."
+ ],
+ "now|oil|2026-11-17": [
+  "The news we have doesn't name a single cause for the stocks' rise; Yahoo Finance noted Hormuz tensions rising (11 Nov).",
+  "ConocoPhillips +3.6%, Phillips 66 +2.5%, Chevron +2.4% and Exxon +2.3%; the basket is −6.2% over the month."
+ ],
+ "today|health|2026-11-17": [
+  "UnitedHealth −5.4%, Abbott −2.6%, the healthcare fund XLV −1.4% and Pfizer −1.4% (the news we have doesn't say why).",
+  "The basket fell more than the S&P 500 but is +3.2% over the month."
+ ],
+ "now|health|2026-11-17": [
+  "The news we have doesn't name a single cause for this week's moves.",
+  "Abbott −5.2%, Thermo Fisher −4.4%, UnitedHealth −3.8% and Merck −3.1%; the basket fell slightly more than the S&P 500 but is +3.2% over the month."
  ]
 }

@@ -623,5 +623,38 @@
    }
   ],
   "why": "With no reported bad news, the slide cannot be tied to one event; analysts' comments that the stock looked expensive suggest it may have lost ground as expectations eased, but the headlines do not confirm that."
+ },
+ "PLD": {
+  "cause": "No single cause: shares slid from a July high after strong results, with no bad news in our headlines",
+  "clear": false,
+  "summary": "Prologis peaked at $148.88 on 16 July after it beat second-quarter estimates and raised its 2026 earnings guidance, and has fallen about 16% since, against a 2% fall for the S&P 500 and 7% for its sector. The headlines we have are mostly positive or neutral: a bid for UK rival Segro (agreed on 23 July at a final $18.7 billion), a note on 22 July that a 42% run was cooling and the stock looked above fair value, and later pieces calling it high quality but expensive. None names a cause for the fall.",
+  "events": [
+   {
+    "date": "2026-07-16",
+    "kind": "peak",
+    "text": "Shares close at $148.88, their high, after it beats second-quarter estimates and raises 2026 earnings guidance"
+   },
+   {
+    "date": "2026-07-20",
+    "kind": "neutral",
+    "text": "Segro rejects Prologis's takeover bid (Reuters)"
+   },
+   {
+    "date": "2026-07-22",
+    "kind": "neutral",
+    "text": "Yahoo Finance says the stock looks above fair value as its 42% run cools"
+   },
+   {
+    "date": "2026-07-23",
+    "kind": "neutral",
+    "text": "Segro's board yields to Prologis's final $18.7 billion takeover bid (WSJ)"
+   },
+   {
+    "date": "2026-09-18",
+    "kind": "neutral",
+    "text": "Seeking Alpha calls Prologis high quality but too rich"
+   }
+  ],
+  "why": "With no reported bad news, the slide cannot be tied to one event; it looks like a gradual decline after a post-results high, with some headlines saying the shares had become expensive."
  }
 }
