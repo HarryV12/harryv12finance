@@ -656,5 +656,28 @@
    }
   ],
   "why": "With no reported bad news, the slide cannot be tied to one event; it looks like a gradual decline after a post-results high, with some headlines saying the shares had become expensive."
+ },
+ "MTB": {
+  "cause": "No single cause; regional banks fell together",
+  "clear": false,
+  "summary": "M&T Bank peaked on 14 August 2026 and has since fallen about 15%. The news we have names no single event: Morgan Stanley upgraded it to a top pick on 8 September, yet regional bank shares, M&T among them, fell on 16 September, and its industry fell with it.",
+  "events": [
+   {
+    "date": "2026-08-14",
+    "kind": "peak",
+    "text": "Shares at their high"
+   },
+   {
+    "date": "2026-09-08",
+    "kind": "good",
+    "text": "Morgan Stanley upgrades M&T Bank to a buy-equivalent rating and names it a top pick"
+   },
+   {
+    "date": "2026-09-16",
+    "kind": "bad",
+    "text": "Regional bank shares, including M&T, WesBanco, Pinnacle, Zions and Regions, fall together; no cause is given in the headline"
+   }
+  ],
+  "why": "When one group of banks falls together without news about the bank itself, the cause is usually about the whole group rather than the company: investors sell regional banks as a set. M&T's own news (the analyst upgrade, loan growth) was not negative, and its industry fell too, so most of the drop looks shared rather than specific to the bank."
  }
 }

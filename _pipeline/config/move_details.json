@@ -1112,5 +1112,57 @@
  "now|health|2026-11-17": [
   "The news we have doesn't name a single cause for this week's moves.",
   "Abbott −5.2%, Thermo Fisher −4.4%, UnitedHealth −3.8% and Merck −3.1%; the basket fell slightly more than the S&P 500 but is +3.2% over the month."
+ ],
+ "health|2026-11-12": [
+  "Alignment Healthcare fell on rising cost concerns (Yahoo Finance, 12 Nov), UnitedHealth hit the health-care fund again (Yahoo Finance, 17 Nov), then insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov).",
+  "UnitedHealth −13.2%, Merck −6.4%, Pfizer −4.7% and Abbott −4.4%; the basket fell more than the S&P 500 and is −1.6% over the month."
+ ],
+ "today|all|2026-11-18": [
+  "Humana −13.0% and UnitedHealth −10.2% fell hardest, as insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov).",
+  "Palo Alto Networks rose 9.9% and TJX 8.1% (the news we have doesn't say why); the S&P 500 is −5.1% over the month."
+ ],
+ "now|all|2026-11-18": [
+  "Nvidia tumbled on 12 Nov (The New York Times) and its drama kept rolling tech stocks on 13 Nov (Yahoo Finance), then stocks fell ahead of Nvidia's earnings (Bloomberg, 16 Nov).",
+  "Biggest movers: MicroStrategy −26.2%, Moderna −20.9%, SanDisk −20.6% and Bloom Energy −18.4% (the news we have doesn't say why); the S&P 500 is −5.1% over the month."
+ ],
+ "today|ai|2026-11-18": [
+  "AMD +5.3% and Broadcom +3.6%, while Nvidia −2.9% and Marvell −2.2% (the news we have doesn't say why).",
+  "The basket beat the S&P 500 today but is −16.8% over the month."
+ ],
+ "now|ai|2026-11-18": [
+  "AI stocks rebounded on 11 Nov (WSJ), then Nvidia tumbled on 12 Nov (The New York Times) and the Nvidia drama kept rolling tech on 13 Nov (Yahoo Finance), ahead of its earnings (Bloomberg, 16 Nov).",
+  "Super Micro −19.9%, Marvell −13.8%, Nvidia −13.1% and Micron −13.1%; the basket fell much more than the S&P 500 and is −16.8% over the month."
+ ],
+ "today|defense|2026-11-18": [
+  "Huntington Ingalls −3.2%, AeroVironment −3.2%, Lockheed Martin −2.1% and Booz Allen −2.0% (the news we have doesn't say why).",
+  "The basket fell more than the S&P 500 but is +2.1% over the month."
+ ],
+ "now|defense|2026-11-18": [
+  "The news we have doesn't name a single cause for this week's fall.",
+  "AeroVironment −18.7%, Huntington Ingalls −8.3%, L3Harris −7.3% and Leidos −6.1%; the basket fell more than the S&P 500 but is +2.1% over the month."
+ ],
+ "today|banks|2026-11-18": [
+  "Yahoo Finance said rolling outages rocked U.S. bank stocks, and that Wells Fargo and JPMorgan face tougher rules (16 Nov); the news we have doesn't name a single cause for today's fall.",
+  "Citigroup −2.2%, Wells Fargo −2.1%, JPMorgan −1.8% and U.S. Bancorp −1.5%; the basket fell more than the S&P 500 and is −1.0% over the month."
+ ],
+ "now|banks|2026-11-18": [
+  "Yahoo Finance said Chase and Wells Fargo outages hit customers and bank stocks fell (16 Nov); the news we have doesn't name a single cause for the whole week.",
+  "Goldman Sachs −5.8%, Wells Fargo −5.7%, JPMorgan −5.6% and Citigroup −5.6%; the basket fell slightly more than the S&P 500 and is −1.0% over the month."
+ ],
+ "today|oil|2026-11-18": [
+  "Marathon Petroleum −5.5%, Occidental −4.9%, Chevron −4.7% and Phillips 66 −4.7% (the news we have doesn't say why).",
+  "The basket fell much more than the S&P 500 and is −10.2% over the month."
+ ],
+ "now|oil|2026-11-18": [
+  "Morningstar asked where oil stocks go next as crude prices fall (12 Nov) and Barron's said energy stocks can't escape Nvidia's wake (12 Nov); the news we have doesn't name a single cause.",
+  "Marathon Petroleum −7.2%, Occidental −6.1%, Phillips 66 −5.4% and Schlumberger −5.0%; the basket fell slightly more than the S&P 500 and is −10.2% over the month."
+ ],
+ "today|health|2026-11-18": [
+  "UnitedHealth and other insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov); Alignment Healthcare fell 9% on weakness in Medicare Advantage stocks (Seeking Alpha, 18 Nov).",
+  "UnitedHealth −10.2%, Merck −3.9%, Eli Lilly −2.3% and AbbVie −2.3%; the basket fell much more than the S&P 500 and is −1.6% over the month."
+ ],
+ "now|health|2026-11-18": [
+  "Insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov), after UnitedHealth had already hit the sector (Yahoo Finance, 17 Nov).",
+  "UnitedHealth −13.2%, Merck −6.4%, Pfizer −4.7% and Abbott −4.4%; the basket fell more than the S&P 500 and is −1.6% over the month."
  ]
 }
