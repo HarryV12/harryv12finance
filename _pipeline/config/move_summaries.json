@@ -327,5 +327,18 @@
  "today|oil|2026-11-18": "Oil stocks fell 3.7% while the S&P 500 fell 0.3%, led lower by Marathon Petroleum (−5.5%), Occidental (−4.9%), Chevron (−4.7%) and Phillips 66 (−4.7%).",
  "now|oil|2026-11-18": "Oil stocks fell 4.2% over the week against −3.9% for the S&P 500, led lower by Marathon Petroleum (−7.2%), Occidental (−6.1%), Phillips 66 (−5.4%) and Schlumberger (−5.0%).",
  "today|health|2026-11-18": "Healthcare fell 2.7% while the S&P 500 fell 0.3%, with UnitedHealth down 10.2%, Merck down 3.9% and Eli Lilly and AbbVie each down 2.3%.",
- "now|health|2026-11-18": "Healthcare fell 5.1% over the week against −3.9% for the S&P 500, with UnitedHealth down 13.2%, Merck down 6.4%, Pfizer down 4.7% and Abbott down 4.4%."
+ "now|health|2026-11-18": "Healthcare fell 5.1% over the week against −3.9% for the S&P 500, with UnitedHealth down 13.2%, Merck down 6.4%, Pfizer down 4.7% and Abbott down 4.4%.",
+ "today|all|2026-11-19": "Stocks fell (S&P 500 −2.0%) as NetEase dropped 11.4% and AMD 7.7%, while PDD rose 11.0% and Palo Alto Networks 6.4%.",
+ "now|all|2026-11-19": "The market fell 5.5% over the week (S&P 500), with MicroStrategy down 24.7%, Freeport-McMoRan 18.8%, UnitedHealth 18.4% and Bloom Energy 16.8%.",
+ "today|ai|2026-11-19": "AI and chip stocks fell 3.3% while the S&P 500 fell 2.0%, led lower by AMD (−7.7%), Marvell (−4.9%), Applied Materials (−3.8%) and Lam Research (−3.8%).",
+ "now|ai|2026-11-19": "AI and chip stocks fell 12.0% over the week against −5.5% for the S&P 500, led lower by AMD (−16.4%), Marvell (−15.8%), Micron (−13.5%) and TSMC (−13.2%).",
+ "today|defense|2026-11-19": "Defense stocks fell 1.3% while the S&P 500 fell 2.0%, with AeroVironment down 5.1%, RTX down 2.0%, Booz Allen down 1.7% and Lockheed Martin down 1.1%.",
+ "now|defense|2026-11-19": "Defense stocks fell 6.3% over the week against −5.5% for the S&P 500, with AeroVironment down 20.6%, Huntington Ingalls down 7.1%, L3Harris down 5.6% and Lockheed Martin down 5.3%.",
+ "today|banks|2026-11-19": "Banks fell 1.6% while the S&P 500 fell 2.0%, led lower by Morgan Stanley (−3.4%), Goldman Sachs (−2.9%), Citigroup (−1.8%) and U.S. Bancorp (−1.8%).",
+ "now|banks|2026-11-19": "Banks fell 5.3% over the week against −5.5% for the S&P 500, with Morgan Stanley down 7.5%, Goldman Sachs down 7.2%, Citigroup down 7.1% and JPMorgan down 6.6%.",
+ "today|oil|2026-11-19": "Oil stocks fell 0.4% while the S&P 500 fell 2.0%, with Marathon Petroleum down 1.6%, Schlumberger down 1.1% and Exxon down 1.0%, while Halliburton rose 0.9%.",
+ "now|oil|2026-11-19": "Oil stocks fell 5.7% over the week against −5.5% for the S&P 500, led lower by Marathon Petroleum (−10.6%), Occidental (−7.9%), Phillips 66 (−7.2%) and Schlumberger (−5.9%).",
+ "today|health|2026-11-19": "Healthcare fell 2.2% while the S&P 500 fell 2.0%, with UnitedHealth down 5.6%, Merck down 3.7% and Eli Lilly down 2.3%.",
+ "now|health|2026-11-19": "Healthcare fell 6.4% over the week against −5.5% for the S&P 500, with UnitedHealth down 18.4%, Merck down 9.7% and Johnson & Johnson down 5.8%.",
+ "oil|2024-12-13": "Oil stocks fell 8.2% (S&P 500 −3.0%) in the week from 13 December 2024, with Phillips 66, Halliburton and Schlumberger down over 10%; the news we have doesn't name a single cause."
 }

@@ -1164,5 +1164,57 @@
  "now|health|2026-11-18": [
   "Insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov), after UnitedHealth had already hit the sector (Yahoo Finance, 17 Nov).",
   "UnitedHealth −13.2%, Merck −6.4%, Pfizer −4.7% and Abbott −4.4%; the basket fell more than the S&P 500 and is −1.6% over the month."
+ ],
+ "today|all|2026-11-19": [
+  "Headlines this week said stocks slid on AI chip and tech pressures ahead of Nvidia's earnings (Yahoo Finance, Bloomberg, 17 Nov); the news we have doesn't name a single cause for today's fall.",
+  "NetEase −11.4% and AMD −7.7%; PDD +11.0% and Palo Alto Networks +6.4% (the news we have doesn't say why); the S&P 500 is −7.4% over the month."
+ ],
+ "now|all|2026-11-19": [
+  "Nvidia's CEO exit shook tech stocks (WSJ, Reuters, 12 Nov), then stocks fell in the countdown to Nvidia's earnings (Bloomberg, 17 Nov) and UnitedHealth and other insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov).",
+  "Biggest movers: MicroStrategy −24.7%, Freeport-McMoRan −18.8%, UnitedHealth −18.4% and Bloom Energy −16.8% (the news we have doesn't say why for the first two); the S&P 500 is −7.4% over the month."
+ ],
+ "today|ai|2026-11-19": [
+  "Bloomberg said chip stocks slid as the US set new curbs on China's compute access, and Yahoo Finance said chip stocks were having their worst two months since 2008 (17 Nov); the news we have doesn't name a single cause for today's fall.",
+  "AMD −7.7%, Marvell −4.9%, Applied Materials −3.8% and Lam Research −3.8%; the basket fell more than the S&P 500 and is −21.3% over the month."
+ ],
+ "now|ai|2026-11-19": [
+  "Nvidia's CEO exit hit AI stocks and memory chip stocks fell on the Nvidia shakeup (Reuters, Barron's, 12 Nov), then chip stocks slid as the US set new curbs on China's compute access (Bloomberg, 17 Nov).",
+  "AMD −16.4%, Marvell −15.8%, Micron −13.5% and TSMC −13.2%; the basket fell much more than the S&P 500 and is −21.3% over the month."
+ ],
+ "today|defense|2026-11-19": [
+  "AeroVironment −5.1%, RTX −2.0%, Booz Allen −1.7% and Lockheed Martin −1.1% (the news we have doesn't say why).",
+  "The basket fell less than the S&P 500 and is +0.6% over the month."
+ ],
+ "now|defense|2026-11-19": [
+  "The news we have doesn't name a single cause for this week's fall.",
+  "AeroVironment −20.6%, Huntington Ingalls −7.1%, L3Harris −5.6% and Lockheed Martin −5.3%; the basket fell slightly more than the S&P 500 but is +0.6% over the month."
+ ],
+ "today|banks|2026-11-19": [
+  "Barron's said Chase and other big banks were hit by customer reports of outages and the stocks were falling, and Deutsche Bank shares sank after leaks of internal documents (CNBC, 17 Nov); the news we have doesn't name a single cause for today's fall.",
+  "Morgan Stanley −3.4%, Goldman Sachs −2.9%, Citigroup −1.8% and U.S. Bancorp −1.8%; the basket fell less than the S&P 500 and is −3.5% over the month."
+ ],
+ "now|banks|2026-11-19": [
+  "Barron's said bank stocks fell as Chase and others faced customer outage reports, and Bloomberg said US banks neared a bearish 'death cross' signal (17 Nov); the news we have doesn't name a single cause for the whole week.",
+  "Morgan Stanley −7.5%, Goldman Sachs −7.2%, Citigroup −7.1% and JPMorgan −6.6%; the basket fell about as much as the S&P 500 and is −3.5% over the month."
+ ],
+ "today|oil|2026-11-19": [
+  "Reuters said oil prices settled lower as traders weighed a surplus supply outlook (18 Nov); the news we have doesn't name a single cause for today's moves.",
+  "Marathon Petroleum −1.6%, Schlumberger −1.1% and Exxon −1.0%; Halliburton +0.9%; the basket fell much less than the S&P 500 but is −10.5% over the month."
+ ],
+ "now|oil|2026-11-19": [
+  "Morningstar asked where oil stocks go next as crude prices fall (12 Nov) and an analyst trimmed price targets, warning oil stocks may 'struggle to appreciate' (Yahoo Finance, 13 Nov); the news we have doesn't name a single cause.",
+  "Marathon Petroleum −10.6%, Occidental −7.9%, Phillips 66 −7.2% and Schlumberger −5.9%; the basket fell about as much as the S&P 500 and is −10.5% over the month."
+ ],
+ "today|health|2026-11-19": [
+  "UnitedHealth and other insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov); the news we have doesn't say why Merck and Eli Lilly fell.",
+  "UnitedHealth −5.6%, Merck −3.7% and Eli Lilly −2.3%; the basket fell slightly more than the S&P 500 and is −3.2% over the month."
+ ],
+ "now|health|2026-11-19": [
+  "Insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov); the news we have doesn't say why Merck and Johnson & Johnson fell.",
+  "UnitedHealth −18.4%, Merck −9.7% and Johnson & Johnson −5.8%; the basket fell more than the S&P 500 and is −3.2% over the month."
+ ],
+ "oil|2024-12-13": [
+  "The headlines we have don't name a single cause (MarketWatch, 19 Dec, said oil could fall below $50 a barrel in 2025 if a 'perfect storm' hit).",
+  "Phillips 66 −11.0%, Halliburton −10.8%, Schlumberger −10.2% and Marathon Petroleum −10.0%, against the S&P 500 −3.0%."
  ]
 }
