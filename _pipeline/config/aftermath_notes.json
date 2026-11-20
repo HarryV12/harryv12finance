@@ -679,5 +679,71 @@
    }
   ],
   "why": "When one group of banks falls together without news about the bank itself, the cause is usually about the whole group rather than the company: investors sell regional banks as a set. M&T's own news (the analyst upgrade, loan growth) was not negative, and its industry fell too, so most of the drop looks shared rather than specific to the bank."
+ },
+ "LHX": {
+  "cause": "CEO ousted over a conduct breach, on top of a slide with no single cause",
+  "clear": false,
+  "summary": "L3Harris peaked at $312.41 on 29 May 2026 and has fallen about 20%. The one dated event in our headlines is the exit of CEO Christopher Kubasik on 17 August after a conduct review, when the shares fell about 5% in a day ($290.43 to $277.05); the rest of the slide, including a 9% one-day fall on 30 July, has no explanation in the news we have, and its sector fell only about 2% over the same period.",
+  "events": [
+   {
+    "date": "2026-05-29",
+    "kind": "peak",
+    "text": "Shares close at $312.41, their high before the fall"
+   },
+   {
+    "date": "2026-07-30",
+    "kind": "bad",
+    "text": "Shares fall 8.6% in a day ($296.11 to $270.60); the news we have doesn't explain it"
+   },
+   {
+    "date": "2026-08-17",
+    "kind": "bad",
+    "text": "Board ousts CEO Christopher Kubasik over a code-of-conduct breach and names insider Mehta as replacement; shares fall about 5% ($290.43 to $277.05)"
+   },
+   {
+    "date": "2026-09-23",
+    "kind": "neutral",
+    "text": "Shares around $239, down about 23% from the high, after drifting lower for five weeks with no named cause"
+   }
+  ],
+  "why": "A chief executive leaving abruptly over an unspecified conduct breach raises doubts about governance and leadership at a company that depends on long-term government contracts, so some investors sell until the new leadership has settled in."
+ },
+ "C": {
+  "cause": "Higher expenses worried investors in July, then a November bank-stock rout",
+  "clear": true,
+  "summary": "Citigroup peaked at $144.14 on 22 June 2026. On 14 July it fell 5.3% in a day even though second-quarter profit beat estimates, as investors worried about higher expenses, and it has since fallen about 23%. Most of the latest leg came in the week of 16 November, when bank stocks sold off on reports of online banking outages at other big banks and a bearish 'death cross' signal; Bloomberg called it the worst week for bank stocks since April 2025.",
+  "events": [
+   {
+    "date": "2026-06-22",
+    "kind": "peak",
+    "text": "Shares close at $144.14, their high before the fall"
+   },
+   {
+    "date": "2026-07-14",
+    "kind": "bad",
+    "text": "Shares fall 5.3% ($139.23 to $131.87): worry over expenses and comments on investments and staff cuts overshadow a second-quarter profit beat"
+   },
+   {
+    "date": "2026-07-15",
+    "kind": "bad",
+    "text": "Reuters: analysts revise estimates after the bank flags higher expenses"
+   },
+   {
+    "date": "2026-11-16",
+    "kind": "bad",
+    "text": "Bank stocks slide as online banking outages are reported at Chase and Wells Fargo"
+   },
+   {
+    "date": "2026-11-19",
+    "kind": "bad",
+    "text": "US banks send a bearish 'death cross' signal as the stock rout extends"
+   },
+   {
+    "date": "2026-11-20",
+    "kind": "bad",
+    "text": "Shares fall 4.0% in a day to $110.62 as bank stocks head for their worst week since April 2025"
+   }
+  ],
+  "why": "Higher costs cut into the profit a bank keeps from each dollar of revenue, so investors mark the shares down even after a good quarter. Bank shares also tend to move together, so a sector-wide selloff drags down a large bank like Citigroup whatever its own news."
  }
 }

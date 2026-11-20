@@ -1216,5 +1216,65 @@
  "oil|2024-12-13": [
   "The headlines we have don't name a single cause (MarketWatch, 19 Dec, said oil could fall below $50 a barrel in 2025 if a 'perfect storm' hit).",
   "Phillips 66 −11.0%, Halliburton −10.8%, Schlumberger −10.2% and Marathon Petroleum −10.0%, against the S&P 500 −3.0%."
+ ],
+ "ai|2026-11-16": [
+  "MarketWatch said Micron, AMD and other AI stocks fell as the chip selloff intensified, and headlines tied it to Nvidia's troubles and US semiconductor restrictions (WSJ, Yahoo Finance, 16 Nov) → Micron −23.6%, Nvidia −22.9%, Marvell −22.0% and AMD −20.5%.",
+  "Barron's called Anthropic's IPO a big test for chip stocks (16 Nov); Fortune said AI stocks kept selling off after the record IPO and that Wall Street is split on whether this is the top (20 Nov) → the group fell 19.1% against −8.6% for the S&P 500 and is −25.2% over the month."
+ ],
+ "defense|2026-11-16": [
+  "The headlines we have are mostly upbeat (European defense stocks seen as undervalued, Morningstar, 16 Nov; insider buying ahead of higher military spending, MarketWatch, 20 Nov) and don't name a cause for the fall.",
+  "AeroVironment −26.2%, Huntington Ingalls −8.5%, L3Harris −8.3% and Leidos −6.4%, against the S&P 500 −8.6%; the basket is −4.9% over the month."
+ ],
+ "banks|2026-11-16": [
+  "Yahoo Finance said bank stocks fell as Chase and Wells Fargo outages hit customers (16 Nov), Bloomberg said US banks neared a bearish 'death cross' signal (17 Nov), and Deutsche Bank shares dropped after leaks about its past (WSJ, 17 Nov).",
+  "Goldman Sachs −13.7%, Morgan Stanley −13.1%, Citigroup −10.8% and JPMorgan −10.3%; Bloomberg called it the worst week for bank stocks since April 2025 (20 Nov), and the basket is −6.9% over the month."
+ ],
+ "today|all|2026-11-20": [
+  "AP News said the S&P 500 dropped as the selloff in AI stocks accelerated (20 Nov); earlier headlines cited Fed minutes signalling more rate hikes (Yahoo Finance, 18 Nov) and Anthropic's debut not being an AI all-clear (Bloomberg, 18 Nov).",
+  "SanDisk −16.1%, Bloom Energy −15.3%, Astera Labs −14.8% and Arm −14.1%; the S&P 500 is −9.7% over the month."
+ ],
+ "now|all|2026-11-20": [
+  "Bloomberg tied the week's fall to jitters ahead of Nvidia's results and the Anthropic IPO (16 Nov), and Reuters called it a snowballing selloff in global markets (20 Nov).",
+  "MicroStrategy −30.3%, SanDisk −28.4%, ASX −26.1% and Bloom Energy −25.8%; basic materials (−13.1%), technology (−11.7%) and energy (−8.4%) were the weakest sectors."
+ ],
+ "today|ai|2026-11-20": [
+  "CNBC asked what went wrong after Anthropic was supposed to save the AI trade, and WSJ said investors dumping AI stocks to buy into Anthropic sent tech shares lower (19 Nov).",
+  "Arm −14.1%, Nvidia −14.0%, Micron −13.9% and AMD −13.3%; the group is −25.2% over the month."
+ ],
+ "now|ai|2026-11-20": [
+  "MarketWatch said Micron, AMD and other AI stocks fell as the chip selloff intensified, and headlines tied it to Nvidia's troubles and US semiconductor restrictions (WSJ, Yahoo Finance, 16 Nov) → Micron −23.6%, Nvidia −22.9%, Marvell −22.0% and AMD −20.5%.",
+  "Barron's called Anthropic's IPO a big test for chip stocks (16 Nov); Fortune said AI stocks kept selling off after the record IPO and that Wall Street is split on whether this is the top (20 Nov) → the group fell 19.1% against −8.6% for the S&P 500 and is −25.2% over the month."
+ ],
+ "today|defense|2026-11-20": [
+  "The headlines we have are about defense picks, backlogs and contracts, and don't explain today's moves.",
+  "AeroVironment −9.5%, L3Harris −2.6%, Huntington Ingalls −2.2% and Leidos −2.0%; the basket fell less than the S&P 500 but is −4.9% over the month."
+ ],
+ "now|defense|2026-11-20": [
+  "The headlines we have are mostly upbeat (European defense stocks seen as undervalued, Morningstar, 16 Nov; insider buying ahead of higher military spending, MarketWatch, 20 Nov) and don't name a cause for the fall.",
+  "AeroVironment −26.2%, Huntington Ingalls −8.5%, L3Harris −8.3% and Leidos −6.4%, against the S&P 500 −8.6%; the basket is −4.9% over the month."
+ ],
+ "today|banks|2026-11-20": [
+  "CNBC said bank stocks continued to sell off and Bloomberg said US banks sent a bearish 'death cross' signal (19 Nov); Bloomberg said bank stocks were set for their worst week since April 2025 (20 Nov).",
+  "Goldman Sachs −6.7%, Morgan Stanley −5.3%, Citigroup −4.0% and Bank of America −3.1%; the basket is −6.9% over the month."
+ ],
+ "now|banks|2026-11-20": [
+  "Yahoo Finance said bank stocks fell as Chase and Wells Fargo outages hit customers (16 Nov), Bloomberg said US banks neared a bearish 'death cross' signal (17 Nov), and Deutsche Bank shares dropped after leaks about its past (WSJ, 17 Nov).",
+  "Goldman Sachs −13.7%, Morgan Stanley −13.1%, Citigroup −10.8% and JPMorgan −10.3%; Bloomberg called it the worst week for bank stocks since April 2025 (20 Nov), and the basket is −6.9% over the month."
+ ],
+ "today|oil|2026-11-20": [
+  "Reuters said oil prices settled lower as traders weighed a surplus supply outlook, and WSJ said US crude stockpiles rose for a second week (18 Nov); the news we have doesn't name a single cause for today's moves.",
+  "Schlumberger −4.2%, Halliburton −3.8% and Phillips 66 −1.4%; Chevron +0.9%; the basket fell much less than the S&P 500 but is −10.3% over the month."
+ ],
+ "now|oil|2026-11-20": [
+  "The headlines we have are mostly stock lists and dividend picks and don't name a cause; energy was one of the weakest sectors in the wider selloff (−8.4%).",
+  "Schlumberger −11.2%, Marathon Petroleum −11.2%, Halliburton −9.6% and Phillips 66 −9.2%; the basket fell slightly less than the S&P 500 and is −10.3% over the month."
+ ],
+ "today|health|2026-11-20": [
+  "MarketWatch said investors fled to healthcare for safety and insurance and hospital shares then plunged, and headlines tied insurers' fall to a CMS anti-fraud proposal (Yahoo Finance, 18 Nov); the news we have doesn't say why Thermo Fisher fell.",
+  "UnitedHealth +2.8%, Johnson & Johnson +1.3%, AbbVie +0.9%; Thermo Fisher −2.8%; the basket held up far better than the S&P 500 but is −4.1% over the month."
+ ],
+ "now|health|2026-11-20": [
+  "UnitedHealth and other insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov); the news we have doesn't say why Merck and Eli Lilly fell.",
+  "UnitedHealth −16.6%, Merck −9.5% and Eli Lilly −6.7%; the basket fell less than the S&P 500 and is −4.1% over the month."
  ]
 }
