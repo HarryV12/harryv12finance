@@ -2,9 +2,11 @@
    prices (one-year share moves, company values). To update: add a dated line to the top of `updates`, change the
    facts below (each has its own date and source), and set `updated`. See UPDATING.md. */
 window.CTC_AIB = {
-  updated: "2026-11-13",
+  updated: "2026-11-20",
   // newest first; shown as "What's new"
   updates: [
+    { date: "2026-11-19", text: "Anthropic began trading on Nasdaq as \"ANT\", opening at $111.50 (about 34% above its $83 IPO price) and closing at $97.17, up about 17%. CNBC put its fully diluted value at about $1.8T at the close. Nvidia, Google, Microsoft and AMD bought about $26B of stock at the IPO price in private placements.", src: "cnbc_ant_live" },
+    { date: "2026-11-18", text: "Anthropic priced its IPO at $83 a share, above the $70–$78 range set on 10 Nov, selling 980M Class A shares to raise $81.3B (up to $93.5B if underwriters buy the extra 147M shares they have until 20 Nov to take), the largest IPO on record, CNBC reports.", src: "cnbc_ant_live" },
     { date: "2026-11-12", text: "OpenAI has raised $15B at a $1.25T valuation, sources told CNBC. That is below the up to $30B it first sought; the Financial Times had reported a cut to $20B. The report does not say who led the round.", src: "cnbc_openai15", src2: "cnbc_openai20" },
     { date: "2026-11-11", text: "CoreWeave's shares rose 24.71%, their best day since April 2025, after it raised its 2026 revenue forecast. CEO Michael Intrator said it plans another asset-level debt offering within one to two weeks, which he expects to price at 7% to 7.5%.", src: "cnbc_cw1111" },
     { date: "2026-11-10", text: "CoreWeave reported third-quarter revenue of $3,661M (up 168%), a net loss of $709M, a revenue backlog of about $132.5B and total debt of $46,873M at 30 September, excluding leases. It raised 2026 revenue guidance to $13.0–13.3B.", src: "cw_q3", src2: "cnbc_cw1111" },
@@ -59,18 +61,19 @@ window.CTC_AIB = {
   chipmakers: [["Nvidia", "NVDA"], ["Broadcom", "AVGO"], ["Micron", "MU"], ["AMD", "AMD"]],
   // the private AI labs, placed among the biggest US-listed companies (whose values are live)
   labs: [
-    { name: "Anthropic", value: 1.4e12, label: "up to $1.4T", status: "Public S-1 filed 26 Oct; roadshow launched 10 Nov at $70–$78 a share (up to $1.4T fully diluted at the top); Nasdaq \"ANT\"; trading could start 18–19 Nov (last private round $965B)", asOf: "2026-11-10", src: "fortune_range", src2: "cnbc_s1_live" },
+    { name: "Anthropic", value: 1.8e12, label: "~$1.8T", status: "Listed on Nasdaq as \"ANT\" on 19 Nov: priced at $83 (above the $70–$78 range), closed day one at $97.17; about $1.8T fully diluted at the close (last private round $965B)", asOf: "2026-11-19", src: "cnbc_ant_live", src2: "fortune_range" },
     { name: "OpenAI", value: 1.25e12, label: "~$1.25T", status: "raised $15B at $1.25T, sources told CNBC (12 Nov); earlier target up to $30B; no IPO in 2026", asOf: "2026-11-12", src: "cnbc_openai15", src2: "cnbc_openai20" }
   ],
   // what decides it next; edit as events happen
   next: [
     { kind: "", title: "Price range set (10 Nov)", text: "$70–$78 a share for 825M shares: up to $64.4B raised and up to $1.4T fully diluted at the top." },
-    { kind: "", title: "IPO priced", text: "Trading could start as early as 18–19 Nov; where it prices against the range is the first market verdict." },
-    { kind: "bad", title: "Priced lower", text: "A price below the range, or a value well under $1.4T, would mark the private-market bubble down.", fork: true },
-    { kind: "warn", title: "Delayed", text: "Pulling or postponing the listing would say the same thing, more quietly.", fork: true }
+    { kind: "", title: "IPO priced (18 Nov)", text: "$83 a share, above the range, for 980M shares: $81.3B raised. It opened at $111.50 on 19 Nov and closed at $97.17." },
+    { kind: "", title: "Holds above $83", text: "Where ANT trades against its $83 IPO price over the coming weeks is the market's running verdict.", fork: true },
+    { kind: "bad", title: "Falls below $83", text: "A close under the IPO price would mean the first-day gain has gone and buyers are paying less than the pricing round did.", fork: true }
   ],
-  watch: ["Anthropic's IPO price and first-day trading", "CoreWeave's bond yields and default swaps", "OpenAI's fundraise value", "AI model price cuts", "Big Tech's 2027 spending plans at January results"],
+  watch: ["Anthropic's share price against its $83 IPO price", "CoreWeave's bond yields and default swaps", "OpenAI's fundraise value", "AI model price cuts", "Big Tech's 2027 spending plans at January results"],
   sources: {
+    cnbc_ant_live: { name: "CNBC, 19 Nov 2026: Anthropic IPO live updates: ANT stock price and Nasdaq debut", url: "https://www.cnbc.com/2026/11/19/anthropic-ipo-ant-live-updates.html" },
     cnbc_openai15: { name: "CNBC, 12 Nov 2026: OpenAI raises $15B at a $1.25T valuation, sources say", url: "https://www.cnbc.com/video/2026/11/12/openai-raises-15b-at-a-1-point-25t-valuation-what-it-means-for-the-ipo.html" },
     cnbc_cw1111: { name: "CNBC, 11 Nov 2026: CoreWeave soars more than 24% for best day since April 2025 after strong Q3 report", url: "https://www.cnbc.com/2026/11/11/coreweave-crwv-outlook-earnings-ai.html" },
     cw_q3: { name: "CoreWeave, 10 Nov 2026: CoreWeave Reports Strong Third Quarter 2026 Results", url: "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Third-Quarter-2026-Results/default.aspx" },
