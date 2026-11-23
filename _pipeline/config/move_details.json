@@ -1276,5 +1276,53 @@
  "now|health|2026-11-20": [
   "UnitedHealth and other insurers dragged down the Dow after CMS proposed a new anti-fraud rule (Yahoo Finance, 18 Nov); the news we have doesn't say why Merck and Eli Lilly fell.",
   "UnitedHealth −16.6%, Merck −9.5% and Eli Lilly −6.7%; the basket fell less than the S&P 500 and is −4.1% over the month."
+ ],
+ "today|all|2026-11-23": [
+  "Yahoo Finance, Reuters and Bloomberg tied the rally to Nvidia reinstating Huang, with the dollar also jumping (22–23 Nov) → AI stocks led the rebound.",
+  "Nvidia +31.5%, Astera Labs +23.2%, ASX +21.4% and Dell +20.8%; the S&P 500 is still −4.9% over the month."
+ ],
+ "now|all|2026-11-23": [
+  "The NYT asked why the market was down after Anthropic's successful IPO (19 Nov), and Yahoo Finance said stocks were on a 'fire sale' as the IPO failed to calm AI jitters (22 Nov); Monday's rebound followed Nvidia reinstating Huang (Yahoo Finance, 23 Nov).",
+  "Intuit −20.3%, UnitedHealth −18.4%, MicroStrategy −18.1% and Humana −16.8%; the S&P 500 is −4.9% over the month."
+ ],
+ "today|ai|2026-11-23": [
+  "Reuters, Yahoo Finance and Bloomberg said Wall Street soared as Nvidia reinstated Huang (22–23 Nov), following the worst week for chips since 2001 (Yahoo Finance, 21 Nov).",
+  "Nvidia +31.5%, Micron +19.0%, Marvell +18.4% and Arm +16.1%; the basket is still −14.6% over the month."
+ ],
+ "now|ai|2026-11-23": [
+  "The week began with the AI selloff still running (WSJ, Bloomberg, 16 Nov); AMD and Broadcom sank on tighter US chip rules (Yahoo Finance, 16 Nov), and Monday's rebound followed Nvidia reinstating Huang (Reuters, 22 Nov).",
+  "AMD −10.1%, Broadcom −6.0% and Oracle −4.5%; Nvidia +5.7%; the basket is −14.6% over the month."
+ ],
+ "today|defense|2026-11-23": [
+  "The headlines we have are about defense contracts, ETFs and listings (Yahoo Finance, Bloomberg, 21–23 Nov) and don't explain today's moves.",
+  "AeroVironment +4.5%, RTX +2.4%, Huntington Ingalls +2.2% and L3Harris +2.0%; the basket rose less than the S&P 500 and is −3.4% over the month."
+ ],
+ "now|defense|2026-11-23": [
+  "The headlines we have are mostly about defense picks, ETFs and budgets (Barron's, Morningstar, Reuters, 17–18 Nov) and don't name a cause for the fall.",
+  "AeroVironment −17.2%, Huntington Ingalls −5.1%, Leidos −5.0% and Booz Allen −4.8%; the basket is −3.4% over the month."
+ ],
+ "today|banks|2026-11-23": [
+  "The headlines we have are about bank stocks and interest rates (Yahoo Finance, 21–22 Nov) and don't name a cause for today's moves; the market as a whole rallied as Nvidia reinstated Huang (Yahoo Finance, 23 Nov).",
+  "Morgan Stanley +4.2%, Goldman Sachs +4.2%, Citigroup +3.4% and Schwab +2.5%; the basket rose less than the S&P 500 and is −3.4% over the month."
+ ],
+ "now|banks|2026-11-23": [
+  "Yahoo Finance said bank stocks fell as Chase and Wells Fargo outages hit customers (16 Nov), Bloomberg said US banks neared a bearish 'death cross' signal (17 Nov), and Deutsche Bank shares dropped after leaks about its past (WSJ, 17 Nov).",
+  "Goldman Sachs −7.6%, Morgan Stanley −7.0%, JPMorgan −6.4% and Wells Fargo −5.7%; the basket is −3.4% over the month."
+ ],
+ "today|oil|2026-11-23": [
+  "The headlines we have are stock lists and dividend picks (Yahoo Finance, 21–22 Nov) and don't explain today's moves.",
+  "ConocoPhillips −2.9%, Marathon Petroleum −2.6%, Occidental −2.2% and EOG −2.2%; the basket fell while the S&P 500 rallied and is −14.1% over the month."
+ ],
+ "now|oil|2026-11-23": [
+  "Reuters said oil prices settled lower as traders weighed a surplus supply outlook (18 Nov); the other headlines we have are stock lists and don't name a cause.",
+  "Marathon Petroleum −10.8%, Phillips 66 −8.5%, Occidental −8.1% and Schlumberger −7.8%; the basket is −14.1% over the month."
+ ],
+ "today|health|2026-11-23": [
+  "The headlines we have are stock lists and picks (Yahoo Finance, Seeking Alpha, 21–23 Nov) and don't explain today's moves.",
+  "Thermo Fisher +2.8%, Eli Lilly +1.5% and Merck +1.3%; the basket rose far less than the S&P 500 and is −2.5% over the month."
+ ],
+ "now|health|2026-11-23": [
+  "MarketWatch said investors fled to healthcare for safety and insurance and hospital shares then plunged (20 Nov); the news we have doesn't say why Merck and Pfizer fell.",
+  "UnitedHealth −18.4%, Merck −6.2% and Pfizer −5.1%; the basket is −2.5% over the month."
  ]
 }
