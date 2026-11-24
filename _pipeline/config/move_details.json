@@ -1324,5 +1324,53 @@
  "now|health|2026-11-23": [
   "MarketWatch said investors fled to healthcare for safety and insurance and hospital shares then plunged (20 Nov); the news we have doesn't say why Merck and Pfizer fell.",
   "UnitedHealth −18.4%, Merck −6.2% and Pfizer −5.1%; the basket is −2.5% over the month."
+ ],
+ "today|all|2026-11-24": [
+  "Bloomberg said stocks turned lower as the Nvidia euphoria wore off (23 Nov), after Nvidia had its best day since 2003 when Jensen Huang was reinstated as CEO; the headlines we have don't explain the individual falls.",
+  "Analog Devices −17.4%, HPE −16.3%, Astera Labs −13.9% and Dell −13.3%, against −0.5% for the S&P 500, which is −6.1% over the month."
+ ],
+ "now|all|2026-11-24": [
+  "WSJ said US stocks fell as AI doubts festered, and Yahoo Finance said Nvidia's plunge put Wall Street on edge ahead of its earnings (both 17 Nov); Nvidia then jumped on 23 Nov when Jensen Huang was reinstated as CEO, but the news we have doesn't say why the other names fell.",
+  "SanDisk −21.8%, MicroStrategy −19.6%, Analog Devices −18.4% and AMD −17.9%, against −1.9% for the S&P 500."
+ ],
+ "today|ai|2026-11-24": [
+  "Nvidia soared 31% on 23 Nov after its board reinstated Jensen Huang as CEO and chip stocks jumped (Yahoo Finance); Bloomberg said the Nvidia euphoria then wore off that day. The headlines we have don't give a cause for today's fall.",
+  "Micron −11.0%, Marvell −9.1%, AMD −8.9% and Arm −8.6%; the basket is −21.8% over the month."
+ ],
+ "now|ai|2026-11-24": [
+  "WSJ said US stocks fell as AI doubts festered, and Barron's said Nvidia's loss of Jensen Huang added to AI stocks' risks (17 Nov); Nvidia soared 31% on 23 Nov when the board reinstated Huang as CEO.",
+  "AMD −17.9%, Arm −11.9%, Broadcom −11.9% and Micron −11.6%; the basket is −21.8% over the month."
+ ],
+ "today|defense|2026-11-24": [
+  "Yahoo Finance reported a bullish Mizuho call on Boeing, Northrop Grumman, Lockheed Martin and Kratos, calling the group 'underappreciated' (24 Nov); the other headlines we have are stock lists and don't name a single cause.",
+  "Leidos +4.0%, Lockheed Martin +2.6%, Booz Allen +2.5% and Huntington Ingalls +2.2%; the basket is −4.9% over the month."
+ ],
+ "now|defense|2026-11-24": [
+  "The headlines we have are stock lists and fund picks (Yahoo Finance, Morningstar, Barron's, 17–19 Nov) and don't explain the move or AeroVironment's fall.",
+  "AeroVironment −14.4%, Booz Allen −1.6%, Huntington Ingalls −1.6% and General Dynamics −1.2%; the basket is −4.9% over the month."
+ ],
+ "today|banks|2026-11-24": [
+  "Seeking Alpha said bank stocks were recovering from Friday's tumble (23 Nov); the other headlines we have are stock lists and outage advice and don't name a cause for today's moves.",
+  "Morgan Stanley −2.2%, Goldman Sachs −2.1%, Schwab +1.7% and Wells Fargo +1.5%; the basket is −3.8% over the month."
+ ],
+ "now|banks|2026-11-24": [
+  "Bloomberg said US banks were near a bearish 'death cross' signal as shares tumbled, and Seeking Alpha tied that to reports of bank outages (both 17 Nov); Yahoo Finance also reported Berkshire selling Bank of America shares (17 Nov).",
+  "Goldman Sachs −8.2%, Morgan Stanley −8.0%, Citigroup −5.0% and JPMorgan −3.9%; the basket is −3.8% over the month."
+ ],
+ "today|oil|2026-11-24": [
+  "The headlines we have are stock lists and picks (Yahoo Finance, Forbes, Morningstar, 22–23 Nov) and don't explain today's moves.",
+  "ConocoPhillips +1.9%, Schlumberger +1.8%, Chevron +1.4% and Occidental +1.3%; the basket is still −14.0% over the month."
+ ],
+ "now|oil|2026-11-24": [
+  "WSJ said oil prices fell on expectations of a supply surplus and Middle East tensions, and that US crude stockpiles rose for a second week (18 Nov); Seeking Alpha reported larger-than-expected rises in crude and gasoline stocks (19 Nov).",
+  "Marathon Petroleum −10.0%, Phillips 66 −7.8%, Occidental −5.6% and EOG −5.4%; the basket is −14.0% over the month."
+ ],
+ "today|health|2026-11-24": [
+  "The headlines we have are AI-healthcare stock lists and fund picks (Yahoo Finance, Seeking Alpha, 22–24 Nov) and don't explain today's moves.",
+  "Merck +4.5%, AbbVie +4.2%, Pfizer +3.9% and Eli Lilly +3.3%, against −0.5% for the S&P 500."
+ ],
+ "now|health|2026-11-24": [
+  "Yahoo Finance said UnitedHealth and other insurers dragged down the Dow after CMS proposed a new anti-fraud rule (18 Nov), and MarketWatch said UnitedHealth tumbled after the government signalled a Medicare Advantage fraud crackdown (19 Nov).",
+  "UnitedHealth −12.3%, Merck −1.3%, AbbVie +2.6% and Thermo Fisher +1.3%; the basket is +0.5% over the month."
  ]
 }
