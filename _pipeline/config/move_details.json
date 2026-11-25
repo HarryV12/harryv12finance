@@ -1372,5 +1372,53 @@
  "now|health|2026-11-24": [
   "Yahoo Finance said UnitedHealth and other insurers dragged down the Dow after CMS proposed a new anti-fraud rule (18 Nov), and MarketWatch said UnitedHealth tumbled after the government signalled a Medicare Advantage fraud crackdown (19 Nov).",
   "UnitedHealth −12.3%, Merck −1.3%, AbbVie +2.6% and Thermo Fisher +1.3%; the basket is +0.5% over the month."
+ ],
+ "today|all|2026-11-25": [
+  "Yahoo Finance and Bloomberg (23 Nov) described Monday's jump after Nvidia reinstated Jensen Huang as CEO, and the New York Times and AP (24 Nov) said Nvidia and other AI stocks were erasing part of that rally; the S&P 500 fell 0.3%, with the basket −6.9% over the month.",
+  "Lam Research −5.7%, Oracle −5.1%, Analog Devices +6.4% and Wheaton Precious Metals +5.2% (the news we have doesn't say why for these)."
+ ],
+ "now|all|2026-11-25": [
+  "WSJ and CNBC (18–19 Nov) said stocks slid as the AI selloff continued despite Anthropic's IPO, and the Yahoo Finance headline asked whether tech was in a bear market (19 Nov).",
+  "SanDisk −24.1%, AMD −23.4%, Arista −15.4% and Sanofi +15.4% (the news we have doesn't say why for Sanofi); the S&P 500 is −6.9% over the month."
+ ],
+ "today|ai|2026-11-25": [
+  "Yahoo Finance (23 Nov) reported Nvidia jumping after its board reinstated Jensen Huang as CEO; the New York Times and AP (24 Nov) said Nvidia and other AI stocks erased some of that rally.",
+  "Lam Research −5.7%, Oracle −5.1%, Micron −4.5% and Nvidia −3.9%; the basket is −25.4% over the month."
+ ],
+ "now|ai|2026-11-25": [
+  "CNBC and the WSJ (19 Nov) said investors dumped AI stocks to buy into Anthropic's IPO and that the AI selloff continued despite it.",
+  "AMD −23.4%, Broadcom −15.0%, Micron −14.8% and Lam Research −12.6%; the basket is −25.4% over the month."
+ ],
+ "today|defense|2026-11-25": [
+  "The headlines we have are stock lists, an analyst note and a CNBC piece on a missile maker falling on expected US military spending cuts (24–25 Nov); none explains today's rise.",
+  "Booz Allen +4.1%, General Dynamics +2.5%, Huntington Ingalls +2.2% and AeroVironment +2.2%; the basket is −2.4% over the month."
+ ],
+ "now|defense|2026-11-25": [
+  "MarketWatch (20 Nov) said insiders were buying defense stocks ahead of a military-spending boom in 2027, and Yahoo Finance (21 Nov) reported that one aerospace and defense stock tanked that week.",
+  "Booz Allen +4.6%, Huntington Ingalls +4.0%, Leidos +3.9% and AeroVironment −9.6%; the basket is −2.4% over the month."
+ ],
+ "today|banks|2026-11-25": [
+  "The headlines we have are stock lists and a Seeking Alpha note on banks recovering from Friday's tumble (23 Nov); none explains today's small moves.",
+  "U.S. Bancorp +0.8%, PNC +0.8%, Morgan Stanley −0.8% and Goldman Sachs −0.6%; the basket is −4.5% over the month."
+ ],
+ "now|banks|2026-11-25": [
+  "CNBC (19 Nov) said bank stocks continued to sell off, and Bloomberg (20 Nov) said they were set for their worst week since April 2025 as the rout deepened.",
+  "Goldman Sachs −8.3%, Morgan Stanley −7.6%, Citigroup −3.4% and JPMorgan −2.3%; the basket is −4.5% over the month."
+ ],
+ "today|oil|2026-11-25": [
+  "The headlines we have are stock lists and a Seeking Alpha piece on the COP31 climate talks collapsing as oil stocks cap a banner year (23 Nov); none explains today's moves.",
+  "Schlumberger +3.3%, Halliburton +2.3%, EOG +1.2% and Marathon Petroleum −2.5%; the basket is −11.2% over the month."
+ ],
+ "now|oil|2026-11-25": [
+  "Reuters said oil prices settled lower as traders weighed a surplus supply outlook (18 Nov); the other headlines we have are stock lists.",
+  "Marathon Petroleum −7.4%, Phillips 66 −3.6%, Exxon Mobil −1.5% and Chevron +2.5%; the basket is −11.2% over the month."
+ ],
+ "today|health|2026-11-25": [
+  "The headlines we have are stock lists and earnings-season screens (Yahoo Finance, Seeking Alpha, 23–25 Nov); none explains today's moves.",
+  "Abbott +2.5%, UnitedHealth +1.3%, AbbVie −1.9% and Thermo Fisher −1.5%; the basket is flat (+0.0%) over the month."
+ ],
+ "now|health|2026-11-25": [
+  "Yahoo Finance (19 Nov) said healthcare ETFs shone as investors rotated out of tech, while MarketWatch (19–20 Nov) said UnitedHealth tumbled after the government signalled a Medicare Advantage fraud crackdown.",
+  "Abbott +3.4%, AbbVie +3.0%, Merck +1.9% and Pfizer +1.4%; the basket is flat (+0.0%) over the month."
  ]
 }

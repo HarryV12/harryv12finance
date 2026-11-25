@@ -379,5 +379,17 @@
  "today|oil|2026-11-24": "Oil stocks rose 0.9% while the S&P 500 fell 0.5%, led by ConocoPhillips (+1.9%), Schlumberger (+1.8%), Chevron (+1.4%) and Occidental (+1.3%); the news we have doesn't name a single cause.",
  "now|oil|2026-11-24": "Oil stocks fell 5.2% over the week against −1.9% for the S&P 500, led lower by Marathon Petroleum (−10.0%), Phillips 66 (−7.8%), Occidental (−5.6%) and EOG (−5.4%).",
  "today|health|2026-11-24": "Healthcare rose 2.9% while the S&P 500 fell 0.5%, led by Merck (+4.5%), AbbVie (+4.2%), Pfizer (+3.9%) and Eli Lilly (+3.3%); the news we have doesn't name a single cause.",
- "now|health|2026-11-24": "Healthcare fell 1.2% over the week against −1.9% for the S&P 500, with UnitedHealth (−12.3%) down most while AbbVie (+2.6%) and Thermo Fisher (+1.3%) rose."
+ "now|health|2026-11-24": "Healthcare fell 1.2% over the week against −1.9% for the S&P 500, with UnitedHealth (−12.3%) down most while AbbVie (+2.6%) and Thermo Fisher (+1.3%) rose.",
+ "today|all|2026-11-25": "Stocks slipped (S&P 500 −0.3%) as chip and AI names gave back more of Monday's rally, with Lam Research (−5.7%) and Oracle (−5.1%) lower while Analog Devices (+6.4%) and Wheaton Precious Metals (+5.2%) rose.",
+ "now|all|2026-11-25": "The market fell 1.9% over the week (S&P 500), with SanDisk (−24.1%), AMD (−23.4%) and Arista (−15.4%) down most while Sanofi rose 15.4%, as the AI selloff continued after Anthropic's IPO.",
+ "today|ai|2026-11-25": "AI and chip stocks fell 1.7% against −0.3% for the S&P 500, led lower by Lam Research (−5.7%), Oracle (−5.1%), Micron (−4.5%) and Nvidia (−3.9%) as Monday's rebound faded.",
+ "now|ai|2026-11-25": "AI and chip stocks fell 9.4% over the week against −1.9% for the S&P 500, led lower by AMD (−23.4%), Broadcom (−15.0%), Micron (−14.8%) and Lam Research (−12.6%).",
+ "today|defense|2026-11-25": "Defense stocks rose 2.0% while the S&P 500 fell 0.3%, led by Booz Allen (+4.1%), General Dynamics (+2.5%), Huntington Ingalls (+2.2%) and AeroVironment (+2.2%); the news we have doesn't name a single cause.",
+ "now|defense|2026-11-25": "Defense stocks rose 1.5% over the week against −1.9% for the S&P 500, with Booz Allen (+4.6%), Huntington Ingalls (+4.0%) and Leidos (+3.9%) higher while AeroVironment fell 9.6%.",
+ "today|banks|2026-11-25": "Bank stocks were roughly flat (−0.1%) against −0.3% for the S&P 500, with U.S. Bancorp (+0.8%) and PNC (+0.8%) higher and Morgan Stanley (−0.8%) and Goldman Sachs (−0.6%) lower; the news we have doesn't name a single cause.",
+ "now|banks|2026-11-25": "Bank stocks fell 2.2% over the week against −1.9% for the S&P 500, led lower by Goldman Sachs (−8.3%), Morgan Stanley (−7.6%), Citigroup (−3.4%) and JPMorgan (−2.3%).",
+ "today|oil|2026-11-25": "Oil stocks rose 0.7% while the S&P 500 fell 0.3%, led by Schlumberger (+3.3%), Halliburton (+2.3%) and EOG (+1.2%), with Marathon Petroleum (−2.5%) lower; the news we have doesn't name a single cause.",
+ "now|oil|2026-11-25": "Oil stocks fell 1.0% over the week against −1.9% for the S&P 500, with Marathon Petroleum (−7.4%) and Phillips 66 (−3.6%) lower and Chevron (+2.5%) higher.",
+ "today|health|2026-11-25": "Healthcare fell 0.3%, in line with the S&P 500 (−0.3%), with Abbott (+2.5%) and UnitedHealth (+1.3%) higher and AbbVie (−1.9%) and Thermo Fisher (−1.5%) lower; the news we have doesn't name a single cause.",
+ "now|health|2026-11-25": "Healthcare rose 1.2% over the week against −1.9% for the S&P 500, led by Abbott (+3.4%), AbbVie (+3.0%), Merck (+1.9%) and Pfizer (+1.4%)."
 }

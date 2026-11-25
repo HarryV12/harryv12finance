@@ -745,5 +745,33 @@
    }
   ],
   "why": "Higher costs cut into the profit a bank keeps from each dollar of revenue, so investors mark the shares down even after a good quarter. Bank shares also tend to move together, so a sector-wide selloff drags down a large bank like Citigroup whatever its own news."
+ },
+ "SIE.DE": {
+  "cause": "No single cause: shares slid from an August high with no bad news in our headlines",
+  "clear": false,
+  "summary": "Siemens peaked at €289.85 on 28 August and has fallen about 15% since, while the S&P 500 is down about 7% and its sector about 2%. The headlines we have are mostly neutral or positive (analysts calling the shares undervalued after industrial-AI and chip-research news; a plan to give Siemens shareholders one Healthineers share for every two Siemens shares, per Reuters sources on 11 November), and none names a cause for the fall.",
+  "events": [
+   {
+    "date": "2026-08-28",
+    "kind": "peak",
+    "text": "Shares at their high, €289.85"
+   },
+   {
+    "date": "2026-09-15",
+    "kind": "neutral",
+    "text": "Yahoo Finance says the stock could be 34% undervalued after fresh industrial-AI news"
+   },
+   {
+    "date": "2026-10-30",
+    "kind": "bad",
+    "text": "Yahoo Finance reports the shares dropped that day; the headline gives no cause"
+   },
+   {
+    "date": "2026-11-11",
+    "kind": "neutral",
+    "text": "Reuters, citing sources, says Siemens shareholders would get one Healthineers share for every two Siemens shares"
+   }
+  ],
+  "why": "With no reported bad news, the slide cannot be tied to one event; it looks like a gradual decline after a high, with the shares falling more than its sector but less than a weak wider market."
  }
 }
