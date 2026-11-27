@@ -2,9 +2,12 @@
    prices (one-year share moves, company values). To update: add a dated line to the top of `updates`, change the
    facts below (each has its own date and source), and set `updated`. See UPDATING.md. */
 window.CTC_AIB = {
-  updated: "2026-11-20",
+  updated: "2026-11-27",
   // newest first; shown as "What's new"
   updates: [
+    { date: "2026-11-25", text: "Nvidia fell 4% and Oracle more than 5% on a day when investors weighed AI spending, a hot inflation reading and rate risk, CNBC reports. Anthropic rose more than 4% after its shares had dropped below the IPO price. Barclays' Venu Krishna said: \"We just feel that this is panic right now.\"", src: "cnbc_selloff1125" },
+    { date: "2026-11-24", text: "Anthropic's shares closed down 6.5% on Tuesday, below the $83 IPO price, five days after the debut, CNBC reports. Canaccord Genuity (buy, $135 target), Wedbush (outperform, $120) and Oppenheimer (outperform, $150) began coverage; roughly half of the institutions that placed IPO orders were left without shares.", src: "cnbc_ant_below" },
+    { date: "2026-11-20", text: "Anthropic announced the closing of its IPO, \"including full exercise of underwriters' option\" (headline of its announcement; the closing terms were not in the text read).", src: "anthropic_close" },
     { date: "2026-11-19", text: "Anthropic began trading on Nasdaq as \"ANT\", opening at $111.50 (about 34% above its $83 IPO price) and closing at $97.17, up about 17%. CNBC put its fully diluted value at about $1.8T at the close. Nvidia, Google, Microsoft and AMD bought about $26B of stock at the IPO price in private placements.", src: "cnbc_ant_live" },
     { date: "2026-11-18", text: "Anthropic priced its IPO at $83 a share, above the $70–$78 range set on 10 Nov, selling 980M Class A shares to raise $81.3B (up to $93.5B if underwriters buy the extra 147M shares they have until 20 Nov to take), the largest IPO on record, CNBC reports.", src: "cnbc_ant_live" },
     { date: "2026-11-12", text: "OpenAI has raised $15B at a $1.25T valuation, sources told CNBC. That is below the up to $30B it first sought; the Financial Times had reported a cut to $20B. The report does not say who led the round.", src: "cnbc_openai15", src2: "cnbc_openai20" },
@@ -23,8 +26,8 @@ window.CTC_AIB = {
   ],
   // what people who matter are saying; keep 3, newest first
   voices: [
+    { who: "Venu Krishna, Barclays head of US equity strategy", date: "2026-11-25", said: "We just feel that this is panic right now.", src: "cnbc_selloff1125" },
     { who: "Hock Tan, Broadcom CEO", date: "2026-10-12", said: "A lot of investors have no clue what they are investing in.", src: "fortune_tan" },
-    { who: "Chris Wood, Jefferies' global head of equity strategy", date: "2026-09-17", said: "Big Tech's AI spending won't earn enough to justify itself; expect significant capital destruction.", paraphrase: true, src: "business_standard_wood" },
     { who: "Bond markets, on CoreWeave", date: "2026-10-15", said: "Its default swaps priced a better-than-even chance of default within five years.", paraphrase: true, src: "benzinga_cds" }
   ],
   // CoreWeave: the AI company whose debt markets are most worried about
@@ -61,18 +64,22 @@ window.CTC_AIB = {
   chipmakers: [["Nvidia", "NVDA"], ["Broadcom", "AVGO"], ["Micron", "MU"], ["AMD", "AMD"]],
   // the private AI labs, placed among the biggest US-listed companies (whose values are live)
   labs: [
-    { name: "Anthropic", value: 1.8e12, label: "~$1.8T", status: "Listed on Nasdaq as \"ANT\" on 19 Nov: priced at $83 (above the $70–$78 range), closed day one at $97.17; about $1.8T fully diluted at the close (last private round $965B)", asOf: "2026-11-19", src: "cnbc_ant_live", src2: "fortune_range" },
+    { name: "Anthropic", value: 1.8e12, label: "~$1.8T", status: "Listed on Nasdaq as \"ANT\" on 19 Nov: priced at $83 (above the $70–$78 range), closed day one at $97.17 (about $1.8T fully diluted, last private round $965B); closed below $83 on 24 Nov, down 6.5% that day (CNBC)", asOf: "2026-11-24", src: "cnbc_ant_below", src2: "cnbc_ant_live" },
     { name: "OpenAI", value: 1.25e12, label: "~$1.25T", status: "raised $15B at $1.25T, sources told CNBC (12 Nov); earlier target up to $30B; no IPO in 2026", asOf: "2026-11-12", src: "cnbc_openai15", src2: "cnbc_openai20" }
   ],
   // what decides it next; edit as events happen
   next: [
     { kind: "", title: "Price range set (10 Nov)", text: "$70–$78 a share for 825M shares: up to $64.4B raised and up to $1.4T fully diluted at the top." },
     { kind: "", title: "IPO priced (18 Nov)", text: "$83 a share, above the range, for 980M shares: $81.3B raised. It opened at $111.50 on 19 Nov and closed at $97.17." },
-    { kind: "", title: "Holds above $83", text: "Where ANT trades against its $83 IPO price over the coming weeks is the market's running verdict.", fork: true },
-    { kind: "bad", title: "Falls below $83", text: "A close under the IPO price would mean the first-day gain has gone and buyers are paying less than the pricing round did.", fork: true }
+    { kind: "bad", title: "Below $83 (24 Nov)", text: "ANT closed down 6.5% on 24 Nov, under its IPO price five days after the debut; it rose more than 4% on 25 Nov, CNBC reports." },
+    { kind: "", title: "Recovers above $83", text: "A close back above the IPO price would restore the first-day gain.", fork: true },
+    { kind: "bad", title: "Stays below $83", text: "Shares that stay under the IPO price mean new buyers are paying less than the pricing round did.", fork: true }
   ],
   watch: ["Anthropic's share price against its $83 IPO price", "CoreWeave's bond yields and default swaps", "OpenAI's fundraise value", "AI model price cuts", "Big Tech's 2027 spending plans at January results"],
   sources: {
+    cnbc_selloff1125: { name: "CNBC, 25 Nov 2026: Nvidia leads tech sell-off as Huang comeback rally fizzles", url: "https://www.cnbc.com/2026/11/25/nvidia-ai-stock-tech-selloff.html" },
+    cnbc_ant_below: { name: "CNBC, 24 Nov 2026: Anthropic closes below $83 IPO price, but analysts are still largely positive", url: "https://www.cnbc.com/2026/11/24/anthropic-stock-ipo-price.html" },
+    anthropic_close: { name: "Anthropic, 20 Nov 2026: Anthropic announces closing of initial public offering, including full exercise of underwriters' option (headline listed on anthropic.com/news/s1-sec)", url: "https://www.anthropic.com/news/s1-sec" },
     cnbc_ant_live: { name: "CNBC, 19 Nov 2026: Anthropic IPO live updates: ANT stock price and Nasdaq debut", url: "https://www.cnbc.com/2026/11/19/anthropic-ipo-ant-live-updates.html" },
     cnbc_openai15: { name: "CNBC, 12 Nov 2026: OpenAI raises $15B at a $1.25T valuation, sources say", url: "https://www.cnbc.com/video/2026/11/12/openai-raises-15b-at-a-1-point-25t-valuation-what-it-means-for-the-ipo.html" },
     cnbc_cw1111: { name: "CNBC, 11 Nov 2026: CoreWeave soars more than 24% for best day since April 2025 after strong Q3 report", url: "https://www.cnbc.com/2026/11/11/coreweave-crwv-outlook-earnings-ai.html" },
