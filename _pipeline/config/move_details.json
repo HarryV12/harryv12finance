@@ -1420,5 +1420,53 @@
  "now|health|2026-11-25": [
   "Yahoo Finance (19 Nov) said healthcare ETFs shone as investors rotated out of tech, while MarketWatch (19–20 Nov) said UnitedHealth tumbled after the government signalled a Medicare Advantage fraud crackdown.",
   "Abbott +3.4%, AbbVie +3.0%, Merck +1.9% and Pfizer +1.4%; the basket is flat (+0.0%) over the month."
+ ],
+ "today|all|2026-11-27": [
+  "Today's headlines we have are from 25–26 Nov (Reuters: Nasdaq and S&P 500 ended down but well off lows; Bloomberg, 26 Nov: stocks and Nasdaq futures climbed as the AI trade rebounded); none explains today's moves.",
+  "Itaú Unibanco +11.3%, Astera Labs +8.7%, Lumentum +8.0% and Seagate +7.9%; the S&P 500 is −5.7% over the month."
+ ],
+ "now|all|2026-11-27": [
+  "Headlines from 19–20 Nov (NYT, WSJ, CNBC) described a stock-market slide after Anthropic's IPO and an AI washout; the headlines we have don't explain this week's rebound.",
+  "Sanofi +15.8%, Moderna +14.7%, Itaú Unibanco +14.5% and AMD −13.2%; the S&P 500 is −5.7% over the month."
+ ],
+ "today|ai|2026-11-27": [
+  "The headlines we have are from 25 Nov (Reuters: the AI stock rout deepened but an afternoon bounce limited the damage; Bloomberg, 26 Nov: AI trade rebounds); none explains today's moves.",
+  "Micron +7.6%, Marvell +7.3%, Arm +6.2% and Palantir +5.2%; the basket is −24.7% over the month."
+ ],
+ "now|ai|2026-11-27": [
+  "Headlines from 19–20 Nov said chip stocks' Anthropic-fuelled rally reversed (Seeking Alpha) and AI stocks sold off after the IPO (Fortune); the headlines we have don't explain this week's moves.",
+  "AMD −13.2%, Broadcom −9.9%, Micron −6.3% and Palantir +12.0%; the basket is −24.7% over the month."
+ ],
+ "today|defense|2026-11-27": [
+  "The headlines we have are stock-comparison pieces and a Yahoo Finance roundup of billion-dollar contracts for Boeing, Northrop Grumman and RTX this week (27 Nov); none explains today's moves.",
+  "AeroVironment +4.8%, Huntington Ingalls +1.7%, L3Harris +1.6% and RTX +1.2%; the basket is −1.0% over the month."
+ ],
+ "now|defense|2026-11-27": [
+  "Headlines from 20 Nov (MarketWatch) said insiders were buying defense stocks ahead of a military-spending boom in 2027; the headlines we have name no cause for this week's rise.",
+  "Booz Allen +7.5%, Huntington Ingalls +6.3%, Lockheed Martin +6.0% and Leidos +5.6%; the basket is −1.0% over the month."
+ ],
+ "today|banks|2026-11-27": [
+  "The headlines we have are from 25 Nov (CNBC: bank stocks under pressure as the tech rout intensified; Barron's: financial stocks slumped in a broad market rout); none explains today's moves.",
+  "Citigroup +2.0%, Morgan Stanley +2.0%, JPMorgan +2.0% and Wells Fargo +1.7%; the basket is −3.7% over the month."
+ ],
+ "now|banks|2026-11-27": [
+  "CNBC said bank stocks continued to sell off (19 Nov) and Bloomberg said they were set for their worst week since April 2025 (20 Nov); the headlines we have don't explain this week's partial recovery.",
+  "U.S. Bancorp +3.6%, PNC +2.2%, Goldman Sachs −4.1% and Morgan Stanley −2.3%; the basket is −3.7% over the month."
+ ],
+ "today|oil|2026-11-27": [
+  "The headlines we have are from 25 Nov (WSJ: U.S. crude stockpiles rose for a third straight week; Barron's: crude oil at a crossroads); none explains today's moves.",
+  "Marathon Petroleum +3.9%, Phillips 66 +2.6%, Halliburton +2.5% and Schlumberger +2.3%; the basket is −10.3% over the month."
+ ],
+ "now|oil|2026-11-27": [
+  "Reuters said oil prices settled lower as traders weighed a surplus supply outlook (19 Nov); the other headlines we have are stock lists and don't explain this week's moves.",
+  "Schlumberger +3.6%, Chevron +2.9%, Halliburton +2.1% and Marathon Petroleum −2.2%; the basket is −10.3% over the month."
+ ],
+ "today|health|2026-11-27": [
+  "The headlines we have are earnings-season stock screens (Seeking Alpha, 25 Nov) and a Bloomberg piece on European healthcare profits sheltering investors from AI swings (27 Nov); none explains today's moves.",
+  "UnitedHealth +1.5%, Merck +0.7%, Johnson & Johnson +0.6% and AbbVie −0.9%; the basket is +0.3% over the month."
+ ],
+ "now|health|2026-11-27": [
+  "MarketWatch said investors fled to healthcare for safety and that insurance and hospital shares were then plunging (20 Nov); the headlines we have don't explain this week's rise.",
+  "Merck +6.4%, UnitedHealth +6.3% and Abbott +4.0%; the basket is +0.3% over the month."
  ]
 }
